@@ -5,6 +5,12 @@ import java.util.Objects;
 public class LoaiKhachHang {
 
 	private String maLoaiKhachHang, tenLoaiKhachHang;
+	
+	
+
+	public LoaiKhachHang(String maLoaiKhachHang) {
+		this.maLoaiKhachHang = maLoaiKhachHang;
+	}
 
 	public LoaiKhachHang(String maLoaiKhachHang, String tenLoaiKhachHang) {
 		this.maLoaiKhachHang = maLoaiKhachHang;
