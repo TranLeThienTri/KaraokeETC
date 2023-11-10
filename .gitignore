@@ -1,0 +1,21 @@
+# Bỏ qua tất cả các file .class
+*.class
+
+# Bỏ qua thư mục build
+/build/
+
+# Bỏ qua file log
+*.log
+
+# Bỏ qua tệp cấu hình dự án của Eclipse
+.project
+.classpath
+
+# Bỏ qua thư mục biên dịch
+/bin/
+
+# Bỏ qua thư mục chứa các thư viện .jar
+/library/
+
+# Bỏ qua thư mục chứa cấu hình của Eclipse
+.settings/
