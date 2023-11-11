@@ -9,6 +9,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +25,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import connectDB.ConnectDB;
+import dao.DanhSachDichVu;
+import dao.DanhSachKhachHang;
+import entitys.DichVu;
+import entitys.KhachHang;
+
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -33,20 +42,22 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class Frm_QuanLyDichVu extends JFrame {
+public class Frm_QuanLyDichVu extends JFrame implements ActionListener {
 	JPanel pnDSDichVu, pnTTDV;
 	JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia;
 	JComboBox comboTDV, comboLDV;
-	JTextField txtSDT, txtDonGia, txtSoLuongTon;
+	JTextField  txtDonGia, txtSoLuongTon;
 	Panel pnQLDV;
+	FixButton btnLamMoi,btnThem,btnSua;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
+	DanhSachDichVu dsDV;
 
 	public Panel getFrmQuanLyDichVu() {
 		return this.pnQLDV;
 	}
 
-	public Frm_QuanLyDichVu() {
+	public Frm_QuanLyDichVu() throws SQLException {
 		setTitle("QUẢN LÝ DỊCH VỤ");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,7 +66,7 @@ public class Frm_QuanLyDichVu extends JFrame {
 		gui();
 	}
 
-	public void gui() {
+	public void gui() throws SQLException {
 		getContentPane().setLayout(null);
 
 		pnQLDV = new Panel();
@@ -122,24 +133,21 @@ public class Frm_QuanLyDichVu extends JFrame {
 		txtDonGia = new JTextField();
 		txtDonGia.setBounds(877, 69, 300, 30);
 		pnTTDV.add(txtDonGia);
-
-		FixButton btnThem = new FixButton("Làm mới");
+// các nút CRUD
+		btnThem = new FixButton("Thêm");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setText("Thêm");
 		btnThem.setBounds(350, 128, 190, 40);
 		pnTTDV.add(btnThem);
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-		FixButton btnSua = new FixButton("Hủy đặt phòng");
+		btnSua = new FixButton("Sửa");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setText("Sửa");
 		btnSua.setBounds(600, 128, 190, 40);
 		pnTTDV.add(btnSua);
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-		FixButton btnLamMoi = new FixButton("Đặt phòng");
+		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setText("Làm mới");
 		btnLamMoi.setBounds(850, 128, 190, 40);
 		pnTTDV.add(btnLamMoi);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -154,28 +162,11 @@ public class Frm_QuanLyDichVu extends JFrame {
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-
-		tableDSDichVu = new JTable(
-				new DefaultTableModel(
-			new Object[][] {
-				{"MMH001", "Bia Tiger", "Th\u1EE9c u\u1ED1ng", "100", "30.000 VN\u0110"},
-				{"MMH002", "Kh\u00F4 b\u00F2 mi\u1EBFng", "\u0110\u1ED3 \u0103n", "50", "5.000.000 VN\u0110"},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"M\u00E3 d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5", "Lo\u1EA1i d\u1ECBch v\u1EE5", "S\u1ED1 l\u01B0\u1EE3ng t\u1ED3n", "Gi\u00E1 b\u00E1n"
-			}
-		));
+		//bảng table 
+		String col[] = { "Mã DV","Tên Dịch Vụ", "Loại Dịch Vụ", "Số Lượng Tồn","Giá Bán"};
+		model = new DefaultTableModel(col, 0);
+		
+		tableDSDichVu = new JTable(model);
 		tableDSDichVu.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -207,10 +198,51 @@ public class Frm_QuanLyDichVu extends JFrame {
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDV.setBounds(0, 0, 1400, 670);
 		pnQLDV.add(lbBGQLDV);
+		
+		btnLamMoi.addActionListener(this);
+		btnThem.addActionListener(this);
+		btnSua.addActionListener(this);
+		//kết nối data
+		ConnectDB.getInstance().connect();
+		// Danh sach Mat Hang
+		dsDV = new DanhSachDichVu();
+		upTable();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		new Frm_QuanLyDichVu().setVisible(true);
 
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o =e.getSource();
+		if(o == btnLamMoi) {
+			xoaTrang();
+		}
+		
+	}
+	
+	public void xoaTrang() {
+		txtSoLuongTon.setText("");
+		txtDonGia.setText("");
+		tableDSDichVu.clearSelection();
+	}
+	
+	public void upTable() {
+		int i = 0;
+		ArrayList<DichVu> list = dsDV.getDSDichVu();
+		for (DichVu dv : list) {
+			Object[] obj = new Object[7];
+			obj[0] = dv.getMaDichVu().trim();
+			obj[1] = dv.getTenDichVu().trim();
+			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+			obj[3] = dv.getSoLuongTon();
+			obj[4] = dv.getDonGia();
+			model.addRow(obj);
+		}
+		xoaTrang();
+	}
+	
 }

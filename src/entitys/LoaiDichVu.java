@@ -4,9 +4,14 @@ import java.util.Objects;
 
 public class LoaiDichVu {
 	private String maLoaiDichVu, tenLoaiDichVu;
+	
+	
+	public LoaiDichVu(String maLoaiDichVu) {
+		super();
+		this.maLoaiDichVu = maLoaiDichVu;
+	}
 
 	public LoaiDichVu(String maLoaiDichVu, String tenLoaiDichVu) {
-	
 		this.maLoaiDichVu = maLoaiDichVu;
 		this.tenLoaiDichVu = tenLoaiDichVu;
 	}
