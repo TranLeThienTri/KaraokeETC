@@ -419,6 +419,7 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		lbltongtk2.setText("");
 		lblthongke2.setText("");
 	}
+
 	/**
 	 * sự kiện click chuột vào table
 	 */
@@ -450,6 +451,7 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		// TODO Auto-generated method stub
 
 	}
+
 	/**
 	 * Sự kiện nút thống kê và làm mới
 	 */

@@ -59,9 +59,9 @@ public class DanhSachKhachHang {
 			myCall.setString(1, maKH);
 			myCall.setString(2, kh.getHoTenKhachHang());
 			myCall.setString(3, kh.getSoCCCD());
-			myCall.setBoolean(6, kh.getGioiTinh());
 			myCall.setString(4, kh.getSoDienThoai());
 			myCall.setInt(5, kh.getDiemTichLuy());
+			myCall.setBoolean(6, kh.getGioiTinh());
 			myCall.setString(7, kh.getLoaiKhachHang().getMaLoaiKhachHang());
 			b = myCall.execute();
 		} catch (SQLException e) {
@@ -94,4 +94,28 @@ public class DanhSachKhachHang {
 		}
 		return kh;
 	}
+
+	public boolean suaKhachHang(KhachHang kh) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateKH(?,?,?,?,?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+//			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
+//			String maKH = dao.getMaNVCuoi();
+			myCall.setString(1, kh.getMaKhachHang());
+			myCall.setString(1, kh.getHoTenKhachHang());
+			myCall.setString(2, kh.getSoCCCD());
+			myCall.setString(3, kh.getSoDienThoai());
+			myCall.setInt(4, kh.getDiemTichLuy());
+			myCall.setBoolean(5, kh.getGioiTinh());
+			myCall.setString(6, kh.getLoaiKhachHang().getMaLoaiKhachHang());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+
 }
