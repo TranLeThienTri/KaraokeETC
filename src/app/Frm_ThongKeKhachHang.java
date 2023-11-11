@@ -37,7 +37,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Frm_ThongKeKhachHang extends JFrame{
-
 	private JFrame frame;
 	private LocalDate now;
 	private int ngay;
