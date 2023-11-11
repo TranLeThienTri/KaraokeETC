@@ -13,7 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,19 +36,36 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import org.openxmlformats.schemas.officeDocument.x2006.docPropsVTypes.ArrayDocument;
+
+import com.toedter.calendar.JDateChooser;
+
+import connectDB.ConnectDB;
+import dao.DanhSachChucVu;
+import dao.DanhSachKhachHang;
+import dao.DanhSachNhanVien;
+import entitys.ChucVu;
+import entitys.KhachHang;
+import entitys.NhanVien;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class Frm_NhanVien extends JFrame {
+public class Frm_NhanVien extends JFrame implements MouseListener, ActionListener{
 private JTextField txtHoTen, txtTenKH, txtDiaChi, txtChucVu, txtSDT, txtGioiTinh,txtNgaySinh , txtCCCD,txtMess;
 private DefaultTableModel model;
-private JButton btnLamMoi,btnSua, btnThem;
+private FixButton btnLamMoi,btnSua, btnThem;
 private JTable table;
 private JComboBox comboGT,comboTrangThai ;
 Panel  pnQLNV;
+JComboBox comboChucVu;
+JDateChooser ngaySinh;
+private Date ngayHienTai;
+private int ngay, thang, nam;
+DanhSachNhanVien dsNV;
 
 public Frm_NhanVien() {
-//getContentPane().setBackground(Color.CYAN);
 setTitle("QUẢN LÝ Nhân Viên");
 setSize(1400, 700);
 setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -140,66 +163,62 @@ public void gui() {
 	txtDiaChi.setColumns(10);
 	
 	
-	txtCCCD = new JTextField("sdsds");
+	txtCCCD = new JTextField();
 	txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 18));
 	txtCCCD.setColumns(10);
 	txtCCCD.setBounds(180, 115, 300, 30);
 	panel.add(txtCCCD);
 	
-	txtChucVu = new JTextField("3");
-	txtChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
-	txtChucVu.setColumns(10);
-	txtChucVu.setBounds(180, 166, 300, 30);
-	panel.add(txtChucVu);
 	
-	txtNgaySinh = new JTextField("4");
-	txtNgaySinh.setColumns(10);
-	txtNgaySinh.setBounds(180, 229, 300, 30);
-	panel.add(txtNgaySinh );
+	comboChucVu = new JComboBox();
+	comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
+	comboChucVu.setSelectedIndex(0);
+	comboChucVu.setBounds(180, 166, 300, 30);
+	panel.add(comboChucVu);
+
+	ngaySinh = new JDateChooser();
+	ngaySinh.getCalendarButton().addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		}
+	});
+	ngaySinh.setDateFormatString("dd/MM/yyyy");
+
+	ngaySinh.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	ngaySinh.getCalendarButton().setPreferredSize(new Dimension(40, 30));
+	ngaySinh.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/calendar.png")));
+
+	ngaySinh.setBounds(180, 229, 300, 30);
 	
-	FixButton btnThem = new FixButton("Thêm");
+	LocalDateTime localDateTime = LocalDateTime.now();
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	ngay = localDateTime.getDayOfMonth();
+	thang = localDateTime.getMonthValue();
+	nam = localDateTime.getYear();
+	ngayHienTai = new Date(nam - 1900, thang - 1, ngay);
+	ngaySinh.setDate(ngayHienTai);
+	panel.add(ngaySinh);
+	
+	 btnThem = new FixButton("Thêm");
 	btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
 	btnThem.setText("Thêm");
-	btnThem.setBounds(1020, 223, 150, 36);
+	btnThem.setBounds(680, 223, 150, 36);
 	panel.add(btnThem);
 	btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-	FixButton btnSua = new FixButton("Sửa");
+	 btnSua = new FixButton("Sửa");
 	btnSua.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
 	btnSua.setText("Sửa");
 	btnSua.setBounds(850, 223, 150, 36);
 	panel.add(btnSua);
 	btnSua.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-	FixButton btnLamMoi = new FixButton("Làm mới");
+	btnLamMoi = new FixButton("Làm mới");
 	btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
 	btnLamMoi.setText("Làm mới");
-	btnLamMoi.setBounds(680, 223, 150, 36);
+	btnLamMoi.setBounds(1020, 223, 150, 36);;
 	panel.add(btnLamMoi);
 	btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
-	
-//	JButton btnSua = new FixButton("Sửa");
-//	btnSua.setForeground(Color.WHITE);
-//	btnSua.setFont(new Font("Tahoma", Font.BOLD, 17));
-//	btnSua.setBackground(Color.RED);
-//	btnSua.setBounds(1082, 223, 106, 36);
-//	panel.add(btnSua);
-//	
-//	JButton btnMoi = new FixButton("Làm mới");
-//	btnMoi.setForeground(Color.WHITE);
-//	btnMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
-//	btnMoi.setBackground(Color.RED);
-//	btnMoi.setBounds(877, 223, 123, 36);
-//	panel.add(btnMoi);
-//
-//
-//	JButton btnNewButton = new FixButton("Thêm ");
-//	btnNewButton.setBackground(new Color(255, 0, 0));
-//	btnNewButton.setForeground(new Color(255, 255, 255));
-//	btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 17));
-//	
-//	btnNewButton.setBounds(680, 223, 106, 36);
-//	panel.add(btnNewButton);
 	
 	comboGT = new JComboBox();
 	comboGT.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -212,40 +231,27 @@ public void gui() {
 	comboTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đang làm việc", "Ngưng làm việc"}));
 	comboTrangThai.setBounds(812, 165, 300, 31);
 	panel.add(comboTrangThai);
-	
-	
-
 
 // Add the menu bar to the NORTH of the content pane
 	JPanel pnDSP = new JPanel();
 	pnDSP.setBounds(100, 370, 1200, 270);
 	pnDSP.setLayout(null);
 
-	JLabel lbDSPhong = new JLabel("Danh sách phòng");
+	JLabel lbDSPhong = new JLabel("Danh Sách Nhân Viên");
 	lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 	lbDSPhong.setBounds(10, 0, 150, 25);
 	pnDSP.add(lbDSPhong);
 
 	
 	String col[] = { "Mã NV","Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD", "Trạng thái","Mật khẩu"};
-	model = new DefaultTableModel(col, 0);
+	model = new DefaultTableModel(col, 0) {
+		@Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Không cho phép chỉnh sửa ô
+        }
+	};
 
-	table = new JTable(new DefaultTableModel(
-			new Object[][] {
-				{"HD001", "MP001", "Tr\u1EA7n Qu\u1ED1c Huy", "0923456789", "04/11/2023", "12:34", "Nguy\u1EC5n V\u0103n A"},
-				{"HD002", "MP002", "L\u00EA Th\u1ECB An", "0972829123", "01/02/2023", "15:07", "Nguy\u1EC5n V\u0103n B"},
-				{null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"Mã NV","Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD", "Trạng thái","Mật khẩu"
-			}));
-
+	table = new JTable(model);
 
 	// Set màu cho table
 	// Set màu cho cột tiêu đề
@@ -272,14 +278,144 @@ public void gui() {
 	lbBG.setBounds(0,0,1400,700);
 	lbBG.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/bg_chot1.png")));
 	pnQLNV.add(lbBG);
+	
+	table.addMouseListener(this);
 
+	btnLamMoi.addActionListener(this);
+	btnSua.addActionListener(this);
+	btnThem.addActionListener(this);
+	
+	try {
+		ConnectDB.getInstance().connect();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+			dsNV = new DanhSachNhanVien();
+			upTable();
+			
+			
+}
+
+//xoá trắng
+public void xoaTrang() {
+	txtHoTen.setText("");
+	txtDiaChi.setText("");
+	txtCCCD.setText("");
+	comboChucVu.setSelectedIndex(0);
+	ngaySinh.setDate(ngayHienTai);
+	txtSDT.setText("");
+	comboGT.setSelectedIndex(0);
+	comboTrangThai.setSelectedIndex(0);
+	table.clearSelection();
+}
+
+
+public void upTable() {
+	ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
+	for (NhanVien nv : listE) {
+		Object[] obj = new Object[9];
+		obj[0] = nv.getMaNhanVien().trim();
+		obj[1] = nv.getHoTenNhanVien().trim();
+		System.out.println(nv.getchucVu().getTenChucVu());
+		obj[2] = nv.getchucVu().getTenChucVu();
+		obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
+		obj[4] = nv.getNgaySinh().toString();
+		obj[5] = nv.getDiaChi().trim();
+		obj[6] = nv.getSdt().trim();
+		obj[7] = nv.getSoCCCD().toString();
+		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";;
+		model.addRow(obj);
+	}
+	xoaTrang();
+}
+
+public void setTextTB() {
+	int row = table.getSelectedRow();
+	txtHoTen.setText(table.getValueAt(row, 1).toString());
+	
+	if(table.getValueAt(row, 2).toString().equalsIgnoreCase("Quản Lí"))
+		comboChucVu.setSelectedIndex(0);
+	else
+		comboChucVu.setSelectedIndex(1);
+
+	if(table.getValueAt(row, 3).toString().equalsIgnoreCase("Nam"))
+		comboGT.setSelectedIndex(0);
+	else
+		comboGT.setSelectedIndex(1);
+
+	String selectedDate = table.getValueAt(row, 4).toString();
+	LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	ngay = curent.getDayOfMonth();
+	thang = curent.getMonthValue();
+	nam = curent.getYear();
+	ngayHienTai = new Date(nam - 1900,thang-1,ngay);
+	ngaySinh.setDate(ngayHienTai);
+	
+	txtDiaChi.setText(table.getValueAt(row, 5).toString());
+
+	txtSDT.setText(table.getValueAt(row, 6).toString());
+	txtCCCD.setText(table.getValueAt(row, 7).toString());
+	if(table.getValueAt(row, 8).toString().equalsIgnoreCase("Đang làm việc"))
+		comboTrangThai.setSelectedIndex(0); 
+	else
+		comboTrangThai.setSelectedIndex(1);
 }
 
 
 public static void main(String[] args) {
-new Frm_NhanVien().setVisible(true);
+	new Frm_NhanVien().setVisible(true);
 }
-
+@Override
+public void mouseClicked(MouseEvent e) {
+	setTextTB();
+}
+@Override
+public void mousePressed(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseReleased(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseEntered(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseExited(MouseEvent e) {
+	// 
+	
+}
+@Override
+public void actionPerformed(ActionEvent e) {
+	// TODO Auto-generated method stub
+	Object o = e.getSource();
+	if(o.equals(btnThem)) {
+		if(btnThem.getText().equalsIgnoreCase("Thêm")) {
+			btnThem.setText("Lưu");
+			btnSua.setText("Huỷ");
+//		themNhanVien();			
+		}else {
+			btnThem.setText("Thêm");
+			btnSua.setText("Sửa");
+		}
+	}else if(o.equals(btnSua)) {
+		if(btnSua.getText().equalsIgnoreCase("Sửa")) {
+			btnThem.setText("Lưu");
+			btnSua.setText("Huỷ");
+//		themNhanVien();			
+		}else {
+			btnThem.setText("Thêm");
+			btnSua.setText("Sửa");
+		}
+	}else {
+		xoaTrang();
+	}
+		
+}
 
 
 }

@@ -9,6 +9,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -155,7 +157,12 @@ public class Frm_QuanLyDatPhong extends JFrame {
 
 		ngayDatPhong.setBounds(230, 155, 300, 30);
 
-		ngayHienTai = new Date(nam, thang, ngay);
+		LocalDateTime localDateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		ngay = localDateTime.getDayOfMonth();
+		thang = localDateTime.getMonthValue();
+		nam = localDateTime.getYear();
+		ngayHienTai = new Date(nam - 1900, thang - 1, ngay);
 		ngayDatPhong.setDate(ngayHienTai);
 		pnTTDDP.add(ngayDatPhong);
 

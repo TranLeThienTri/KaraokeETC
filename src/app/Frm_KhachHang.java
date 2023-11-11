@@ -234,7 +234,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		
 	// kết nối data
 		ConnectDB.getInstance().connect();
-		// Danh sach Mat Hang
+		// Danh sach Khách hàng
 		dsKh = new DanhSachKhachHang();
 		upTable();
 
@@ -244,7 +244,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 	public static void main(String[] args) throws SQLException {
 	new Frm_KhachHang().setVisible(true);
 	
-	System.out.println("dsds");
 	}
 
 	@Override

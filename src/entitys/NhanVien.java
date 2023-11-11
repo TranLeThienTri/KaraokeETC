@@ -6,19 +6,18 @@ import java.util.Objects;
 public class NhanVien {
 	private String maNhanVien, hoTenNhanVien, soCCCD,diaChi,sdt;
 	private boolean gioiTinh, tinhTrang;
-	private ChucVu maChucVu;
+	private ChucVu chucVu;
 	private LocalDate ngaySinh;
 	
 	public NhanVien(String maNhanVien, String hoTenNhanVien, String soCCCD, String diaChi, String sdt,
-			boolean gioiTinh, ChucVu maChucVu, LocalDate ngaySinh, Boolean tinhTrang) {
-	
+			boolean gioiTinh, ChucVu chucVu, LocalDate ngaySinh, Boolean tinhTrang) {
 		this.maNhanVien = maNhanVien;
 		this.hoTenNhanVien = hoTenNhanVien;
 		this.soCCCD = soCCCD;
 		this.diaChi = diaChi;
 		this.sdt = sdt;
 		this.gioiTinh = gioiTinh;
-		this.maChucVu = maChucVu;
+		this.chucVu = chucVu;
 		this.ngaySinh = ngaySinh;
 		this.tinhTrang = tinhTrang;
 	}
@@ -52,11 +51,11 @@ public class NhanVien {
 	public void setGioiTinh(boolean gioiTinh) {
 		this.gioiTinh = gioiTinh;
 	}
-	public ChucVu getMaChucVu() {
-		return maChucVu;
+	public ChucVu getchucVu() {
+		return chucVu;
 	}
-	public void setMaChucVu(ChucVu maChucVu) {
-		this.maChucVu = maChucVu;
+	public void setchucVu(ChucVu chucVu) {
+		this.chucVu = chucVu;
 	}
 	public String getSoCCCD() {
 		return soCCCD;
