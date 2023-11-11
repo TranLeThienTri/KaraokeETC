@@ -27,6 +27,7 @@ import dao.Dao_PhatSinhMa;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -35,15 +36,17 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Frm_KhachHang extends JFrame implements ActionListener,MouseListener{
+	private JLabel lbTTKH,lblHoTen,lblSDT,lblCCCD,lblGioiTinh ,lblLoaiKhachHgang,lblDTL,lbDSPhong,lbBG;
 	private JTextField  txtTenKH, txtLoaiKH, txtSDT,  txtCCCD ,txtDTL;
 	private DefaultTableModel model;
+	private JTableHeader tbHeader;
 	private JTable table;
+	private JScrollPane scrollPane;
 	private FixButton btnLamMoi,btnSua, btnThem;
 	private JComboBox comboGT,comboLKH ;
 	DanhSachKhachHang dsKh;
-	
 	Panel pnQLKH;
-
+	JPanel panel,pnDSP;
 	public Panel getFrmQuanLyKhachHang() {
 		return this.pnQLKH;
 	}
@@ -68,25 +71,25 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		pnQLKH.setLayout(null);
 	//
 
-	JPanel panel = new JPanel();
+		panel = new JPanel();
 	    panel.setBackground(new Color(190, 157, 157,181));	
 		panel.setBounds(102, 51, 1200, 271);
 		pnQLKH.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lbTTDV = new JLabel("Thông tin khách hàng");
-		lbTTDV.setBounds(102, 21, 250, 20);
-		pnQLKH.add(lbTTDV);
-		lbTTDV.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lbTTDV.setForeground(new Color(255, 255, 255));
+		lbTTKH = new JLabel("Thông tin khách hàng");
+		lbTTKH.setBounds(102, 21, 250, 20);
+		pnQLKH.add(lbTTKH);
+		lbTTKH.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lbTTKH.setForeground(new Color(255, 255, 255));
 		
-		JLabel lblHoTen = new JLabel("Họ và tên: ");
+		lblHoTen = new JLabel("Họ và tên: ");
 		lblHoTen.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblHoTen.setForeground(new Color(255, 255, 255));
 		lblHoTen.setBounds(79, 21, 91, 27);
 		panel.add(lblHoTen);
 		
-		JLabel lblSDT = new JLabel("Số điện thoại:");
+		lblSDT = new JLabel("Số điện thoại:");
 		lblSDT.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblSDT.setForeground(new Color(255, 255, 255));
 		lblSDT.setBounds(679, 20, 123, 28);
@@ -94,34 +97,33 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		
 		
 		
-		JLabel lblCCCD = new JLabel("CCCD:");
+		lblCCCD = new JLabel("CCCD:");
 		lblCCCD.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblCCCD.setForeground(new Color(255, 255, 255));
 		lblCCCD.setBounds(79, 81, 72, 36);
 		panel.add(lblCCCD);
 		
-		JLabel lblGioiTinh = new JLabel("Giới tính:");
+		lblGioiTinh = new JLabel("Giới tính:");
 		lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblGioiTinh.setForeground(new Color(255, 255, 255));
 		lblGioiTinh.setBounds(679, 81, 95, 36);
 		panel.add(lblGioiTinh);
 		
 		
-		JLabel lblLoaiKhachHgang = new JLabel("Loại KH:");
+		lblLoaiKhachHgang = new JLabel("Loại KH:");
 		lblLoaiKhachHgang.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblLoaiKhachHgang.setForeground(new Color(255, 255, 255));
 		lblLoaiKhachHgang.setBounds(79, 143, 81, 36);
 		panel.add(lblLoaiKhachHgang);
 		
 		
-		JLabel lblDTL = new JLabel("ĐIểm tích luỹ:");
+		lblDTL = new JLabel("ĐIểm tích luỹ:");
 		lblDTL.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblDTL.setForeground(new Color(255, 255, 255));
 		lblDTL.setBounds(679, 141, 123, 41);
 		panel.add(lblDTL);
 		
 		txtTenKH = new JTextField();
-//		txtHoTen = new JTextField();
 		txtTenKH.setBounds(180, 19,300 , 30);
 		panel.add(txtTenKH);
 		txtTenKH.setColumns(10);
@@ -130,9 +132,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		txtSDT.setBounds(812, 19, 300, 30);
 		panel.add(txtSDT);
 		txtSDT.setColumns(10);
-		
-	
-		
 		
 		txtCCCD = new JTextField();
 		txtCCCD.setColumns(10);
@@ -145,7 +144,14 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		txtLoaiKH.setBounds(180, 146, 300, 30);
 		txtLoaiKH.enable(false);
 		panel.add(txtLoaiKH);
-		//CRUD
+		
+		txtDTL = new JTextField();
+		txtDTL.setColumns(10);
+		txtDTL.setBounds(812, 145, 300, 31);
+		txtDTL.enable(false);
+		panel.add(txtDTL);
+		
+//CRUD
 		btnThem = new FixButton("Thêm");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
 		btnThem.setBounds(375, 223, 150, 36);
@@ -171,40 +177,29 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		comboGT.setBounds(812, 82, 300, 31);
 		panel.add(comboGT);
 		
-		
-		txtDTL = new JTextField();
-		txtDTL.setColumns(10);
-		txtDTL.setBounds(812, 145, 300, 31);
-		txtDTL.enable(false);
-		panel.add(txtDTL);
-		
-		
 
-
-	// Add the menu bar to the NORTH of the content pane
-		JPanel pnDSP = new JPanel();
+	// Danh sách khách hàng table
+		pnDSP = new JPanel();
 		pnDSP.setBounds(100, 350, 1200, 270);
 		pnDSP.setLayout(null);
 
-		JLabel lbDSPhong = new JLabel("Danh sách khách hàng");
+		lbDSPhong = new JLabel("Danh sách khách hàng");
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
 		
 		String col[] = { "Mã KH","Họ tên", "Loại KH", "Giới tính","SĐT", "CCCD", "Điểm tích luỹ"};
 		model = new DefaultTableModel(col, 0);
-
 		table = new JTable(model);
 				
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
-		JTableHeader tbHeader = table.getTableHeader();
+		tbHeader = table.getTableHeader();
 		tbHeader.setPreferredSize(new Dimension(100, 30));
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 14));
 		// Set màu các dòng
-//
 		table.setShowHorizontalLines(true);
 		table.setShowGrid(true);
 		table.setBackground(Color.white);
@@ -212,18 +207,16 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		table.setSelectionBackground(new Color(158, 207, 155));
 	
 		table.setRowHeight(30);
-
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
-		scrollPane.setBounds(0, 20, 1200, 300);
+		scrollPane.setBounds(0, 20, 1200, 250);
 		scrollPane.getHorizontalScrollBar();
 		pnDSP.add(scrollPane);
 		scrollPane.setViewportView(table);
 		pnQLKH.add(pnDSP);
 // backgroud	
-		JLabel lbBG = new JLabel();
+		lbBG = new JLabel();
 		lbBG.setBounds(0,0,1400,700);
 		lbBG.setIcon(new ImageIcon(Frm_KhachHang.class.getResource("/imgs/bg_chot1.png")));
 		pnQLKH.add(lbBG);
@@ -233,9 +226,9 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		btnSua.addActionListener(this);
 		table.addMouseListener(this);
 		
-	// kết nối data
+// kết nối data
 		ConnectDB.getInstance().connect();
-		// Danh sach Mat Hang
+// Danh sach Mat Hang
 		dsKh = new DanhSachKhachHang();
 		upTable();
 
@@ -252,27 +245,47 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if(o == btnLamMoi ) {
-			xoaTrang();
-		}
-		else if(o == btnThem) {	
-			themKH();
-		}
-		else if(o == btnSua) {
+		if(o.equals(btnThem)) {
+			if(btnThem.getText().equalsIgnoreCase("Thêm")) {
+				btnThem.setText("Xác nhận");
+				btnSua.setText("Huỷ");
+			}else if(btnThem.getText().equalsIgnoreCase("Xác nhận")) {
+				btnSua.setText("Sửa");
+				themKH();
+				btnThem.setText("Thêm");
+			}else if(btnThem.getText().equalsIgnoreCase("Huỷ")) {
+				btnSua.setText("Sửa");
+				btnThem.setText("Thêm");
+			}
+		}else if(o.equals(btnSua)) {
+			if (btnSua.getText().equals("Huỷ")) {
+				btnThem.setText("Thêm");
+				btnSua.setText("Sửa");
+			} else if(btnSua.getText().equals("Sửa")) {		
+				btnThem.setText("Huỷ");
+				btnSua.setText("Xác nhận");
+			}else if(btnSua.getText().equals("Xác nhận")) {
 				suaKH();
+				xoaTrang();				
+				btnThem.setText("Thêm");
+				btnSua.setText("Sửa");
+			}	
+		}else if(o.equals(btnLamMoi)) {
+				xoaTrang();		
 		}
+	
 	}
 	
 	public void xoaTrang() {
 		txtTenKH.setText("");
 		txtSDT.setText("");
 		txtCCCD.setText("");
+		txtLoaiKH.setText("");
+		txtDTL.setText("");
 		table.clearSelection();
 	}
 
-//	String maKH = rs.getString(1);
-
-	
+	//get vào bảng
 	public void upTable() {
 		int i = 0;
 		ArrayList<KhachHang> list = dsKh.getDSKhachHang();

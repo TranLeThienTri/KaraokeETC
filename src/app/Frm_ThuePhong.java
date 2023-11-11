@@ -115,7 +115,6 @@ public class Frm_ThuePhong extends JFrame {
 		lbLoaiPhongTK.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbLoaiPhongTK.setBounds(46, 11, 150, 25);
 		pnLoaiPhong.add(lbLoaiPhongTK);
-//		pnLoaiPhong.setBackground(new java.awt.Color(255, 255, 255, 80));
 
 
 		btnTatCa = new FixButton2("Tất cả");

@@ -81,9 +81,7 @@ public class DanhSachKhachHang {
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call updateKH(?,?,?,?,?,?,?)}";
 			CallableStatement myCall = con.prepareCall(sql);
-//			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
-//			String maKH = dao.getMaNVCuoi();
-			myCall.setString(1, kh.getMaKhachHang());
+			myCall.setString(7, kh.getMaKhachHang());
 			myCall.setString(1, kh.getHoTenKhachHang());
 			myCall.setString(2, kh.getSoCCCD());
 			myCall.setString(3, kh.getSoDienThoai());
