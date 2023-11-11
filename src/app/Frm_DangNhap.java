@@ -61,11 +61,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	private DanhSachNhanVien dsNV;
 
 	public Frm_DangNhap() {
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		ConnectDB.getInstance().connect();
 		frmChinh = new Frm_Chinh();
 		getContentPane().setBackground(SystemColor.controlHighlight);
 		setTitle("Đăng Nhập");
