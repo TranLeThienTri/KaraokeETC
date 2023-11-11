@@ -66,6 +66,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.SystemColor;
 import java.awt.Rectangle;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.ScrollPane;
 import javax.swing.JScrollBar;
 import java.awt.Panel;
@@ -278,6 +280,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 		// ADD sự kiện
 		btnDangxuat.addActionListener(this);
+		btnDangxuat.addMouseListener(this);
 		mnTrangChu.addMouseListener(this);
 		mnQLDV.addMouseListener(this);
 		mnQLDP.addMouseListener(this);
@@ -454,13 +457,13 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		Object o = e.getSource();
 		if (o == mnTKDV)
 			loadFrm_ThongKeDichVu();
-		if (o == mnTKHD)
+		else if (o == mnTKHD)
 			loadFrm_ThongKeHoaDon();
-		if (o == mnTKKH)
+		else if (o == mnTKKH)
 			loadFrm_ThongKeKhachHang();
-		if (o == mnTKNV)
+		else if (o == mnTKNV)
 			loadFrm_ThongKeNhanVien();
-		if (o.toString().equals(btnDangxuat)) {
+		else if (o == btnDangxuat) {
 			dangXuat();
 		}
 
@@ -493,7 +496,12 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 	
 	public void dangXuat() {
-		
+		if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất không?", "Cảnh báo",
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			Frm_DangNhap frame = new Frm_DangNhap();
+			frame.setVisible(true);
+			this.setVisible(false);
+		}
 	}
 	
 	public void addInfoStaff(NhanVien nv) {
@@ -578,7 +586,6 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			        public void actionPerformed(ActionEvent e) {
 			            mnTK.doClick();
 			        	callTKNV();    
-			           
 			        	callTKKH();
 			        	callTKDV();
 			        	callTKHD();
