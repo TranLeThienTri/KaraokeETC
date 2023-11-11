@@ -230,6 +230,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		
 		btnLamMoi.addActionListener(this);
 		btnThem.addActionListener(this);
+		btnSua.addActionListener(this);
 		table.addMouseListener(this);
 		
 	// kết nối data
@@ -256,6 +257,9 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		}
 		else if(o == btnThem) {	
 			themKH();
+		}
+		else if(o == btnSua) {
+				suaKH();
 		}
 	}
 	
@@ -289,7 +293,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		}
 		xoaTrang();
 	}
-	
+	// theem khach hang
 	public boolean themKH() {
 		Object[] obj = new Object[7];
 		Dao_PhatSinhMa makh = new Dao_PhatSinhMa();
@@ -321,6 +325,46 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 
 		return false;
 	}
+	//update khach hang
+	public boolean suaKH() {
+		int row = table.getSelectedRow();
+		if (row == -1) {
+			JOptionPane.showMessageDialog(this, "Chọn nhân viên cần sửa");
+		} else {
+			Object[] obj = new Object[7];
+				String ma = table.getValueAt(row, 0).toString();
+				String ten = txtTenKH.getText().toString();
+				String dt = txtSDT.getText().toString();
+				String cccd = txtCCCD.getText().toString();
+				String gt = (String) comboGT.getSelectedItem();
+				boolean gioitinh;
+				if(gt.equals("Nam")) {
+					gioitinh = true;
+				}else gioitinh = false;
+				LoaiKhachHang lkh = new LoaiKhachHang("NOR","Khách hàng thường");
+				obj[0] = ma;
+				obj[1] = ten;
+				obj[2] = lkh.getTenLoaiKhachHang();
+				obj[3] = gt;
+				obj[4] = dt;
+				obj[5] = cccd;
+				obj[6] = 0;
+			
+				KhachHang kh = new KhachHang(ma, ten, cccd, dt,0,gioitinh, lkh);
+				if (!dsKh.suaKhachHang(kh)) {
+					JOptionPane.showMessageDialog(this, "Sửa thành công");
+					table.setValueAt(obj[1], row, 1);
+					table.setValueAt(obj[3], row, 3);
+					table.setValueAt(obj[4], row, 4);
+					table.setValueAt(obj[5], row, 5);
+					xoaTrang();
+					return true;
+				}
+			}
+		
+		return false;
+	}
+	//click table
 	public void setTextTB() {
 		int row = table.getSelectedRow();
 		txtTenKH.setText(table.getValueAt(row, 1).toString());
