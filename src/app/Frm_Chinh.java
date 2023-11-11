@@ -563,7 +563,12 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 //			        @Override
 			        public void actionPerformed(ActionEvent e) {
 			        	mnQLDV.doClick();
-			            loadFrmQuanLyDichVu();
+			            try {
+							loadFrmQuanLyDichVu();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 			        }
 			    });
 				// hot key f7
