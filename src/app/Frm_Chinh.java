@@ -298,7 +298,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 //		new Frm_Chinh(nv).setVisible(true);
 //	}
 
-	public void loadFrmQuanLyKhachHang() {
+	public void loadFrmQuanLyKhachHang() throws SQLException {
 		pnCenter.removeAll();
 		Frm_KhachHang frKH = new Frm_KhachHang();
 		pnCenter.add(frKH.getFrmQuanLyKhachHang());
@@ -377,7 +377,12 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		if (o == mnQLDP)
 			loadFrmQuanLyDatPhong();
 		if (o == mnQLKH)
-			loadFrmQuanLyKhachHang();
+			try {
+				loadFrmQuanLyKhachHang();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		if (o == mnQLNV)
 			loadFrmQuanLyNhanVien();
 		if (o == mnQLTP)

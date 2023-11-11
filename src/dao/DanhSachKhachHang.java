@@ -36,7 +36,7 @@ public class DanhSachKhachHang {
 				String malkh = rs.getString(7);
 				LoaiKhachHang maLoaiKH = new LoaiKhachHang(malkh);
 				int dtl=rs.getInt(6);
-				KhachHang kh = new KhachHang(maKH, tenKH, cccd, sdt, false, dtl);
+				KhachHang kh = new KhachHang(maKH, tenKH, cccd, sdt, dtl, gioiTinh,maLoaiKH);
 				list.add(kh);
 			}
 		} catch (SQLException e) {
