@@ -258,32 +258,32 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 			if(btnThem.getText().equalsIgnoreCase("Thêm")) {
 				btnThem.setText("Xác nhận");
 				btnSua.setText("Huỷ");
+			}else if(btnThem.getText().equalsIgnoreCase("Huỷ")) {
+				btnSua.setText("Sửa");
+				btnThem.setText("Thêm");
 			}else if(btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				btnSua.setText("Sửa");
 				themKH();
 				btnThem.setText("Thêm");
-			}else if(btnThem.getText().equalsIgnoreCase("Huỷ")) {
-				btnSua.setText("Sửa");
+			}else if(btnThem.getText().equals("Xác nhận ")) {
+				suaKH();
+				xoaTrang();				
 				btnThem.setText("Thêm");
+				btnSua.setText("Sửa");
 			}
 		}else if(o.equals(btnSua)) {
 			if (btnSua.getText().equals("Huỷ")) {
 				btnThem.setText("Thêm");
 				btnSua.setText("Sửa");
 			} else if(btnSua.getText().equals("Sửa")) {		
-				btnThem.setText("Huỷ");
-				btnSua.setText("Xác nhận");
-			}else if(btnSua.getText().equals("Xác nhận")) {
-				suaKH();
-				xoaTrang();				
-				btnThem.setText("Thêm");
-				btnSua.setText("Sửa");
+				btnThem.setText("Xác nhận ");
+				btnSua.setText("Huỷ");
 			}	
 		}else if(o.equals(btnLamMoi)) {
 				xoaTrang();		
 
 		}
-	
+		
 	}
 
 	public void xoaTrang() {
@@ -405,7 +405,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		txtSDT.setText(table.getValueAt(row, 4).toString());
 		txtDTL.setText(table.getValueAt(row, 6).toString());
 	}
-
+	// Button them
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
