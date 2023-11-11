@@ -15,6 +15,8 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -31,6 +33,7 @@ import entitys.KhachHang;
 import jiconfont.icons.FontAwesome;
 import dao.DanhSachKhachHang;
 import dao.Dao_PhatSinhMa;
+import dao.DanhSachHoaDon;
 import jiconfont.swing.IconFontSwing;
 
 import javax.swing.border.LineBorder;
@@ -42,9 +45,11 @@ import javax.swing.table.JTableHeader;
 import javax.swing.JScrollPane;
 import java.awt.ScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 
-public class Frm_ThongKeKhachHang extends JFrame{
+public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, MouseListener {
 
 	private JFrame frame;
 	private LocalDate now;
@@ -57,19 +62,35 @@ public class Frm_ThongKeKhachHang extends JFrame{
 	private JTable table;
 	private Panel panel_tong;
 	private DefaultTableModel model;
+	private JLabel lbltg, lbltongtk1, lbltongtk2, lblthongke1, lblthongke2;
+	private DecimalFormat df;
+	private DecimalFormat dfs;
+	private DecimalFormat dfh;
+	private SimpleDateFormat sf;
+	private JScrollPane scrollPane;
+	private JPanel panel_tknv, panel_ngay, panel_thongke1, panel_thongke2;
+	private JLabel lbltkkh, lbltgtk, lblnbd, lblnkt, lbliconthongke1, lbliconthongke2, lblbackground;
+	private JTableHeader tbHeader;
+	JButton btnThongKe, btnLamMoi;
 	DanhSachKhachHang dsKh;
+	DanhSachHoaDon dsHD;
 
+	/**
+	 * trả về frame Thống kê Khách hàng
+	 */
 	public Panel getFrmThongKeKhachHang() {
 		return this.panel_tong;
 	}
+
 	public static void main(String[] args) {
 		new Frm_ThongKeKhachHang().setVisible(true);
 
 	}
 
 	/**
-	 * Create the application.
-	 * @throws SQLException 
+	 * Tạo frame Thống kê Khách hàng
+	 * 
+	 * @throws SQLException
 	 */
 	public Frm_ThongKeKhachHang() {
 		setTitle("THỐNG KÊ KHÁCH HÀNG");
@@ -82,55 +103,62 @@ public class Frm_ThongKeKhachHang extends JFrame{
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
+	 * Tạo gui TKKH
+	 * 
+	 * @throws SQLException
 	 */
-	private void gui(){
+	private void gui() {
 		getContentPane().setLayout(null);
 		panel_tong = new Panel();
 		panel_tong.setBounds(0, 0, 1400, 670);
 		getContentPane().add(panel_tong);
 		panel_tong.setLayout(null);
 
+		lbltg = new JLabel("");
+		lbltg.setForeground(new Color(255, 255, 255));
+		lbltg.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbltg.setBounds(550, 62, 310, 41);
+		panel_tong.add(lbltg);
 
-		JPanel panel_tknv = new JPanel();
+		panel_tknv = new JPanel();
 		panel_tknv.setBackground(new Color(0, 0, 0));
 		panel_tknv.setBounds(536, 10, 335, 41);
 		panel_tong.add(panel_tknv);
 		panel_tknv.setLayout(null);
 
-		JLabel lbltkkh = new JLabel("THỐNG KÊ KHÁCH HÀNG");
+		lbltkkh = new JLabel("THỐNG KÊ KHÁCH HÀNG");
 		lbltkkh.setForeground(new Color(255, 255, 255));
 		lbltkkh.setBounds(52, 10, 253, 20);
 		panel_tknv.add(lbltkkh);
 		lbltkkh.setFont(new Font("Tahoma", Font.BOLD, 18));
 
-		JLabel lbltgtk = new JLabel("Thời gian thống kê:");
+		lbltgtk = new JLabel("Thời gian thống kê:");
 		lbltgtk.setForeground(new Color(255, 255, 255));
 		lbltgtk.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbltgtk.setBounds(394, 70, 165, 25);
 		panel_tong.add(lbltgtk);
 
-		JPanel panel_ngay = new JPanel();
+		panel_ngay = new JPanel();
 		panel_ngay.setBackground(new Color(190, 157, 157, 190));
 		panel_ngay.setBounds(10, 112, 427, 228);
 		panel_tong.add(panel_ngay);
 		panel_ngay.setLayout(null);
 
-		JLabel lblnbd = new JLabel("Ngày bắt đầu:");
+		lblnbd = new JLabel("Ngày bắt đầu:");
 		lblnbd.setForeground(new Color(255, 255, 255));
 		lblnbd.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblnbd.setBounds(10, 22, 128, 38);
 		panel_ngay.add(lblnbd);
 		now = LocalDate.now();
 		ngay = now.getDayOfMonth();
-		thang = now.getMonthValue()-1;
-		nam = now.getYear()-1900;
+		thang = now.getMonthValue() - 1;
+		nam = now.getYear() - 1900;
 
-		dNow = new Date(nam,thang,ngay);
+		dNow = new Date(nam, thang, ngay);
 
 		dateChooserThongKeNgayBatDau = new JDateChooser();
-		dateChooserThongKeNgayBatDau.getCalendarButton().setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
+		dateChooserThongKeNgayBatDau.getCalendarButton()
+				.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
 		dateChooserThongKeNgayBatDau.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -139,13 +167,14 @@ public class Frm_ThongKeKhachHang extends JFrame{
 
 		dateChooserThongKeNgayBatDau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayBatDau.getCalendarButton().setPreferredSize(new Dimension(40, 30));
-		dateChooserThongKeNgayBatDau.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
+		dateChooserThongKeNgayBatDau
+				.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayBatDau.setBounds(149, 22, 226, 38);
 		dateChooserThongKeNgayBatDau.setDate(dNow);
 		panel_ngay.add(dateChooserThongKeNgayBatDau);
 
-		JLabel lblnkt = new JLabel("Ngày kết thúc:");
+		lblnkt = new JLabel("Ngày kết thúc:");
 		lblnkt.setForeground(new Color(255, 255, 255));
 		lblnkt.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblnkt.setBounds(10, 80, 128, 38);
@@ -155,65 +184,77 @@ public class Frm_ThongKeKhachHang extends JFrame{
 
 		dateChooserThongKeNgayKetThuc.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayKetThuc.getCalendarButton().setPreferredSize(new Dimension(40, 30));
-		dateChooserThongKeNgayKetThuc.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
+		dateChooserThongKeNgayKetThuc
+				.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayKetThuc.setBounds(149, 80, 226, 38);
 		dateChooserThongKeNgayKetThuc.setDate(dNow);
 		panel_ngay.add(dateChooserThongKeNgayKetThuc);
 
-		JButton btnThongKe = new FixButton("Thống kê");
+		btnThongKe = new FixButton("Thống kê");
 		btnThongKe.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThongKe.setBounds(84, 128, 253, 42);
 		btnThongKe.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_thongke.png")));
 		panel_ngay.add(btnThongKe);
 
-		JButton btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(84, 176, 253, 42);
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_lammoi.png")));
 		panel_ngay.add(btnLamMoi);
 
-		JPanel panel_thongke1 = new JPanel();
+		panel_thongke1 = new JPanel();
 		panel_thongke1.setBackground(new Color(190, 157, 157, 190));
 		panel_thongke1.setBounds(447, 112, 471, 228);
 		panel_tong.add(panel_thongke1);
 		panel_thongke1.setLayout(null);
 
-		JLabel lbliconthongke1 = new JLabel("");
+		lbliconthongke1 = new JLabel("");
 		lbliconthongke1.setForeground(new Color(255, 255, 255));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
 		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_tong.png")));
 
-		JLabel lblthongke1 = new JLabel("Tổng số khách hàng: ");
+		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
 		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblthongke1.setBounds(149, 114, 199, 33);
+		lblthongke1.setBounds(149, 97, 199, 33);
 		panel_thongke1.add(lblthongke1);
 
-		JPanel panel_thongke2 = new JPanel();
+		lbltongtk1 = new JLabel("");
+		lbltongtk1.setForeground(new Color(255, 255, 255));
+		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbltongtk1.setBounds(220, 131, 70, 43);
+		panel_thongke1.add(lbltongtk1);
+
+		panel_thongke2 = new JPanel();
 		panel_thongke2.setBackground(new Color(190, 157, 157, 190));
 		panel_thongke2.setBounds(928, 112, 448, 228);
 		panel_tong.add(panel_thongke2);
 		panel_thongke2.setLayout(null);
 
-		JLabel lbliconthongke2 = new JLabel("");
+		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
 		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_funnel.png")));
 
-		JLabel lblthongke2 = new JLabel("Tổng số hóa đơn của khách hàng:");
+		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
 		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblthongke2.setBounds(101, 115, 265, 28);
+		lblthongke2.setBounds(91, 99, 265, 28);
 		panel_thongke2.add(lblthongke2);
 
-		
-		String col[] = { "Mã KH","Họ tên", "Loại KH", "Giới tính","SĐT", "CCCD", "Điểm tích luỹ"};
+		lbltongtk2 = new JLabel("");
+		lbltongtk2.setForeground(new Color(255, 255, 255));
+		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbltongtk2.setBounds(200, 131, 79, 41);
+		panel_thongke2.add(lbltongtk2);
+
+		String col[] = { "Mã KH", "Họ tên", "Loại KH", "Giới tính", "SĐT", "CCCD", "Điểm tích luỹ" };
 		model = new DefaultTableModel(col, 0);
 
 		table = new JTable(model);
-		JTableHeader tbHeader = table.getTableHeader();
+		tbHeader = table.getTableHeader();
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -222,26 +263,38 @@ public class Frm_ThongKeKhachHang extends JFrame{
 		table.setSelectionBackground(new Color(158, 207, 0));
 		table.setSelectionForeground(new Color(255, 255, 255));
 		table.setRowHeight(30);
-		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
 		scrollPane.setBounds(0, 350, 1400, 267);
 		scrollPane.getHorizontalScrollBar();
 		scrollPane.setViewportView(table);
 		panel_tong.add(scrollPane);
-		JLabel lblbackground = new JLabel("");
+		lblbackground = new JLabel("");
 		lblbackground.setBounds(0, 0, 1400, 670);
 		panel_tong.add(lblbackground);
 		lblbackground.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/bg_chot1.png")));
+		// khai bao định dạng
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("### p");
+		dfh = new DecimalFormat("### h");
+		sf = new SimpleDateFormat("dd/MM/yyy");
+		// add su kien button
+		btnThongKe.addActionListener(this);
+		btnLamMoi.addActionListener(this);
+		table.addMouseListener(this);
 		// kết nối data
 		ConnectDB.getInstance().connect();
 		// Danh sach Khach Hang
 		dsKh = new DanhSachKhachHang();
-		upTable();
+		dsHD = new DanhSachHoaDon();
 	}
-	public void upTable() {
+
+	/**
+	 * Đưa dữ liệu từ danh sách lên bảng
+	 */
+	public void upTable(ArrayList<KhachHang> list) {
 		int i = 0;
-		ArrayList<KhachHang> list = dsKh.getDSKhachHang();
 		for (KhachHang kh : list) {
 			Object[] obj = new Object[7];
 			obj[0] = kh.getMaKhachHang().trim();
@@ -250,16 +303,54 @@ public class Frm_ThongKeKhachHang extends JFrame{
 			obj[4] = kh.getSoDienThoai().trim();
 			obj[5] = kh.getSoCCCD().trim();
 			String gt;
-			if(kh.getGioiTinh())
+			if (kh.getGioiTinh())
+				gt = "Nữ";
+			else
 				gt = "Nam";
-			else gt = "Nữ";
 			obj[3] = gt;
 			obj[6] = kh.getDiemTichLuy();
-			model.addRow(obj);
+			if (table.getRowCount() == 0)
+				model.addRow(obj);
+			else {
+				for (i = 0; i < table.getRowCount(); i++) {
+					if (obj[0].toString().equals(table.getValueAt(i, 0)))
+						break;
+				}
+				if (i == table.getRowCount())
+					model.addRow(obj);
+			}
 		}
+
 	}
-public void loadThongKeKhachHang() {
-		
+
+	/**
+	 * Thống kê số khách hàng theo ngày
+	 */
+	public void loadThongKeKhachHang() {
+
+		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
+		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
+		@SuppressWarnings("deprecation")
+		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
+		@SuppressWarnings("deprecation")
+		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
+			ArrayList<KhachHang> listHD = dsHD.getDSKhachHangTheoNgay(ngayBatDau, ngayKetThuc);
+			int tong = dsHD.tongSoKHTheoNgay(ngayBatDau, ngayKetThuc);
+			lblthongke1.setText("Tổng số khách hàng:");
+			lbltongtk1.setText(String.valueOf(tong));
+			upTable(listHD);
+		} else
+			JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");
+	}
+
+	/**
+	 * 
+	 * @param ma là mã khách hàng
+	 * @return tổng số hóa đơn theo mã khách hàng trong ngày được chọn thống kê
+	 */
+	public int soHDTheoMaTheoNgay(String ma) {
+		int tong = 0;
 		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
 		DanhSachKhachHang dao = new DanhSachKhachHang();
@@ -267,13 +358,112 @@ public void loadThongKeKhachHang() {
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
-		if(ngayBatDau.before(ngayKetThuc)||ngayBatDau.equals(ngayKetThuc)) {
-			
-			ArrayList<KhachHang> lstHD = dao.getHDTheoNgay(ngayBatDau, ngayKetThuc);
-			double doanhThu = tongDoanhThu(lstHD);
-			btnTongDoanhThu.setText(df.format(doanhThu));
-				
+		tong = dsHD.getSoHDTheoMaTheoNgay(ma, ngayBatDau, ngayKetThuc);
+		return tong;
+	}
+
+	/**
+	 * sự kiện click cột trong table hiện lên thống kê tổng số hóa đơn của khách
+	 * hàng
+	 */
+	public void setTextTB() {
+		int row = table.getSelectedRow();
+		String ma = (String) table.getValueAt(row, 0);
+		int tong = soHDTheoMaTheoNgay(ma);
+		lblthongke2.setText("Tổng số hóa đơn của khách hàng:");
+		lbltongtk2.setText(String.valueOf(tong));
+	}
+
+	/**
+	 * đưa ngày được chọn thống kê lên thời gian thống kê
+	 */
+	public void loadThongKeSoGio() {
+		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
+		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
+		@SuppressWarnings("deprecation")
+		Date ngayden = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
+		@SuppressWarnings("deprecation")
+		Date ngayKT = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+		lbltg.setText(sf.format(ngayden) + " - " + sf.format(ngayKT));
+
+	}
+
+	/**
+	 * xóa tất cả dữ liệu trên frame đưa về mặc định
+	 */
+	public void resetAll() {
+		dateChooserThongKeNgayBatDau.setDate(dNow);
+		dateChooserThongKeNgayKetThuc.setDate(dNow);
+		lbltongtk1.setText("");
+		lbltongtk2.setText("");
+		lblthongke1.setText("");
+		lblthongke2.setText("");
+		lbltg.setText("");
+		clearTable();
+
+	}
+
+	/**
+	 * xóa dữ liệu của table
+	 */
+	public void clearTable() {
+		while (table.getRowCount() > 0) {
+			model.removeRow(0);
 		}
-		else JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");
+	}
+
+	/**
+	 * xóa dữ liệu của thống kê tổng số hóa đơn của khách hàng
+	 */
+	public void clearTK2() {
+		lbltongtk2.setText("");
+		lblthongke2.setText("");
+	}
+	/**
+	 * sự kiện click chuột vào table
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		setTextTB();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	/**
+	 * Sự kiện nút thống kê và làm mới
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == btnThongKe) {
+			clearTable();
+			clearTK2();
+			loadThongKeSoGio();
+			loadThongKeKhachHang();
+		} else if (o == btnLamMoi) {
+			resetAll();
+		}
 	}
 }
