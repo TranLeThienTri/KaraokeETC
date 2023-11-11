@@ -9,10 +9,14 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Panel;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -22,7 +26,11 @@ import javax.swing.border.TitledBorder;
 import com.mindfusion.scheduling.Cursor;
 import com.toedter.calendar.JDateChooser;
 
+import connectDB.ConnectDB;
+import entitys.KhachHang;
 import jiconfont.icons.FontAwesome;
+import dao.DanhSachKhachHang;
+import dao.Dao_PhatSinhMa;
 import jiconfont.swing.IconFontSwing;
 
 import javax.swing.border.LineBorder;
@@ -48,6 +56,8 @@ public class Frm_ThongKeKhachHang extends JFrame{
 	private JDateChooser dateChooserThongKeNgayKetThuc;
 	private JTable table;
 	private Panel panel_tong;
+	private DefaultTableModel model;
+	DanhSachKhachHang dsKh;
 
 	public Panel getFrmThongKeKhachHang() {
 		return this.panel_tong;
@@ -59,6 +69,7 @@ public class Frm_ThongKeKhachHang extends JFrame{
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
 	public Frm_ThongKeKhachHang() {
 		setTitle("THỐNG KÊ KHÁCH HÀNG");
@@ -72,8 +83,9 @@ public class Frm_ThongKeKhachHang extends JFrame{
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
 	 */
-	private void gui() {
+	private void gui(){
 		getContentPane().setLayout(null);
 		panel_tong = new Panel();
 		panel_tong.setBounds(0, 0, 1400, 670);
@@ -197,23 +209,10 @@ public class Frm_ThongKeKhachHang extends JFrame{
 		panel_thongke2.add(lblthongke2);
 
 		
-		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, "", null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"M\u00E3 KH", "T\u00EAn KH", "Lo\u1EA1i KH", "CCCD", "Gi\u1EDBi t\u00EDnh", "SDT", "\u0110i\u1EC3m t\u00EDch l\u0169y"
-			}
-		));
+		String col[] = { "Mã KH","Họ tên", "Loại KH", "Giới tính","SĐT", "CCCD", "Điểm tích luỹ"};
+		model = new DefaultTableModel(col, 0);
+
+		table = new JTable(model);
 		JTableHeader tbHeader = table.getTableHeader();
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
@@ -234,6 +233,47 @@ public class Frm_ThongKeKhachHang extends JFrame{
 		lblbackground.setBounds(0, 0, 1400, 670);
 		panel_tong.add(lblbackground);
 		lblbackground.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/bg_chot1.png")));
+		// kết nối data
+		ConnectDB.getInstance().connect();
+		// Danh sach Khach Hang
+		dsKh = new DanhSachKhachHang();
+		upTable();
+	}
+	public void upTable() {
+		int i = 0;
+		ArrayList<KhachHang> list = dsKh.getDSKhachHang();
+		for (KhachHang kh : list) {
+			Object[] obj = new Object[7];
+			obj[0] = kh.getMaKhachHang().trim();
+			obj[1] = kh.getHoTenKhachHang().trim();
+			obj[2] = kh.getLoaiKhachHang().getTenLoaiKhachHang();
+			obj[4] = kh.getSoDienThoai().trim();
+			obj[5] = kh.getSoCCCD().trim();
+			String gt;
+			if(kh.getGioiTinh())
+				gt = "Nam";
+			else gt = "Nữ";
+			obj[3] = gt;
+			obj[6] = kh.getDiemTichLuy();
+			model.addRow(obj);
+		}
+	}
+public void loadThongKeKhachHang() {
 		
+		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
+		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
+		DanhSachKhachHang dao = new DanhSachKhachHang();
+		@SuppressWarnings("deprecation")
+		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
+		@SuppressWarnings("deprecation")
+		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+		if(ngayBatDau.before(ngayKetThuc)||ngayBatDau.equals(ngayKetThuc)) {
+			
+			ArrayList<KhachHang> lstHD = dao.getHDTheoNgay(ngayBatDau, ngayKetThuc);
+			double doanhThu = tongDoanhThu(lstHD);
+			btnTongDoanhThu.setText(df.format(doanhThu));
+				
+		}
+		else JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");
 	}
 }
