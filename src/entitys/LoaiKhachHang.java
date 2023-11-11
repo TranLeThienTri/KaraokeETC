@@ -5,11 +5,11 @@ import java.util.Objects;
 public class LoaiKhachHang {
 
 	private String maLoaiKhachHang, tenLoaiKhachHang;
-	
-	
 
 	public LoaiKhachHang(String maLoaiKhachHang) {
 		this.maLoaiKhachHang = maLoaiKhachHang;
+
+		// để đó đi, này nó làm v là set thẳng khi gọi mã á t làm xong phàn này r ko cần xoá đi
 		if(maLoaiKhachHang.equals("NOR"))
 			this.tenLoaiKhachHang = "Khách hàng thường";
 		else this.tenLoaiKhachHang = "Khách hàng VIP";
