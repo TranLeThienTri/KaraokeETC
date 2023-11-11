@@ -1,14 +1,17 @@
 package app;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -87,6 +90,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	private JLabel lbChucVu;
 	private JLabel lbIconChucVu;
 	private NhanVien nv;
+	KeyStroke keyStrokeF1,keyStrokeF2,keyStrokeF3,keyStrokeF4,keyStrokeF5,keyStrokeF6,keyStrokeF7,keyStrokeF71,keyStrokeF72,keyStrokeF73,keyStrokeF74,keyStrokeF8,keyStrokeF9;
 
 
 
@@ -287,17 +291,36 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTKHD.addActionListener(this);
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
+		
+		//add và địng nghĩa các hot key cho ứng dụng
+		keyStrokeF1 = KeyStroke.getKeyStroke("F1");
+		keyStrokeF2 = KeyStroke.getKeyStroke("F2");
+		keyStrokeF3 = KeyStroke.getKeyStroke("F3");
+		keyStrokeF4 = KeyStroke.getKeyStroke("F4");
+		keyStrokeF5 = KeyStroke.getKeyStroke("F5");
+		keyStrokeF6 = KeyStroke.getKeyStroke("F6");
+		keyStrokeF7 = KeyStroke.getKeyStroke("F7");
+		keyStrokeF71 = KeyStroke.getKeyStroke("1");
+		keyStrokeF72 = KeyStroke.getKeyStroke("2");
+		keyStrokeF73 = KeyStroke.getKeyStroke("3");
+		keyStrokeF74 = KeyStroke.getKeyStroke("4");
+		keyStrokeF8 = KeyStroke.getKeyStroke("F8");
+		keyStrokeF9 = KeyStroke.getKeyStroke("F9");
 
 		// Ngày, giờ hiện tại
 		ngayHienTai();
 		gioHienTai();
 		loadFrm_TrangChu();
+		
+		addHotKey();
 	}
 
 //	public static void main(String[] args) {
 //		new Frm_Chinh(nv).setVisible(true);
 //	}
-
+	
+	
+	
 	public void loadFrmQuanLyKhachHang() throws SQLException {
 		pnCenter.removeAll();
 		Frm_KhachHang frKH = new Frm_KhachHang();
@@ -477,4 +500,133 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		pnHeader.add(lbHoTenNV);
 	}
 	
+	
+	public void addHotKey() {
+		// hot key f1
+		mnTrangChu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF1, "clickButton");
+		mnTrangChu.getActionMap().put("clickButton", new AbstractAction() {
+//	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            mnTrangChu.doClick();
+	            loadFrm_TrangChu();
+	        }
+	    });
+		// hot key f2
+				mnQLP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF2, "clickButton");
+				mnQLP.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			        	mnQLP.doClick();
+			            loadFrmQuanLyPhong();
+			        }
+			    });
+				// hot key f3
+				mnQLTP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF3, "clickButton");
+				mnQLTP.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			        	mnQLTP.doClick();
+			            loadFrmQuanLyThuePhong();
+			        }
+			    });
+				// hot key f4
+				mnQLDP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF4, "clickButton");
+				mnQLDP.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			        	mnQLDP.doClick();
+			            loadFrmQuanLyDatPhong();
+			        }
+			    });
+				// hot key f5
+				mnQLKH.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF5, "clickButton");
+				mnQLKH.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			            mnQLKH.doClick();
+			            try {
+							loadFrmQuanLyKhachHang();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			        }
+			    });
+				// hot key f6
+				mnQLDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF6, "clickButton");
+				mnQLDV.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			        	mnQLDV.doClick();
+			            loadFrmQuanLyDichVu();
+			        }
+			    });
+				// hot key f7
+				mnTK.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF7, "clickButton");
+				mnTK.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			            mnTK.doClick();
+			        	callTKNV();    
+			           
+			        	callTKKH();
+			        	callTKDV();
+			        	callTKHD();
+			        }
+			    });
+				// hot key f8
+				mnQLNV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF8, "clickButton");
+				mnQLNV.getActionMap().put("clickButton", new AbstractAction() {
+//			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			            mnQLNV.doClick();
+			            loadFrmQuanLyNhanVien();
+			        }
+			    });
+	}
+	
+	public void callTKNV() {
+		// hot key f71
+		mnTKNV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF71, "clickButton");
+		mnTKNV.getActionMap().put("clickButton", new AbstractAction() {
+//	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	mnTKNV.doClick();
+	            loadFrm_ThongKeNhanVien();
+	        }
+	    });
+	}
+	public void callTKKH() {
+		// hot key f71
+		mnTKKH.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF72, "clickButton");
+		mnTKKH.getActionMap().put("clickButton", new AbstractAction() {
+//	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	mnTKKH.doClick();
+	            loadFrm_ThongKeKhachHang();
+	        }
+	    });
+	}
+	public void callTKDV() {
+		// hot key f71
+		mnTKDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF73, "clickButton");
+		mnTKDV.getActionMap().put("clickButton", new AbstractAction() {
+//	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	mnTKDV.doClick();
+	            loadFrm_ThongKeDichVu();
+	        }
+	    });
+	}
+	public void callTKHD() {
+		// hot key f71
+		mnTKHD.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF74, "clickButton");
+		mnTKHD.getActionMap().put("clickButton", new AbstractAction() {
+//	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	mnTKHD.doClick();
+	            loadFrm_ThongKeHoaDon();
+	        }
+	    });
+	}
 }
