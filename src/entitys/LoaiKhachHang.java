@@ -10,6 +10,9 @@ public class LoaiKhachHang {
 
 	public LoaiKhachHang(String maLoaiKhachHang) {
 		this.maLoaiKhachHang = maLoaiKhachHang;
+		if(maLoaiKhachHang.equals("NOR"))
+			this.tenLoaiKhachHang = "Khách hàng thường";
+		else this.tenLoaiKhachHang = "Khách hàng VIP";
 	}
 
 	public LoaiKhachHang(String maLoaiKhachHang, String tenLoaiKhachHang) {

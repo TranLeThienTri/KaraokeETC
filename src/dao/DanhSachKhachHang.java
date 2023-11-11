@@ -12,6 +12,7 @@ import java.util.List;
 import connectDB.ConnectDB;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
+import dao.Dao_PhatSinhMa;
 
 public class DanhSachKhachHang {
 	ArrayList<KhachHang> list;
@@ -46,28 +47,29 @@ public class DanhSachKhachHang {
 	}
 
 //
-// boolean themKhachHang(KhachHang kh) {
-//		boolean b = true;
-//		try {
-//			C.getInstance();
-//			Connection con = Database.getConnection();
-//			String sql = "{call addKH(?,?,?,?,?,?,?)}";
-//			CallableStatement myCall = con.prepareCall(sql);
-//			String maKH = getMaNVCuoi();
-//			myCall.setString(1, maKH);
-//			myCall.setString(2, kh.getHoTenKhachHang());
-//			myCall.setString(3, kh.getSoCCCD());
-//			myCall.setBoolean(4, kh.getGioiTinh());
-//			myCall.setString(5, kh.getSoDienThoai());
-//			myCall.setInt(6, kh.getDiemTichLuy());
-//			myCall.setString(7, kh.getLoaiKhachHang().getMaLoaiKhachHang());
-//			b = myCall.execute();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return b;
-//	}
-//
+ public boolean themKhachHang(KhachHang kh) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call themKhachHang(?,?,?,?,?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
+			String maKH = dao.getMaNVCuoi();
+			myCall.setString(1, maKH);
+			myCall.setString(2, kh.getHoTenKhachHang());
+			myCall.setString(3, kh.getSoCCCD());
+			myCall.setBoolean(6, kh.getGioiTinh());
+			myCall.setString(4, kh.getSoDienThoai());
+			myCall.setInt(5, kh.getDiemTichLuy());
+			myCall.setString(7, kh.getLoaiKhachHang().getMaLoaiKhachHang());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+
 ////	public boolean suaKhachHang(KhachHang kh) {
 ////		boolean b = true;
 ////		try {

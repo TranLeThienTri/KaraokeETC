@@ -23,6 +23,7 @@ import javax.swing.table.JTableHeader;
 
 import connectDB.*;
 import dao.DanhSachKhachHang;
+import dao.Dao_PhatSinhMa;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
 
@@ -187,13 +188,11 @@ public class Frm_KhachHang extends JFrame implements ActionListener{
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
 		
-//		
 		String col[] = { "Mã KH","Họ tên", "Loại KH", "Giới tính","SĐT", "CCCD", "Điểm tích luỹ"};
 		model = new DefaultTableModel(col, 0);
 
 		table = new JTable(model);
 				
-//
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		JTableHeader tbHeader = table.getTableHeader();
@@ -229,7 +228,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener{
 		btnLamMoi.addActionListener(this);
 		btnThem.addActionListener(this);
 		
-	
+	// kết nối data
 		ConnectDB.getInstance().connect();
 		// Danh sach Mat Hang
 		dsKh = new DanhSachKhachHang();
@@ -251,8 +250,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener{
 		if(o == btnLamMoi ) {
 			xoaTrang();
 		}
-		else if(o == btnThem) {
-//			themKH();
+		else if(o == btnThem) {	
+			themKH();
 		}
 	}
 	
@@ -276,40 +275,45 @@ public class Frm_KhachHang extends JFrame implements ActionListener{
 			obj[2] = kh.getLoaiKhachHang().getTenLoaiKhachHang();
 			obj[4] = kh.getSoDienThoai().trim();
 			obj[5] = kh.getSoCCCD().trim();
-			obj[3] = kh.getGioiTinh();
+			String gt;
+			if(kh.getGioiTinh())
+				gt = "Nam";
+			else gt = "Nữ";
+			obj[3] = gt;
 			obj[6] = kh.getDiemTichLuy();
 			model.addRow(obj);
 		}
 		xoaTrang();
 	}
 	
-//	public boolean themKH() {
-//		Object[] obj = new Object[6];
-//			String ten = txtTenKH.getText();
-//			String dt = txtSDT.getText();
-//			String cccd = txtCCCD.getText();
-//			String ma = dsKh.getMaNVCuoi();
-//			String gt = (String) comboGT.getSelectedItem();
-//			boolean gioitinh;
-//			if(gt.equals("Nam")) {
-//				gioitinh = true;
-//			}else gioitinh = false;
-//			LoaiKhachHang lkh = new LoaiKhachHang("NOR","Khách hàng thường");
-//			obj[0] = ma;
-//			obj[1] = ten;
-//			obj[2] = lkh;
-//			obj[3] = gt;
-//			obj[4] = dt;
-//			obj[5] = cccd;
-//			KhachHang kh = new KhachHang(ma, ten, cccd, dt,0, gioitinh, lkh);
-//			if (!dsKh.themKhachHang(kh)) {
-//				JOptionPane.showMessageDialog(this, "Thêm thành công");
-//				model.addRow(obj);
-//				xoaTrang();
-//				return true;
-//			}
-//	
-//
-//		return false;
-//	}
+	public boolean themKH() {
+		Object[] obj = new Object[6];
+		Dao_PhatSinhMa makh = new Dao_PhatSinhMa();
+			String ma = makh.getMaNVCuoi();
+			String ten = txtTenKH.getText();
+			String dt = txtSDT.getText();
+			String cccd = txtCCCD.getText();
+			String gt = (String) comboGT.getSelectedItem();
+			boolean gioitinh;
+			if(gt.equals("Nam")) {
+				gioitinh = true;
+			}else gioitinh = false;
+			LoaiKhachHang lkh = new LoaiKhachHang("NOR","Khách hàng thường");
+			obj[0] = ma;
+			obj[1] = ten;
+			obj[2] = lkh;
+			obj[3] = gt;
+			obj[4] = dt;
+			obj[5] = cccd;
+			KhachHang kh = new KhachHang(ma, ten, cccd, dt,0, gioitinh, lkh);
+			if (!dsKh.themKhachHang(kh)) {
+				JOptionPane.showMessageDialog(this, "Thêm thành công");
+				model.addRow(obj);
+				xoaTrang();
+				return true;
+			}
+	
+
+		return false;
+	}
 }
