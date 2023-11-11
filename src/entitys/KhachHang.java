@@ -24,6 +24,10 @@ public class KhachHang {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public KhachHang(String makh) {
+		super();
+		this.maKhachHang = makh;
+	}
 
 	public String getMaKhachHang() {
 		return maKhachHang;

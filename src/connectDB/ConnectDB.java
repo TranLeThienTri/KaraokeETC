@@ -13,11 +13,15 @@ public class ConnectDB {
 		return instance;
 	}
 	
-	public void connect() throws SQLException{
+	public void connect(){
 		String url = "jdbc:sqlserver://localhost:1433;databasename=DBQuanLyKaraoke";
 		String user = "sa";
 		String password = "123";
-		con = DriverManager.getConnection(url, user, password);
+		try {
+			con = DriverManager.getConnection(url, user, password);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	public void disconnect () {
 		if(con != null) {
