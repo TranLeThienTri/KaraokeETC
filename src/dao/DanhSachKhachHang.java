@@ -35,7 +35,11 @@ public class DanhSachKhachHang {
 				String cccd = rs.getString(3);
 				Boolean gioiTinh = rs.getBoolean(4);
 				String malkh = rs.getString(7);
-				LoaiKhachHang maLoaiKH = new LoaiKhachHang(malkh);
+				String tenlkh;
+				if(malkh.equals("NOR"))
+					tenlkh = "Khách hàng thường";
+				else tenlkh = "Khách hàng VIP";
+				LoaiKhachHang maLoaiKH = new LoaiKhachHang(malkh,tenlkh);
 				int dtl=rs.getInt(6);
 				KhachHang kh = new KhachHang(maKH, tenKH, cccd, sdt, dtl, gioiTinh,maLoaiKH);
 				list.add(kh);
