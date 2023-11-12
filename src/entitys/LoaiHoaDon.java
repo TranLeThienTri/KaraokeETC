@@ -10,6 +10,11 @@ public class LoaiHoaDon {
 		this.tenLoaiHoaDon = tenLoaiHoaDon;
 	}
 
+	public LoaiHoaDon(String ma) {
+		super();
+		this.maLoaiHoaDon = ma;
+	}
+
 	public String getMaLoaiHoaDon() {
 		return maLoaiHoaDon;
 	}

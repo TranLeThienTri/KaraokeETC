@@ -32,6 +32,11 @@ public class NhanVien {
 		super();
 		this.maNhanVien = manv;
 	}
+	public NhanVien(String manv,String ten) {
+		super();
+		this.maNhanVien = manv;
+		this.hoTenNhanVien = ten;
+	}
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}

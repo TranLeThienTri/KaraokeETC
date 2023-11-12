@@ -204,7 +204,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		panel_thongke1.add(lbliconthongke1);
 		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tong.png")));
 
-		lblthongke1 = new JLabel("Tổng số nhân viên: ");
+		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
 		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblthongke1.setBounds(136, 114, 199, 33);
@@ -325,7 +325,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
 			ArrayList<NhanVien> listHD = dsHD.getDSNVTheoNgay(ngayBatDau, ngayKetThuc);
 			int tong = dsHD.tongSoNVTheoNgay(ngayBatDau, ngayKetThuc);
-			lblthongke1.setText("Tổng số nhân viên trong tháng:");
+			lblthongke1.setText("Tổng số nhân viên:");
 			lbltongtk1.setText(String.valueOf(tong));
 			upTable(listHD);
 		} else
@@ -334,8 +334,8 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 
 	/**
 	 * 
-	 * @param ma là mã khách hàng
-	 * @return tổng số hóa đơn theo mã khách hàng trong ngày được chọn thống kê
+	 * @param ma là mã nhân viên
+	 * @return tổng số hóa đơn theo mã nhân viên trong ngày được chọn thống kê
 	 */
 	public int soHDTheoMaTheoNgay(String ma) {
 		int tong = 0;
@@ -351,14 +351,14 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	}
 
 	/**
-	 * sự kiện click cột trong table hiện lên thống kê tổng số hóa đơn của khách
-	 * hàng
+	 * sự kiện click cột trong table hiện lên thống kê tổng số hóa đơn của nhân viên
+	 * 
 	 */
 	public void setTextTB() {
 		int row = table.getSelectedRow();
 		String ma = (String) table.getValueAt(row, 0);
 		int tong = soHDTheoMaTheoNgay(ma);
-		lblthongke2.setText("Tổng số hóa đơn của khách hàng:");
+		lblthongke2.setText("Tổng số hóa đơn của nhân viên:");
 		lbltongtk2.setText(String.valueOf(tong));
 	}
 
@@ -401,7 +401,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	}
 
 	/**
-	 * xóa dữ liệu của thống kê tổng số hóa đơn của khách hàng
+	 * xóa dữ liệu của thống kê tổng số hóa đơn của nhân viên
 	 */
 	public void clearTK2() {
 		lbltongtk2.setText("");
