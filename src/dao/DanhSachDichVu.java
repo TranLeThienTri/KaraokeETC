@@ -108,8 +108,9 @@ public class DanhSachDichVu {
 			myCall.setString(1, maLDV);
 			ResultSet rs = myCall.executeQuery();
 			while (rs.next()) {
+				String maDV = rs.getString(1);
 				String tenDV = rs.getString(2);
-				DichVu dv = new DichVu(tenDV);
+				DichVu dv = new DichVu(maDV, tenDV);
 				dao.add(dv);
 			}
 		} catch (SQLException e) {

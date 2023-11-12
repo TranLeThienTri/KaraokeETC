@@ -59,6 +59,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
 	Panel pnQLDP;
 	private JComboBox comboLoaiPhong, comboTinhTrang, comboSucChua;
+	private int ngay, thang, nam;
 	private JTable tableDSPhong1;
 	private DefaultTableModel model1;
 	private JTextField txtGia, txtMaPhong, txtDienTich;
@@ -165,7 +166,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setBounds(795, 151, 323, 28);
-		txtMaPhong.setEditable(false);
+		txtMaPhong.enable(false);
 		pnTTDDP.add(txtMaPhong);
 
 		comboLoaiPhong = new JComboBox();
@@ -268,7 +269,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		if (o.equals(btnThem)) {
 			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
 				comboTinhTrang.setSelectedIndex(1);
-				comboTinhTrang.setEnabled(false);
+				comboTinhTrang.enable(false);
 				comboTinhTrang.setForeground(Color.black);
 				btnThem.setText("Xác nhận");
 				btnSua.setText("Huỷ");

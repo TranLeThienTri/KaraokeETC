@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import org.apache.poi.examples.hsmf.Msg2txt;
 
+
 import connectDB.ConnectDB;
 import dao.ThuePhong;
 import entitys.KhachHang;
@@ -50,6 +51,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	private Date ngayHienTai;
 	private Panel pnQLDP;
 	private int ngay, thang, nam;
+
 	private JTable tableDSPhong, tableDSPhong1, tableDSPhong2, tableDSDichVu;
 	private DefaultTableModel model, model1, model2;
 	private JLabel lbIconSearch, lbSDT, lbTenKH, lbTTDDP;
@@ -78,6 +80,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnQLDP.setBounds(0, 0, 1400, 670);
 		getContentPane().add(pnQLDP);
 		pnQLDP.setLayout(null);
+
 		JPanel pnTTDDP = new JPanel();
 		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
 		pnTTDDP.setBounds(30, 10, 579, 97);
@@ -112,11 +115,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		lbIconSearch.setBorder(bottomBorder);
 		pnTTDDP.add(lbIconSearch);
+
 		lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
 		lbTTDDP.setBounds(10, -1, 190, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTDDP.setForeground(new Color(255, 255, 255));
+
 		pnLoaiPhong = new JPanel();
 		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
 		pnLoaiPhong.setBounds(689, 10, 655, 97);
@@ -212,6 +217,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP1.add(lbDSPhong);
+
 		String col1[] = { "STT", "M\u00E3 ph\u00F2ng", "Lo\u1EA1i d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5",
 				"S\u1ED1 l\u01B0\u1EE3ng", "\u0110\u01A1n gi\u00E1" };
 		model = new DefaultTableModel(col, 0);
@@ -254,6 +260,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnLamMoi.setBounds(712, 20, 150, 30);
 		pnCRUD.add(btnLamMoi);
 
+
 		FixButton btnTinhTien = new FixButton("Tính tiền");
 
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -267,6 +274,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnThuePhong.setBounds(476, 20, 150, 30);
 		pnCRUD.add(btnThuePhong);
 
+
 		FixButton btnChuyenPhong = new FixButton("Chuyển phòng");
 
 		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
@@ -274,6 +282,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnChuyenPhong.setBounds(25, 20, 150, 30);
 		pnCRUD.add(btnChuyenPhong);
+
 		FixButton btnThemDV = new FixButton("Thêm dịch vụ");
 		// btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
 		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -318,11 +327,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		scrollPane2.setBounds(0, 25, 750, 200);
 		scrollPane2.getHorizontalScrollBar();
 		pnDSP2.add(scrollPane2);
+
 		// add background ở cuối
 		lbBGQLDP = new JLabel("");
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDP.setBounds(0, 0, 1400, 700);
 		pnQLDP.add(lbBGQLDP);
+
 		dsTP = new ThuePhong();
 		// kết nối data
 		ConnectDB.getInstance().connect();
@@ -352,7 +363,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
