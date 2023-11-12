@@ -126,7 +126,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		lbltgtk.setBounds(394, 70, 165, 25);
 		panel_tong.add(lbltgtk);
 		panel_ngay = new JPanel();
-		panel_ngay.setBackground(new Color(190, 157, 157, 190));
+		panel_ngay.setBackground(Color.ORANGE);
 		panel_ngay.setBounds(10, 112, 427, 228);
 		panel_tong.add(panel_ngay);
 		panel_ngay.setLayout(null);
@@ -191,7 +191,8 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		panel_ngay.add(btnLamMoi);
 
 		panel_thongke1 = new JPanel();
-		panel_thongke1.setBackground(new Color(190, 157, 157, 190));
+		panel_thongke1.setBorder(new LineBorder(Color.WHITE, 8, true));
+		panel_thongke1.setBackground(new java.awt.Color(131, 0, 171));
 		panel_thongke1.setBounds(447, 112, 471, 228);
 		panel_tong.add(panel_thongke1);
 		panel_thongke1.setLayout(null);
@@ -214,7 +215,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		panel_thongke1.add(lbltongtk1);
 
 		panel_thongke2 = new JPanel();
-		panel_thongke2.setBackground(new Color(190, 157, 157, 190));
+		panel_thongke2.setBackground(Color.ORANGE);
 		panel_thongke2.setBounds(928, 112, 448, 228);
 		panel_tong.add(panel_thongke2);
 		panel_thongke2.setLayout(null);
