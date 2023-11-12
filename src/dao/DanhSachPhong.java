@@ -107,4 +107,24 @@ public class DanhSachPhong {
 		}
 		return dao;
 	}
+	
+	public boolean suaPhong(Phong p) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updatePhong(?,?,?,?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(6, p.getMaPhong());
+			myCall.setString(1, p.getMaLoaiPhong().getMaLoaiPhong());
+			myCall.setInt(2, p.getSucChua());
+			myCall.setFloat(3, p.getGiaPhong());
+			myCall.setString(4, p.getMaTinhTrangPhong().getMaTinhTrangPhong());
+			myCall.setFloat(5, p.getDienTich());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
 }
