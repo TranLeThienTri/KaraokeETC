@@ -296,7 +296,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 			obj[4] = gt;
 			obj[5] = nv.getDiaChi().trim();
 			obj[6] = nv.getSdt().trim();
-			obj[7] = nv.getMaChucVu().getTenChucVu();
+			obj[7] = nv.getchucVu().getTenChucVu();
 			if (table.getRowCount() == 0)
 				model.addRow(obj);
 			else {
