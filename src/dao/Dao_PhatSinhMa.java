@@ -29,13 +29,13 @@ public class Dao_PhatSinhMa {
 		return ma;
 	}
 	
-	public String getMaPhongCuoi()
+	public String getMaDATuDong()
 	{
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call getMaPhongTuDong}";
+			String sql = "{call getMaDATuDong}";
 			CallableStatement myCall = con.prepareCall(sql);
 			ResultSet rs = myCall.executeQuery();
 			while(rs.next())
@@ -45,6 +45,25 @@ public class Dao_PhatSinhMa {
 		}
 		return ma;
 	}
+	
+	public String getMaNUTuDong()
+	{
+		String ma = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaNUTuDong}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while(rs.next())
+				ma = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ma;
+	}
+	
+	
 	
 	
 }
