@@ -8,7 +8,6 @@ public class HoaDonPhong {
 
 	private String maHoaDon;
 	private Phong phong;
-	private ChiTietHoaDon chiTietHoaDon;
 	private NhanVien maNhanVien;
 	private KhachHang maKhachHang;
 	private LoaiHoaDon maLoaiHoaDon;
@@ -17,18 +16,15 @@ public class HoaDonPhong {
 	private LocalTime gioTraPhong;
 	private LocalDate ngayDat;
 	private LocalTime gioDat;
-	private double thanhTien;
-	private double giamGia;
+	private float thanhTien;
 
 	
-	
-	public HoaDonPhong(String maHoaDon, Phong phong, ChiTietHoaDon chiTietHoaDon, NhanVien maNhanVien,
+	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
 			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue,
-			LocalTime gioTraPhong, LocalDate ngayDat, LocalTime gioDat, double thanhTien, double giamGia) {
+			LocalTime gioTraPhong, LocalDate ngayDat, LocalTime gioDat, float thanhTien) {
 		super();
 		this.maHoaDon = maHoaDon;
 		this.phong = phong;
-		this.chiTietHoaDon = chiTietHoaDon;
 		this.maNhanVien = maNhanVien;
 		this.maKhachHang = maKhachHang;
 		this.maLoaiHoaDon = maLoaiHoaDon;
@@ -38,10 +34,31 @@ public class HoaDonPhong {
 		this.ngayDat = ngayDat;
 		this.gioDat = gioDat;
 		this.thanhTien = thanhTien;
-		this.giamGia = giamGia;
 	}
 
-	
+	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
+			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue,
+			LocalTime gioTraPhong, float thanhTien) {
+		super();
+		this.maHoaDon = maHoaDon;
+		this.phong = phong;
+		this.maNhanVien = maNhanVien;
+		this.maKhachHang = maKhachHang;
+		this.maLoaiHoaDon = maLoaiHoaDon;
+		this.ngayLapHoaDon = ngayLapHoaDon;
+		this.gioBatDauThue = gioBatDauThue;
+		this.gioTraPhong = gioTraPhong;
+		this.thanhTien = thanhTien;
+	}
+	public HoaDonPhong() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public HoaDonPhong(String ma) {
+		super();
+		this.maHoaDon = ma;
+	}
+
 	public String getMaHoaDon() {
 		return maHoaDon;
 	}
@@ -59,16 +76,6 @@ public class HoaDonPhong {
 
 	public void setPhong(Phong phong) {
 		this.phong = phong;
-	}
-
-
-	public ChiTietHoaDon getChiTietHoaDon() {
-		return chiTietHoaDon;
-	}
-
-
-	public void setChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
-		this.chiTietHoaDon = chiTietHoaDon;
 	}
 
 
@@ -152,26 +159,14 @@ public class HoaDonPhong {
 	}
 
 
-	public double getThanhTien() {
+	public float getThanhTien() {
 		return thanhTien;
 	}
 
 
-	public void setThanhTien(double thanhTien) {
+	public void setThanhTien(float thanhTien) {
 		this.thanhTien = thanhTien;
 	}
-
-
-	public double getGiamGia() {
-		return giamGia;
-	}
-
-
-	public void setGiamGia(double giamGia) {
-		this.giamGia = giamGia;
-	}
-
-
 
 	
 	public double tinhTienPhong() {

@@ -28,7 +28,11 @@ public class KhachHang {
 		super();
 		this.maKhachHang = makh;
 	}
-
+	public KhachHang(String makh,String ten) {
+		super();
+		this.maKhachHang = makh;
+		this.hoTenKhachHang = ten;
+	}
 	public String getMaKhachHang() {
 		return maKhachHang;
 	}

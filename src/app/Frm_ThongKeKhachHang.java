@@ -50,8 +50,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 
 public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, MouseListener {
-
-	private JFrame frame;
 	private LocalDate now;
 	private int ngay;
 	private int thang;
@@ -71,7 +69,7 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 	private JPanel panel_tknv, panel_ngay, panel_thongke1, panel_thongke2;
 	private JLabel lbltkkh, lbltgtk, lblnbd, lblnkt, lbliconthongke1, lbliconthongke2, lblbackground;
 	private JTableHeader tbHeader;
-	JButton btnThongKe, btnLamMoi;
+	private JButton btnThongKe, btnLamMoi;
 	DanhSachKhachHang dsKh;
 	DanhSachHoaDon dsHD;
 
