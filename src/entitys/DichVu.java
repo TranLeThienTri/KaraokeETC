@@ -15,9 +15,14 @@ public class DichVu {
 		this.soLuongTon = soLuongTon;
 		this.donGia = donGia;
 	}
-	public DichVu(String ten) {
+	public DichVu(String maDichVu) {
 		super();
-		this.tenDichVu = ten;
+		this.maDichVu = maDichVu;
+	}
+	public DichVu(String ma,String ten) {
+		super();
+		this.maDichVu = maDichVu;
+		this.tenDichVu = tenDichVu;
 	}
 	public String getMaDichVu() {
 		return maDichVu;

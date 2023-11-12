@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import entitys.ChucVu;
+import entitys.KhachHang;
 import entitys.NhanVien;
 
 
@@ -48,6 +49,7 @@ public class DanhSachNhanVien {
 	}
 	
 	
+	
 	public NhanVien getNhanVienTheoMa(String ma) {
 		NhanVien nv =null;
 		try {
@@ -77,4 +79,30 @@ public class DanhSachNhanVien {
 		}
 		return nv;
 	}
+	public boolean themNhanVien(NhanVien nv) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call themNhanVien(?,?,?,?,?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
+			String maNV = dao.getMaNVCuoi();
+			myCall.setString(1, maNV);
+			myCall.setString(2, nv.getHoTenNhanVien());
+			myCall.setString(3, nv.getchucVu().getMaChucVu());
+			myCall.setBoolean(4, nv.isGioiTinh());
+			myCall.setString(5, nv.getNgaySinh().toString());
+			myCall.setString(6, nv.getDiaChi());
+			myCall.setString(7, nv.getSdt());
+			myCall.setString(8, nv.getSoCCCD());
+			myCall.setBoolean(9, nv.isTinhTrang());			
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	
 }

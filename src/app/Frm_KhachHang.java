@@ -324,7 +324,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 	public boolean themKH() {
 		Object[] obj = new Object[7];
 		Dao_PhatSinhMa makh = new Dao_PhatSinhMa();
-		String ma = makh.getMaNVCuoi();
+		String ma = makh.getMaKHCuoi();
 		String ten = txtTenKH.getText();
 		String dt = txtSDT.getText();
 		String cccd = txtCCCD.getText();

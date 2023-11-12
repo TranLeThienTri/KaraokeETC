@@ -55,7 +55,7 @@ public class DanhSachKhachHang {
 			String sql = "{call themKhachHang(?,?,?,?,?,?,?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
-			String maKH = dao.getMaNVCuoi();
+			String maKH = dao.getMaKHCuoi();
 			myCall.setString(1, maKH);
 			myCall.setString(2, kh.getHoTenKhachHang());
 			myCall.setString(3, kh.getSoCCCD());
