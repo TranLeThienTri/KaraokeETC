@@ -19,14 +19,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
-//import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -36,8 +35,6 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
-<<<<<<< HEAD
 import org.apache.poi.examples.hsmf.Msg2txt;
 
 import connectDB.ConnectDB;
@@ -55,24 +52,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	private int ngay, thang, nam;
 	private JTable tableDSPhong, tableDSPhong1, tableDSPhong2, tableDSDichVu;
 	private DefaultTableModel model, model1, model2;
-	private JLabel lbIconSearch;
+	private JLabel lbIconSearch, lbSDT, lbTenKH, lbTTDDP;
 	private JTextField txtSDT, txtKhachHang;
+	private FixButton btnThuePhong;
+	ButtonGroup bg;
 	ThuePhong dsTP;
-=======
-public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListener {
-	private JPanel pnLoaiPhong, pnDSP,pnDSP1,pnCRUD,pnDSP2,pnTTDDP;
-	private JLabel lbLoaiPhongTK, lbTinhTrang, lbDSPhong, lbBGQLDP,lbDSPhong1,lbSDT,lbTenKH,lbIconSearch,lbTTDDP;
-	private JTextField txtSDT,txtKhachHang;
-	private FixButton btnLamMoi,btnThemDV, btnThuePhong, btnChuyenPhong,btnTinhTien;
-	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
-	private JRadioButton radioDangDat, radioTrong;
-	private Date ngayHienTai;
-	private ButtonGroup bg;
-	Panel pnQLDP;
-	private int ngay, thang, nam;
-	private JTable tableDSPhong,tableDSPhong2,tableDSDichVu;
-	private DefaultTableModel model, model1,model2;
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 
 	public Panel getFrmQuanLyThuePhong() {
 		return this.pnQLDP;
@@ -94,14 +78,8 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		pnQLDP.setBounds(0, 0, 1400, 670);
 		getContentPane().add(pnQLDP);
 		pnQLDP.setLayout(null);
-
-<<<<<<< HEAD
 		JPanel pnTTDDP = new JPanel();
 		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
-=======
-		pnTTDDP = new JPanel();
-		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157,190));
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		pnTTDDP.setBounds(30, 10, 579, 97);
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -123,10 +101,7 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
-<<<<<<< HEAD
 		txtKhachHang.setForeground(new Color(0, 0, 0));
-=======
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		txtKhachHang.setBounds(174, 62, 323, 25);
 		txtKhachHang.setEditable(false);
 		pnTTDDP.add(txtKhachHang);
@@ -137,22 +112,11 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		lbIconSearch.setBorder(bottomBorder);
 		pnTTDDP.add(lbIconSearch);
-<<<<<<< HEAD
-=======
-		
-				lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
-				lbTTDDP.setBounds(10, -1, 190, 20);
-				pnTTDDP.add(lbTTDDP);
-				lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
-				lbTTDDP.setForeground(new Color(255, 255, 255));
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
-
-		JLabel lbTTDDP = new JLabel("Thông tin đơn đặt phòng");
+		lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
 		lbTTDDP.setBounds(10, -1, 190, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTDDP.setForeground(new Color(255, 255, 255));
-
 		pnLoaiPhong = new JPanel();
 		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
 		pnLoaiPhong.setBounds(689, 10, 655, 97);
@@ -286,20 +250,12 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_btn_lammoi.png")));
-<<<<<<< HEAD
 		// btnLamMoi.setBackground(new java.awt.Color(153, 36, 36));
 		btnLamMoi.setBounds(712, 20, 150, 30);
 		pnCRUD.add(btnLamMoi);
 
 		FixButton btnTinhTien = new FixButton("Tính tiền");
 
-=======
-		btnLamMoi.setBounds(712, 20, 150, 30);
-		pnCRUD.add(btnLamMoi);
-
-		btnTinhTien = new FixButton("Tính tiền");
-		
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTinhTien.setBounds(939, 20, 150, 30);
 		// btnTinhTien.setBackground(new java.awt.Color(153, 36, 36));
@@ -311,7 +267,6 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		btnThuePhong.setBounds(476, 20, 150, 30);
 		pnCRUD.add(btnThuePhong);
 
-<<<<<<< HEAD
 		FixButton btnChuyenPhong = new FixButton("Chuyển phòng");
 
 		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
@@ -324,24 +279,7 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThemDV.setBounds(240, 20, 150, 30);
 		pnCRUD.add(btnThemDV);
-//table thong tin thuê phòng
-
-=======
-		btnChuyenPhong = new FixButton("Chuyển phòng");
-		
-		//btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
-		
-		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnChuyenPhong.setBounds(25, 20, 150, 30);
-		pnCRUD.add(btnChuyenPhong);
-		
-		btnThemDV = new FixButton("Thêm dịch vụ");
-		//btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
-		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThemDV.setBounds(240, 20, 150, 30);
-		pnCRUD.add(btnThemDV);
 //table thong tin thuê phòng	
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		pnDSP2 = new JPanel();
 		pnDSP2.setBackground(Color.WHITE);
 		pnDSP2.setBounds(30, 380, 750, 200);
@@ -354,10 +292,6 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 
 		String col2[] = { "Mã hóa đơn", "Mã phòng", "Tên khách hàng", "SĐT", "Ngày", "Thời gian", "Tên nhân viên" };
 		model2 = new DefaultTableModel(col2, 0);
-<<<<<<< HEAD
-=======
-
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		tableDSPhong2 = new JTable(model2);
 		tableDSPhong2.setBackground(Color.WHITE);
 //		tableDSPhong1.setColumnSelectionAllowed(true);
@@ -384,102 +318,35 @@ public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListene
 		scrollPane2.setBounds(0, 25, 750, 200);
 		scrollPane2.getHorizontalScrollBar();
 		pnDSP2.add(scrollPane2);
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		// add background ở cuối
 		lbBGQLDP = new JLabel("");
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDP.setBounds(0, 0, 1400, 700);
 		pnQLDP.add(lbBGQLDP);
-<<<<<<< HEAD
 		dsTP = new ThuePhong();
 		// kết nối data
 		ConnectDB.getInstance().connect();
 		lbIconSearch.addMouseListener(this);
-=======
-		
 		btnChuyenPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnThuePhong.addActionListener(this);
 		btnTinhTien.addActionListener(this);
 		btnThemDV.addActionListener(this);
 		tableDSPhong.addMouseListener(this);
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 	}
 
 	public static void main(String[] args) {
 		new Frm_ThuePhong().setVisible(true);
 
 	}
-<<<<<<< HEAD
-=======
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Object o = e.getSource();
-		if(o == btnThemDV) {
-			Frm_ThemDichVu themDV= new Frm_ThemDichVu();
-			themDV.setVisible(true);
-			this.setVisible(false);
-		}else if(o == btnThuePhong) {
-			
-		}
-	}
-	public void setTextTB() {
-		 int selectedRow = tableDSPhong.getSelectedRow();
-         int selectedColumn = tableDSPhong.getSelectedColumn();
-         Object selectedData = tableDSPhong.getValueAt(selectedRow, selectedColumn);
-         
-         // Xóa dữ liệu cũ trong Table 2 (nếu có)
-         DefaultTableModel model = (DefaultTableModel) tableDSPhong2.getModel();
-         model.setRowCount(0);
-
-         // Thêm dữ liệu mới vào Table 2
-         model.addRow(new Object[]{selectedData});
-	}
-	// Button them
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-		setTextTB();
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-}
->>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 
 	public void ktraKH() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsTP.ktraKHTheoSDt(sdt);
 		if (kh != null) {
 			txtKhachHang.setText(kh.getHoTenKhachHang());
+		} else {
+//			JOptionPane.showConfirmDialog(btnDatPhong, kh)
 		}
 	}
 
