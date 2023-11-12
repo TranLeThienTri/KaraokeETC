@@ -28,4 +28,23 @@ public class Dao_PhatSinhMa {
 		}
 		return ma;
 	}
+	
+	public String getMaPhongCuoi()
+	{
+		String ma = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaPhongTuDong}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while(rs.next())
+				ma = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ma;
+	}
+	
+	
 }

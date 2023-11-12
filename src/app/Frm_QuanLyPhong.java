@@ -10,6 +10,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -17,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
@@ -24,6 +27,17 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import connectDB.ConnectDB;
+import dao.DanhSachKhachHang;
+import dao.DanhSachPhong;
+import dao.Dao_PhatSinhMa;
+import entitys.KhachHang;
+import entitys.LoaiKhachHang;
+import entitys.LoaiPhong;
+import entitys.Phong;
+import entitys.TinhTrangPhong;
+
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -35,20 +49,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.JFormattedTextField;
 
-public class Frm_QuanLyPhong extends JFrame {
+public class Frm_QuanLyPhong extends JFrame implements ActionListener {
 	JPanel pnLoaiPhong, pnDSP;
 	JLabel lbLoaiPhongTK, lbDSPhong, lbBGQLDP;
-	FixButton btnLamMoi, btnHuyDatPhong, btnDatPhong, btnNhanPhong;
-	FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
-	private Date ngayHienTai;
-	Panel pnQLDP;
-	private int ngay, thang, nam;
-	private JTable tableDSPhong, tableDSPhong1;
-	private DefaultTableModel model, model1;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
 
+	FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
+	Panel pnQLDP;
+	private JComboBox comboLoaiPhong,comboTinhTrang,comboSucChua ;
+	private int ngay, thang, nam;
+	private JTable  tableDSPhong1;
+	private DefaultTableModel model1;
+	private JTextField txtGia,txtMaPhong,txtDienTich;
+	private FixButton fxbtnSa ,btnThem;
+	DanhSachPhong dsPhong;
 	public Panel getFrmQuanLyPhong() {
 		return this.pnQLDP;
 	}
@@ -118,52 +131,48 @@ public class Frm_QuanLyPhong extends JFrame {
 				lblMPhng.setBounds(676, 154, 126, 25);
 				pnTTDDP.add(lblMPhng);
 				
-				FixButton fxbtnThm = new FixButton("Thêm");
-				fxbtnThm.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_them.png")));
-				fxbtnThm.setFont(new Font("Tahoma", Font.BOLD, 15));
-				fxbtnThm.setBounds(412, 199, 150, 30);
-				fxbtnThm.setBackground(new java.awt.Color(153, 36, 36));
-				pnTTDDP.add(fxbtnThm);
+				 btnThem = new FixButton("Thêm");
+				 btnThem.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_them.png")));
+				 btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
+				 btnThem.setBounds(412, 199, 150, 30);
+				 btnThem.setBackground(new java.awt.Color(153, 36, 36));
+				pnTTDDP.add(btnThem);
 				
-				FixButton fxbtnSa = new FixButton("Sửa");
+				 fxbtnSa = new FixButton("Sửa");
 				fxbtnSa.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_sua.png")));
 				fxbtnSa.setFont(new Font("Tahoma", Font.BOLD, 15));
 				fxbtnSa.setBackground(new java.awt.Color(153, 36, 36));
 				fxbtnSa.setBounds(657, 199, 150, 30);
 				pnTTDDP.add(fxbtnSa);
 				
-				textField_6 = new JTextField();
-				textField_6.setBounds(795, 37, 323, 30);
-				pnTTDDP.add(textField_6);
+				txtGia= new JTextField();
+				txtGia.setBounds(795, 37, 323, 30);
+				pnTTDDP.add(txtGia);
 				
-				textField_7 = new JTextField();
-				textField_7.setBounds(795, 93, 323, 30);
-				pnTTDDP.add(textField_7);
+				txtDienTich = new JTextField();
+				txtDienTich.setBounds(795, 93, 323, 30);
+				pnTTDDP.add(txtDienTich);
 				
-				textField_8 = new JTextField();
-				textField_8.setBounds(795, 151, 323, 28);
-				pnTTDDP.add(textField_8);
+				txtMaPhong = new JTextField();
+				txtMaPhong.setBounds(795, 151, 323, 28);
+				pnTTDDP.add(txtMaPhong);
 				
-				JComboBox comboBox = new JComboBox();
-				comboBox.setModel(new DefaultComboBoxModel(new String[] { "Phòng VIP", "Phòng Thường" }));
-				comboBox.setSelectedIndex(0);
-				comboBox.setFont(new Font("Tahoma", Font.BOLD, 15));
-				comboBox.setBounds(215, 154, 323, 28);
-				pnTTDDP.add(comboBox);
+				comboLoaiPhong = new JComboBox();
+				comboLoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+				comboLoaiPhong.setBounds(215, 154, 323, 28);
+				pnTTDDP.add(comboLoaiPhong);
 				
-				JComboBox comboBox_1 = new JComboBox();
-				comboBox_1.setModel(new DefaultComboBoxModel(new String[] { "Trống", "Đang Thuê","Đã Đặt" }));
-				comboBox_1.setSelectedIndex(0);
-				comboBox_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-				comboBox_1.setBounds(215, 33, 323, 28);
-				pnTTDDP.add(comboBox_1);
+				comboTinhTrang = new JComboBox();
+				comboTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
+				comboTinhTrang.setBounds(215, 33, 323, 28);
+				pnTTDDP.add(comboTinhTrang);
 				
-				JComboBox comboBox_2 = new JComboBox();
-				comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "10", "15","20" }));
-				comboBox_2.setSelectedIndex(0);
-				comboBox_2.setFont(new Font("Tahoma", Font.BOLD, 15));
-				comboBox_2.setBounds(215, 93, 323, 28);
-				pnTTDDP.add(comboBox_2);
+				comboSucChua = new JComboBox();
+				comboSucChua.setModel(new DefaultComboBoxModel(new String[] { "10", "15","20" }));
+				comboSucChua.setSelectedIndex(0);
+				comboSucChua.setFont(new Font("Tahoma", Font.BOLD, 15));
+				comboSucChua.setBounds(215, 93, 323, 28);
+				pnTTDDP.add(comboSucChua);
 
 		
 
@@ -194,19 +203,10 @@ public class Frm_QuanLyPhong extends JFrame {
 		btnPhongThuong.setBounds(447, 23, 150, 25);
 		pnLoaiPhong.add(btnPhongThuong);
 //
-		String col1[] = { "Mã hóa đơn", "Mã phòng", "Tên khách hàng", "SĐT", "Ngày", "Thời gian", "Tên nhân viên" };
+		String col1[] = {  "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
 		model1 = new DefaultTableModel(col1, 0);
 
-		tableDSPhong1 = new JTable(new DefaultTableModel(
-				new Object[][] {
-						{ "HD001", "MP001", "Tr\u1EA7n Qu\u1ED1c Huy", "0923456789", "04/11/2023", "12:34",
-								"Nguy\u1EC5n V\u0103n A" },
-						{ "HD002", "MP002", "L\u00EA Th\u1ECB An", "0972829123", "01/02/2023", "15:07",
-								"Nguy\u1EC5n V\u0103n B" },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, },
-				new String[] { "M\u00E3 h\u00F3a \u0111\u01A1n", "M\u00E3 ph\u00F2ng", "T\u00EAn kh\u00E1ch h\u00E0ng",
-						"S\u0110T", "Ng\u00E0y", "Th\u1EDDi gian", "T\u00EAn nh\u00E2n vi\u00EAn" }));
+		tableDSPhong1 = new JTable(model1);
 
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
@@ -232,10 +232,101 @@ public class Frm_QuanLyPhong extends JFrame {
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDP.setBounds(0, 0, 1400, 700);
 		pnQLDP.add(lbBGQLDP);
+		ConnectDB.getInstance().connect();
+		// Danh sach Mat Hang
+		dsPhong = new DanhSachPhong();
+		upTable();
+		upCombobox();
+		upCombobox2();
+		
+		btnThem.addActionListener(this);
+		fxbtnSa.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
 		new Frm_QuanLyPhong().setVisible(true);
 
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o == btnThem) {
+			themPhong();
+		}
+	}
+	
+	
+	public boolean themPhong() {
+		Object[] obj = new Object[6];
+		Dao_PhatSinhMa maP = new Dao_PhatSinhMa();
+		String ma = maP.getMaPhongCuoi();
+		String tenLoaiPhong = String.valueOf(comboLoaiPhong.getSelectedItem());
+		int sucChua = Integer.parseInt((String) comboSucChua.getSelectedItem());
+		String tenTinhTang = String.valueOf(comboTinhTrang.getSelectedItem());
+		float Gia = Float.parseFloat(txtGia.getText());
+		float dienTich = Float.parseFloat(txtDienTich.getText());
+		String maLP = null;
+		if(tenLoaiPhong.equals("Phòng thường")) {
+			maLP = "NOR";
+		}else maLP = "VIP";
+		LoaiPhong lp = new LoaiPhong(maLP);
+		TinhTrangPhong tt = new TinhTrangPhong("EMPT");
+		Phong p = new Phong(ma, lp, sucChua, Gia, tt, dienTich);
+		if (!dsPhong.themPhong(p)) {
+			JOptionPane.showMessageDialog(this, "Thêm thành công");
+			obj[0] = ma;
+			obj[1] = tt.getTenTinhTrangPhong();
+			obj[2] = sucChua;
+			obj[3] = tenLoaiPhong;
+			obj[4] = Gia;
+			obj[5] = dienTich;
+			model1.addRow(obj);
+			xoaTrang();
+			return true;
+		}
+
+		return false;
+	}
+	
+	public void xoaTrang() {
+		txtGia.setText("");
+		txtMaPhong.setText("");
+		txtDienTich.setText("");
+		tableDSPhong1.clearSelection();
+	}
+
+
+	public void upTable() {
+		int i = 0;
+		ArrayList<Phong> list = dsPhong.getDSPhong();
+		for (Phong p : list) {
+			Object[] obj = new Object[7];
+			obj[0] = p.getMaPhong().trim();
+			obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+			obj[2] = p.getSucChua();
+			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+			obj[4] = p.getGiaPhong();
+			obj[5] = p.getDienTich();
+			model1.addRow(obj);
+		}
+		xoaTrang();
+	}
+	//them phong
+	
+	public void upCombobox () {
+		List<TinhTrangPhong> list = dsPhong.getDSTinhTrang();
+		for (TinhTrangPhong s : list) {
+			comboTinhTrang.addItem(s.getTenTinhTrangPhong());
+		}
+	}
+	
+	public void upCombobox2 () {
+		List<LoaiPhong> list = dsPhong.getDSLoatPhong();
+		for (LoaiPhong a : list) {
+			comboLoaiPhong.addItem(a.getTenLoaiPhong());
+		}
+	}
+
 }
