@@ -1,4 +1,5 @@
 package dao;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +12,12 @@ import java.util.List;
 import connectDB.ConnectDB;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
+import entitys.LoaiPhong;
+import entitys.Phong;
+import entitys.TinhTrangPhong;
+
 public class Dao_PhatSinhMa {
-	public String getMaNVCuoi()
-	{
+	public String getMaNVCuoi() {
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
@@ -21,16 +25,15 @@ public class Dao_PhatSinhMa {
 			String sql = "{call getMaKHTuDong}";
 			CallableStatement myCall = con.prepareCall(sql);
 			ResultSet rs = myCall.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				ma = rs.getString(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ma;
 	}
-	
-	public String getMaDATuDong()
-	{
+
+	public String getMaDATuDong() {
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
@@ -38,16 +41,15 @@ public class Dao_PhatSinhMa {
 			String sql = "{call getMaDATuDong}";
 			CallableStatement myCall = con.prepareCall(sql);
 			ResultSet rs = myCall.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				ma = rs.getString(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ma;
 	}
-	
-	public String getMaNUTuDong()
-	{
+
+	public String getMaNUTuDong() {
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
@@ -55,15 +57,29 @@ public class Dao_PhatSinhMa {
 			String sql = "{call getMaNUTuDong}";
 			CallableStatement myCall = con.prepareCall(sql);
 			ResultSet rs = myCall.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				ma = rs.getString(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ma;
 	}
-	
-	
-	
-	
+
+
+	public String getMaPhongCuoi() {
+		String ma = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaPhongTuDong}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next())
+				ma = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ma;
+	}
+
 }
