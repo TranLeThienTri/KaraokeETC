@@ -94,9 +94,6 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	private NhanVien nv;
 	KeyStroke keyStrokeF1,keyStrokeF2,keyStrokeF3,keyStrokeF4,keyStrokeF5,keyStrokeF6,keyStrokeF7,keyStrokeF71,keyStrokeF72,keyStrokeF73,keyStrokeF74,keyStrokeF8,keyStrokeF9;
 
-
-
-	
 	
 	public Frm_Chinh() throws HeadlessException {
 		super();
@@ -164,7 +161,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		lbHoTenNV.setBounds(980, 10, 200, 25);
 		pnHeader.add(lbHoTenNV);
 
-		lbChucVu = new JLabel(nv.getMaChucVu().getTenChucVu());
+		lbChucVu = new JLabel(nv.getchucVu().getTenChucVu());
 		lbChucVu.setForeground(Color.WHITE);
 		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lbChucVu.setBounds(980, 35, 200, 25);
@@ -512,7 +509,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		lbHoTenNV.setBounds(980, 10, 200, 25);
 		pnHeader.add(lbHoTenNV);
 	}
-	
+
 	
 	public void addHotKey() {
 		// hot key f1

@@ -239,14 +239,16 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		table.addMouseListener(this);
 
 		ConnectDB.getInstance().connect();
-// Danh sach Mat Hang
+
 		dsKh = new DanhSachKhachHang();
 		upTable();
 
 	}
 
 	public static void main(String[] args) throws SQLException {
-		new Frm_KhachHang().setVisible(true);
+
+	new Frm_KhachHang().setVisible(true);
+
 	}
 
 	@Override
