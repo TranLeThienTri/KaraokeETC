@@ -65,4 +65,31 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
+	public DichVu getDVTheoMa(String ma) {
+		DichVu dv = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDVTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maDV = rs.getString(1);
+				String tenDV = rs.getString(2);
+				String maLDV = rs.getString(3);
+				int soLuongTon = rs.getInt(4);
+				Double donGia = rs.getDouble(5);
+				String tenLDV;
+				if(maLDV.equals("FOOD"))
+					tenLDV = "Thực phẩm";
+				else tenLDV = "Nước uống";
+				LoaiDichVu maLoaiDV = new LoaiDichVu(maLDV, tenLDV);
+				dv = new DichVu(maDV, tenDV, maLoaiDV, soLuongTon, donGia);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dv;
+	}
 }

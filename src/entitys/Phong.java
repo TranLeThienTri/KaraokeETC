@@ -19,6 +19,12 @@ public class Phong {
 		this.maTinhTrangPhong = maTinhTrangPhong;
 		this.dienTich = dienTich;
 	}
+	
+	public Phong(String ma) {
+		super();
+		this.maPhong = ma;
+	}
+
 	public String getMaPhong() {
 		return maPhong;
 	}
