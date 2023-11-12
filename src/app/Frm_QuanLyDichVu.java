@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -52,7 +53,7 @@ import javax.swing.table.JTableHeader;
 
 public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseListener {
 	JPanel pnDSDichVu, pnTTDV;
-	JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia;
+	JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia, lbTB;
 	JComboBox comboTDV, comboLDV;
 	JTextField txtDonGia, txtSoLuongTon;
 	Panel pnQLDV;
@@ -139,22 +140,29 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtDonGia = new JTextField();
 		txtDonGia.setBounds(877, 69, 300, 30);
 		pnTTDV.add(txtDonGia);
+		
+		lbTB = new JLabel();
+		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
+		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbTB.setBounds(150, 128, 500, 36);
+		lbTB.setForeground(Color.RED);
+		pnTTDV.add(lbTB);
 // các nút CRUD
 		btnThem = new FixButton("Thêm");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setBounds(350, 128, 190, 40);
+		btnThem.setBounds(550, 128, 190, 40);
 		pnTTDV.add(btnThem);
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		btnSua = new FixButton("Sửa");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setBounds(600, 128, 190, 40);
+		btnSua.setBounds(750, 128, 190, 40);
 		pnTTDV.add(btnSua);
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setBounds(850, 128, 190, 40);
+		btnLamMoi.setBounds(950, 128, 190, 40);
 		pnTTDV.add(btnLamMoi);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 16));
 
@@ -234,7 +242,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			if (btnThem.getText().equals("Thêm")) {
 				btnSua.setText("Hủy");
 				btnThem.setText("Xác nhận");
-			}else if (btnThem.getText().equals("Xác nhận")) {
+			} else if (btnThem.getText().equals("Xác nhận")) {
 				themDV();
 				btnSua.setText("Sửa");
 				btnThem.setText("Thêm");
@@ -245,10 +253,9 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			if (btnSua.getText().equals("Hủy")) {
 				btnSua.setText("Sửa");
 				btnThem.setText("Thêm");
-			}
-			else if (btnSua.getText().equals("Sửa")) {
+			} else if (btnSua.getText().equals("Sửa")) {
 				suaDichVu();
-				
+
 			}
 		}
 
@@ -261,6 +268,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtSoLuongTon.setText("");
 		txtDonGia.setText("");
 		tableDSDichVu.clearSelection();
+		lbTB.setText("");
 	}
 
 	public void upTable() {
@@ -281,48 +289,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	// thêm dịch vụ
 	public boolean themDV() {
 		Object[] obj = new Object[6];
-		Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
-		String mada = matp1.getMaDATuDong();
-		String manu = matp1.getMaNUTuDong();
-		String loai = (String) comboLDV.getSelectedItem();
-		String tendv = (String) comboTDV.getSelectedItem();
-		LoaiDichVu ldv;
-		String ma;
-		if (loai.equals("Thực phẩm")) {
-			ma = mada;
-			ldv = new LoaiDichVu("FOOD", "Thực phẩm");
-
-		} else {
-			ldv = new LoaiDichVu("WATER", "Nước uống");
-			ma = manu;
-		}
-		int slt = Integer.parseInt(txtSoLuongTon.getText());
-		double giaban = Double.parseDouble(txtDonGia.getText());
-
-		DichVu dv = new DichVu(ma, tendv, ldv, slt, giaban);
-
-		if (!dsDV.themDichVu(dv)) {
-			JOptionPane.showMessageDialog(this, "Thêm thành công");
-			obj[0] = ma;
-			obj[1] = tendv;
-			obj[2] = ldv.getTenLoaiDichVu();
-			obj[3] = slt;
-			obj[4] = giaban;
-			model.addRow(obj);
-			xoaTrang();
-			return true;
-		}
-
-		return false;
-	}
-
-	// update dịch vụ
-	public boolean suaDichVu() {
-		int row = tableDSDichVu.getSelectedRow();
-		if (row == -1) {
-			JOptionPane.showMessageDialog(this, "Chọn dịch vụ cần sửa");
-		} else {
-			Object[] obj = new Object[7];
+		if (ktraDuLieu()) {
 			Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
 			String mada = matp1.getMaDATuDong();
 			String manu = matp1.getMaNUTuDong();
@@ -340,29 +307,72 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			}
 			int slt = Integer.parseInt(txtSoLuongTon.getText());
 			double giaban = Double.parseDouble(txtDonGia.getText());
+
 			DichVu dv = new DichVu(ma, tendv, ldv, slt, giaban);
-			obj[0] = ma;
-			obj[1] = tendv;
-			obj[2] = ldv.getTenLoaiDichVu();
-			obj[3] = slt;
-			obj[4] = giaban;
 
-			if (!dsDV.suaDichVu(dv)) {
-				int optThanhToan = JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn SỬA không?", "Thông báo",
-						JOptionPane.YES_NO_OPTION);
-
-				if (optThanhToan == JOptionPane.YES_OPTION) {
-					tableDSDichVu.setValueAt(obj[1], row, 1);
-					tableDSDichVu.setValueAt(obj[2], row, 2);
-					tableDSDichVu.setValueAt(obj[3], row, 3);
-					tableDSDichVu.setValueAt(obj[4], row, 4);
-					xoaTrang();
-					return true;
-				}
-
+			if (!dsDV.themDichVu(dv)) {
+				JOptionPane.showMessageDialog(this, "Thêm thành công");
+				obj[0] = ma;
+				obj[1] = tendv;
+				obj[2] = ldv.getTenLoaiDichVu();
+				obj[3] = slt;
+				obj[4] = giaban;
+				model.addRow(obj);
+				xoaTrang();
+				return true;
 			}
 		}
+		return false;
+	}
 
+	// update dịch vụ
+	public boolean suaDichVu() {
+		int row = tableDSDichVu.getSelectedRow();
+		if (row == -1) {
+			JOptionPane.showMessageDialog(this, "Chọn dịch vụ cần sửa");
+		} else {
+			Object[] obj = new Object[7];
+			if (ktraDuLieu()) {
+				Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
+				String mada = matp1.getMaDATuDong();
+				String manu = matp1.getMaNUTuDong();
+				String loai = (String) comboLDV.getSelectedItem();
+				String tendv = (String) comboTDV.getSelectedItem();
+				LoaiDichVu ldv;
+				String ma;
+				if (loai.equals("Thực phẩm")) {
+					ma = mada;
+					ldv = new LoaiDichVu("FOOD", "Thực phẩm");
+
+				} else {
+					ldv = new LoaiDichVu("WATER", "Nước uống");
+					ma = manu;
+				}
+				int slt = Integer.parseInt(txtSoLuongTon.getText());
+				double giaban = Double.parseDouble(txtDonGia.getText());
+				DichVu dv = new DichVu(ma, tendv, ldv, slt, giaban);
+				obj[0] = ma;
+				obj[1] = tendv;
+				obj[2] = ldv.getTenLoaiDichVu();
+				obj[3] = slt;
+				obj[4] = giaban;
+
+				if (!dsDV.suaDichVu(dv)) {
+					int optThanhToan = JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn SỬA không?",
+							"Thông báo", JOptionPane.YES_NO_OPTION);
+
+					if (optThanhToan == JOptionPane.YES_OPTION) {
+						tableDSDichVu.setValueAt(obj[1], row, 1);
+						tableDSDichVu.setValueAt(obj[2], row, 2);
+						tableDSDichVu.setValueAt(obj[3], row, 3);
+						tableDSDichVu.setValueAt(obj[4], row, 4);
+						xoaTrang();
+						return true;
+					}
+
+				}
+			}
+		}
 		return false;
 	}
 
@@ -391,6 +401,40 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtSoLuongTon.setText(tableDSDichVu.getValueAt(row, 3).toString());
 		txtDonGia.setText(tableDSDichVu.getValueAt(row, 4).toString());
 
+	}
+
+	public void showMessage(String message) {
+		lbTB.setText(message);
+	}
+
+	public boolean ktraDuLieu() {
+
+		try {
+			int slt = Integer.parseInt(txtSoLuongTon.getText());
+			if (slt <= 0) {
+				showMessage("(*)Số lượng tồn phải lớn hơn 0");
+				txtSoLuongTon.requestFocus();
+				return false;
+			}
+		} catch (Exception e) {
+			showMessage("(*)Số lượng tồn là số và không được để trống");
+			txtSoLuongTon.requestFocus();
+			return false;
+		}
+
+		try {
+			float donGia = Float.parseFloat(txtDonGia.getText());
+			if (donGia <= 0) {
+				showMessage("(*)Lương phải lớn hơn 0");
+				txtDonGia.requestFocus();
+				return false;
+			}
+		} catch (Exception e) {
+			showMessage("(*)Đơn giá phải là số và không được để trống");
+			txtDonGia.requestFocus();
+			return false;
+		}
+		return true;
 	}
 
 	@Override

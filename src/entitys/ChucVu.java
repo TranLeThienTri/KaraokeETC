@@ -10,6 +10,16 @@ public class ChucVu {
 		this.tenChucVu = tenChucVu;
 	}
 	
+	public ChucVu(String maChucVu) {
+		this.maChucVu = maChucVu;
+		if(maChucVu.equals("QL")) {
+			this.tenChucVu = "Quản lí";
+		}else {
+			this.tenChucVu = "Nhân viên";
+		}
+		
+	}
+	
 	
 	public ChucVu() {
 	}

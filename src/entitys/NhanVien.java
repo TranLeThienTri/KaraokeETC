@@ -1,6 +1,7 @@
 package entitys;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 public class NhanVien {
@@ -10,7 +11,7 @@ public class NhanVien {
 	private LocalDate ngaySinh;
 	
 	public NhanVien(String maNhanVien, String hoTenNhanVien, String soCCCD, String diaChi, String sdt,
-			boolean gioiTinh, ChucVu chucVu, LocalDate ngaySinh, Boolean tinhTrang) {
+			boolean gioiTinh, ChucVu chucVu, LocalDate ngaySinh2, Boolean tinhTrang) {
 		this.maNhanVien = maNhanVien;
 		this.hoTenNhanVien = hoTenNhanVien;
 		this.soCCCD = soCCCD;
@@ -18,7 +19,7 @@ public class NhanVien {
 		this.sdt = sdt;
 		this.gioiTinh = gioiTinh;
 		this.chucVu = chucVu;
-		this.ngaySinh = ngaySinh;
+		this.ngaySinh = ngaySinh2;
 		this.tinhTrang = tinhTrang;
 	}
 	
