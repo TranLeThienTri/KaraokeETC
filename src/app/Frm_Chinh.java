@@ -91,7 +91,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	private JLabel lbHoTenNV;
 	private JLabel lbChucVu;
 	private JLabel lbIconChucVu;
-	private NhanVien nv;
+	public NhanVien nv;
 	KeyStroke keyStrokeF1,keyStrokeF2,keyStrokeF3,keyStrokeF4,keyStrokeF5,keyStrokeF6,keyStrokeF7,keyStrokeF71,keyStrokeF72,keyStrokeF73,keyStrokeF74,keyStrokeF8,keyStrokeF9;
 
 	

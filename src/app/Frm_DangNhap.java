@@ -56,8 +56,8 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	private JLabel ngayLabel;
 	private JLabel lblNewLabel;
 	private Frm_Chinh frmChinh;
-	JLabel lbQuenMatKhau;
-
+	private JLabel lbQuenMatKhau;
+	public  TaiKhoan tk;
 	private DanhSachTaiKhoan dsTk;
 	private DanhSachNhanVien dsNV;
 
@@ -71,7 +71,8 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
-
+		dsTk = new DanhSachTaiKhoan();
+		dsNV = new DanhSachNhanVien();
 		showGui();
 	}
 
@@ -202,9 +203,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		btnDangNhap.addActionListener(this);
 	}
 
-	public static void main(String[] args) {
-		new Frm_DangNhap().setVisible(true);
-	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -248,13 +247,9 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	}
 
 	public void dangNhap() {
-		dsTk = new DanhSachTaiKhoan();
-		dsNV = new DanhSachNhanVien();
 		String maNV = txtTaiKhoan.getText().toString().trim();
-
 		String mk = pwdNv.getText().toString().trim();
-		TaiKhoan tk = dsTk.getTaiKhoanTheoMa(maNV);
-
+		tk = dsTk.getTaiKhoanTheoMa(maNV);
 		if (tk == null) {
 			JOptionPane.showMessageDialog(this, "Tài khoản không đúng!\nVui lòng kiểm tra lại.");
 			txtTaiKhoan.requestFocus();
@@ -271,8 +266,14 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	}
 
 	public void quenMatKhau() {
-		Frm_GuiMail frmSendMail = new Frm_GuiMail();
+		String maNV = txtTaiKhoan.getText().toString().trim();
+		String mk = pwdNv.getText().toString().trim();
+		tk = dsTk.getTaiKhoanTheoMa(maNV);
+		Frm_GuiMail frmSendMail = new Frm_GuiMail(tk);
 		frmSendMail.setVisible(true);
 		this.setVisible(false);
+	}
+	public static void main(String[] args) {
+		new Frm_DangNhap().setVisible(true);
 	}
 }
