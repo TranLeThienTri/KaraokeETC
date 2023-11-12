@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+<<<<<<< HEAD
 import org.apache.poi.examples.hsmf.Msg2txt;
 
 import connectDB.ConnectDB;
@@ -57,6 +58,21 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	private JLabel lbIconSearch;
 	private JTextField txtSDT, txtKhachHang;
 	ThuePhong dsTP;
+=======
+public class Frm_ThuePhong extends JFrame implements ActionListener,MouseListener {
+	private JPanel pnLoaiPhong, pnDSP,pnDSP1,pnCRUD,pnDSP2,pnTTDDP;
+	private JLabel lbLoaiPhongTK, lbTinhTrang, lbDSPhong, lbBGQLDP,lbDSPhong1,lbSDT,lbTenKH,lbIconSearch,lbTTDDP;
+	private JTextField txtSDT,txtKhachHang;
+	private FixButton btnLamMoi,btnThemDV, btnThuePhong, btnChuyenPhong,btnTinhTien;
+	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
+	private JRadioButton radioDangDat, radioTrong;
+	private Date ngayHienTai;
+	private ButtonGroup bg;
+	Panel pnQLDP;
+	private int ngay, thang, nam;
+	private JTable tableDSPhong,tableDSPhong2,tableDSDichVu;
+	private DefaultTableModel model, model1,model2;
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 
 	public Panel getFrmQuanLyThuePhong() {
 		return this.pnQLDP;
@@ -79,19 +95,24 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		getContentPane().add(pnQLDP);
 		pnQLDP.setLayout(null);
 
+<<<<<<< HEAD
 		JPanel pnTTDDP = new JPanel();
 		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
+=======
+		pnTTDDP = new JPanel();
+		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157,190));
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		pnTTDDP.setBounds(30, 10, 579, 97);
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
 
-		JLabel lbSDT = new JLabel("Số điện thoại:");
+		lbSDT = new JLabel("Số điện thoại:");
 		lbSDT.setForeground(Color.WHITE);
 		lbSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSDT.setBounds(38, 25, 126, 25);
 		pnTTDDP.add(lbSDT);
 
-		JLabel lbTenKH = new JLabel("Tên khách hàng:");
+		lbTenKH = new JLabel("Tên khách hàng:");
 		lbTenKH.setForeground(Color.WHITE);
 		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTenKH.setBounds(41, 60, 140, 25);
@@ -102,7 +123,10 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
+<<<<<<< HEAD
 		txtKhachHang.setForeground(new Color(0, 0, 0));
+=======
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		txtKhachHang.setBounds(174, 62, 323, 25);
 		txtKhachHang.setEditable(false);
 		pnTTDDP.add(txtKhachHang);
@@ -113,6 +137,15 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		lbIconSearch.setBorder(bottomBorder);
 		pnTTDDP.add(lbIconSearch);
+<<<<<<< HEAD
+=======
+		
+				lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
+				lbTTDDP.setBounds(10, -1, 190, 20);
+				pnTTDDP.add(lbTTDDP);
+				lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
+				lbTTDDP.setForeground(new Color(255, 255, 255));
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 
 		JLabel lbTTDDP = new JLabel("Thông tin đơn đặt phòng");
 		lbTTDDP.setBounds(10, -1, 190, 20);
@@ -163,7 +196,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		radioTrong.setBounds(295, 50, 103, 21);
 		pnLoaiPhong.add(radioTrong);
 
-		ButtonGroup bg = new ButtonGroup();
+		bg = new ButtonGroup();
 		bg.add(radioTrong);
 		bg.add(radioDangDat);
 //table danh sách phòng
@@ -250,26 +283,35 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.setBounds(106, 572, 1184, 57);
 		pnQLDP.add(pnCRUD);
 		pnCRUD.setLayout(null);
-		FixButton btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_btn_lammoi.png")));
+<<<<<<< HEAD
 		// btnLamMoi.setBackground(new java.awt.Color(153, 36, 36));
 		btnLamMoi.setBounds(712, 20, 150, 30);
 		pnCRUD.add(btnLamMoi);
 
 		FixButton btnTinhTien = new FixButton("Tính tiền");
 
+=======
+		btnLamMoi.setBounds(712, 20, 150, 30);
+		pnCRUD.add(btnLamMoi);
+
+		btnTinhTien = new FixButton("Tính tiền");
+		
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTinhTien.setBounds(939, 20, 150, 30);
 		// btnTinhTien.setBackground(new java.awt.Color(153, 36, 36));
 		pnCRUD.add(btnTinhTien);
 
-		FixButton btnThuePhong = new FixButton("Thuê phòng");
+		btnThuePhong = new FixButton("Thuê phòng");
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
 		btnThuePhong.setBounds(476, 20, 150, 30);
 		pnCRUD.add(btnThuePhong);
 
+<<<<<<< HEAD
 		FixButton btnChuyenPhong = new FixButton("Chuyển phòng");
 
 		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
@@ -284,6 +326,22 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnThemDV);
 //table thong tin thuê phòng
 
+=======
+		btnChuyenPhong = new FixButton("Chuyển phòng");
+		
+		//btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
+		
+		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnChuyenPhong.setBounds(25, 20, 150, 30);
+		pnCRUD.add(btnChuyenPhong);
+		
+		btnThemDV = new FixButton("Thêm dịch vụ");
+		//btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
+		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnThemDV.setBounds(240, 20, 150, 30);
+		pnCRUD.add(btnThemDV);
+//table thong tin thuê phòng	
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		pnDSP2 = new JPanel();
 		pnDSP2.setBackground(Color.WHITE);
 		pnDSP2.setBounds(30, 380, 750, 200);
@@ -296,6 +354,10 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 		String col2[] = { "Mã hóa đơn", "Mã phòng", "Tên khách hàng", "SĐT", "Ngày", "Thời gian", "Tên nhân viên" };
 		model2 = new DefaultTableModel(col2, 0);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		tableDSPhong2 = new JTable(model2);
 		tableDSPhong2.setBackground(Color.WHITE);
 //		tableDSPhong1.setColumnSelectionAllowed(true);
@@ -323,21 +385,95 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		scrollPane2.getHorizontalScrollBar();
 		pnDSP2.add(scrollPane2);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 		// add background ở cuối
 		lbBGQLDP = new JLabel("");
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDP.setBounds(0, 0, 1400, 700);
 		pnQLDP.add(lbBGQLDP);
+<<<<<<< HEAD
 		dsTP = new ThuePhong();
 		// kết nối data
 		ConnectDB.getInstance().connect();
 		lbIconSearch.addMouseListener(this);
+=======
+		
+		btnChuyenPhong.addActionListener(this);
+		btnLamMoi.addActionListener(this);
+		btnThuePhong.addActionListener(this);
+		btnTinhTien.addActionListener(this);
+		btnThemDV.addActionListener(this);
+		tableDSPhong.addMouseListener(this);
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 	}
 
 	public static void main(String[] args) {
 		new Frm_ThuePhong().setVisible(true);
 
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o == btnThemDV) {
+			Frm_ThemDichVu themDV= new Frm_ThemDichVu();
+			themDV.setVisible(true);
+			this.setVisible(false);
+		}else if(o == btnThuePhong) {
+			
+		}
+	}
+	public void setTextTB() {
+		 int selectedRow = tableDSPhong.getSelectedRow();
+         int selectedColumn = tableDSPhong.getSelectedColumn();
+         Object selectedData = tableDSPhong.getValueAt(selectedRow, selectedColumn);
+         
+         // Xóa dữ liệu cũ trong Table 2 (nếu có)
+         DefaultTableModel model = (DefaultTableModel) tableDSPhong2.getModel();
+         model.setRowCount(0);
+
+         // Thêm dữ liệu mới vào Table 2
+         model.addRow(new Object[]{selectedData});
+	}
+	// Button them
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+		setTextTB();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}
+>>>>>>> 3dae4f6b48e53c55c77df3437f7d3f54f1debc84
 
 	public void ktraKH() {
 		String sdt = txtSDT.getText();

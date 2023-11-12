@@ -22,7 +22,7 @@ public class DanhSachNhanVien {
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call getDSTaiKhoan}";
+			String sql = "{call getDSNV}";
 			CallableStatement myCall = con.prepareCall(sql);
 			ResultSet rs = myCall.executeQuery();
 			while(rs.next()) {
@@ -35,8 +35,10 @@ public class DanhSachNhanVien {
 				String sdt = rs.getString(7);
 				String cccd = rs.getString(8);
 				Boolean tinhTrang = rs.getBoolean(9);			
-				ChucVu cv = new ChucVu(maChucVu);
-				NhanVien nv = new NhanVien(maNV, tenNV, cccd, diaChi, sdt, phai, cv, ngaySinh, tinhTrang);
+				DanhSachChucVu listRole = new DanhSachChucVu();
+				ChucVu role = listRole.getRoleById(maChucVu);
+				
+				NhanVien nv = new NhanVien(maNV, tenNV, cccd, diaChi, sdt, phai, role, ngaySinh, tinhTrang);
 				dsNV.add(nv);
 			}
 		} catch (SQLException e) {
@@ -65,7 +67,9 @@ public class DanhSachNhanVien {
 				String sdt = rs.getString(7);
 				String cccd = rs.getString(8);
 				Boolean tinhTrang = rs.getBoolean(9);			
-				ChucVu cv = new ChucVu(maChucVu);
+				ChucVu cv = new ChucVu();
+				DanhSachChucVu listRole = new DanhSachChucVu();
+				cv = listRole.getRoleById(maChucVu);
 				nv = new NhanVien(maNV, tenNV, cccd, diaChi, sdt, phai, cv, ngaySinh, tinhTrang);
 			}
 		} catch (SQLException e) {
