@@ -18,17 +18,21 @@ import javax.activation.DataSource;
 
 public class Config {
 	static String to;//nhập mail người nhận từ đây
+	static RandomNumber r = new RandomNumber();
+	static String rd =r.getSoNgauNhien();
 	
+	public String getRd() {
+		return rd;
+	}
+
 	public Config(String to) {
 		super();
 		this.setTo(to);
 	}
-	
-	
+
 	public void setTo(String to) {
 		this.to = to;
 	}
-
 
 	// Config: tungletest1.Config@gmail.com
 	// Password: zblv oyaq rgyl qriq
@@ -75,12 +79,8 @@ public class Config {
 			// Quy đinh ngày gửi
 			msg.setSentDate(new Date());
 
-			// Quy định Config nhận phản hồi
-			// msg.setReplyTo(InternetAddress.parse(from, false))
-
-			RandomNumber r = new RandomNumber();
-			String rd =r.getSoNgauNhien();
-			
+		
+		
 			// Nội dung
 			msg.setContent(rd, "text/HTML; charset=UTF-8");
 

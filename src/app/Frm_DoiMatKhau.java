@@ -48,7 +48,7 @@ import java.awt.ComponentOrientation;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class Frm_DoiMatKhau extends JFrame  {
+public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	private JButton btnXacNhan;
 	private JPanel formDangNhap, pnTaiKhoan;
 	private JTextField txtTaiKhoan;
@@ -56,9 +56,15 @@ public class Frm_DoiMatKhau extends JFrame  {
 	private JLabel ngayLabel;
 	private JLabel lbPass;
 	private Frm_Chinh frmChinh;
+	public TaiKhoan tk;
+	private DanhSachTaiKhoan dsTK;
+	public JPanel get_FrmSendMail() {
+		return this.formDangNhap;
+	}
 
 
-	public Frm_DoiMatKhau() {
+	public Frm_DoiMatKhau(TaiKhoan tk) {
+		this.tk =tk;
 		ConnectDB.getInstance().connect();
 		frmChinh = new Frm_Chinh();
 		getContentPane().setBackground(SystemColor.controlHighlight);
@@ -68,7 +74,7 @@ public class Frm_DoiMatKhau extends JFrame  {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
-
+		dsTK = new DanhSachTaiKhoan();
 		showGui();
 	}
 
@@ -92,7 +98,7 @@ public class Frm_DoiMatKhau extends JFrame  {
 		txtTaiKhoan.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		txtTaiKhoan.setBackground(SystemColor.window);
 		txtTaiKhoan.setFont(new Font("Dialog", Font.PLAIN, 20));
-		txtTaiKhoan.setBounds(226, 8, 301, 36);
+		txtTaiKhoan.setBounds(227, 8, 300, 36);
 		pnTaiKhoan.add(txtTaiKhoan);
 
 		JPanel pnMatKhau = new JPanel();
@@ -120,7 +126,7 @@ public class Frm_DoiMatKhau extends JFrame  {
 		lbPass.setBounds(218, 23, 184, 45);
 		formDangNhap.add(lbPass);
 //		lbQuenMatKhau.addMouseListener(this);
-
+		btnXacNhan.addActionListener(this);
 	}
 
 	private void btnDangNhap() {
@@ -189,10 +195,30 @@ public class Frm_DoiMatKhau extends JFrame  {
 		setBgr();
 		// form
 		formDangNhap();
-
 	}
 
-	public static void main(String[] args) {
-		new Frm_DoiMatKhau().setVisible(true);
+	private boolean comparePass() {
+		String maNV = txtTaiKhoan.getText().toString().trim();
+		String mk = pwdNv.getText().toString().trim();
+		return maNV.equals(mk);
 	}
+	
+	public boolean doiMatKhau() {
+		if(comparePass()) {
+			Frm_DangNhap frmDangNhap = new Frm_DangNhap();
+			frmDangNhap.setVisible(true);
+			this.setVisible(false);
+			return  dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());			
+		}
+		return false;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o == btnXacNhan) {
+			Boolean fl = doiMatKhau();
+		}	
+	}	
 }
