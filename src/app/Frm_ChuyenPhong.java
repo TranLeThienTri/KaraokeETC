@@ -33,24 +33,21 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class Frm_ChuyenPhong extends JFrame {
+public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	JPanel pnDSDichVu;
-	JLabel lbDSDichVu, lbBGQLDV, lbTTKH;
-	Panel pnThanhToan;
+	Panel pnChuyenPhong;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	private JTextField txtKhachHang, txtSDT;
-	private JPanel pnTTDDP_1;
-	private JLabel lbSucChua;
-	private JLabel lbMaPhong;
-	private JTextField txtMaPhong;
-	private JTextField txtTinhTrang;
-	private JTextField txtLoaiPhong;
-	private JTextField txtGiaPhong;
-	private JLabel lbGiaPhong;
+	private JPanel pnTTDDP_1, pnTTDDP;
+	private JLabel lbSucChua, lbMaPhong, lbLoaiPhong, lbSDT, lbTenKH, lbThongTinPhongHienTai, lbTinhTrang, lbGiaPhong,
+			lbDSDichVu, lbBGQLDV, lbTTKH;;
+	private JTextField txtMaPhong, txtTinhTrang, txtLoaiPhong, txtGiaPhong, txtSucChua;
+	private JComboBox comboTTP, comboLP, comboGP;
+	FixButton btnHuy, btnChuyen;
 
 	public Panel getFrmThanhToan() {
-		return this.pnThanhToan;
+		return this.pnChuyenPhong;
 	}
 
 	public Frm_ChuyenPhong() {
@@ -65,21 +62,21 @@ public class Frm_ChuyenPhong extends JFrame {
 	public void gui() {
 		getContentPane().setLayout(null);
 
-		pnThanhToan = new Panel();
-		pnThanhToan.setBounds(0, 0, 1000, 820);
-		getContentPane().add(pnThanhToan);
-		pnThanhToan.setLayout(null);
+		pnChuyenPhong = new Panel();
+		pnChuyenPhong.setBounds(0, 0, 1000, 820);
+		getContentPane().add(pnChuyenPhong);
+		pnChuyenPhong.setLayout(null);
 
 		lbTTKH = new JLabel("Thông tin khách hàng");
 		lbTTKH.setForeground(Color.WHITE);
 		lbTTKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTKH.setBounds(46, 76, 200, 25);
-		pnThanhToan.add(lbTTKH);
+		pnChuyenPhong.add(lbTTKH);
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
 		pnDSDichVu.setBounds(0, 537, 980, 250);
-		pnThanhToan.add(pnDSDichVu);
+		pnChuyenPhong.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
 		lbDSDichVu = new JLabel("Danh sách dịch vụ");
@@ -120,19 +117,19 @@ public class Frm_ChuyenPhong extends JFrame {
 
 		scrollPane.setViewportView(tableDSDichVu);
 
-		JPanel pnTTDDP = new JPanel();
+		pnTTDDP = new JPanel();
 		pnTTDDP.setLayout(null);
 		pnTTDDP.setBackground(new Color(190, 157, 157, 190));
 		pnTTDDP.setBounds(34, 111, 926, 92);
-		pnThanhToan.add(pnTTDDP);
+		pnChuyenPhong.add(pnTTDDP);
 
-		JLabel lbSDT = new JLabel("Số điện thoại:");
+		lbSDT = new JLabel("Số điện thoại:");
 		lbSDT.setForeground(Color.WHITE);
 		lbSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSDT.setBounds(513, 30, 150, 25);
 		pnTTDDP.add(lbSDT);
 
-		JLabel lbTenKH = new JLabel("Tên khách hàng:");
+		lbTenKH = new JLabel("Tên khách hàng:");
 		lbTenKH.setForeground(Color.WHITE);
 		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTenKH.setBounds(10, 30, 200, 25);
@@ -146,17 +143,17 @@ public class Frm_ChuyenPhong extends JFrame {
 		txtKhachHang.setBounds(160, 30, 250, 30);
 		pnTTDDP.add(txtKhachHang);
 
-		JLabel lbThongTinPhongHienTai = new JLabel("Thông tin phòng hiện tại");
+		lbThongTinPhongHienTai = new JLabel("Thông tin phòng hiện tại");
 		lbThongTinPhongHienTai.setForeground(Color.WHITE);
 		lbThongTinPhongHienTai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbThongTinPhongHienTai.setBounds(46, 213, 200, 25);
-		pnThanhToan.add(lbThongTinPhongHienTai);
+		pnChuyenPhong.add(lbThongTinPhongHienTai);
 
 		pnTTDDP_1 = new JPanel();
 		pnTTDDP_1.setLayout(null);
 		pnTTDDP_1.setBackground(new Color(190, 157, 157, 190));
 		pnTTDDP_1.setBounds(34, 240, 926, 208);
-		pnThanhToan.add(pnTTDDP_1);
+		pnChuyenPhong.add(pnTTDDP_1);
 
 		lbSucChua = new JLabel("Sức chứa: ");
 		lbSucChua.setForeground(Color.WHITE);
@@ -170,7 +167,7 @@ public class Frm_ChuyenPhong extends JFrame {
 		lbMaPhong.setBounds(10, 30, 200, 25);
 		pnTTDDP_1.add(lbMaPhong);
 
-		JTextField txtSucChua = new JTextField();
+		txtSucChua = new JTextField();
 		txtSucChua.setBounds(643, 30, 250, 30);
 		pnTTDDP_1.add(txtSucChua);
 
@@ -178,29 +175,39 @@ public class Frm_ChuyenPhong extends JFrame {
 		txtMaPhong.setBounds(160, 30, 250, 30);
 		pnTTDDP_1.add(txtMaPhong);
 
-		JLabel lbTinhTrang = new JLabel("Tình trạng: ");
+		lbTinhTrang = new JLabel("Tình trạng: ");
 		lbTinhTrang.setForeground(Color.WHITE);
 		lbTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTinhTrang.setBounds(10, 80, 200, 25);
 		pnTTDDP_1.add(lbTinhTrang);
 
-		txtTinhTrang = new JTextField();
-		txtTinhTrang.setBounds(160, 80, 250, 30);
-		pnTTDDP_1.add(txtTinhTrang);
+		comboTTP = new JComboBox();
+		comboTTP.setModel(new DefaultComboBoxModel(new String[] { "Đang thuê", "Đã đặt", "Trống" }));
+		comboTTP.setSelectedIndex(0);
+		comboTTP.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboTTP.setBounds(643, 80, 250, 30);
+		pnTTDDP_1.add(comboTTP);
 
-		JLabel lbLoaiPhong = new JLabel("Loại phòng: ");
+		lbLoaiPhong = new JLabel("Loại phòng: ");
 		lbLoaiPhong.setForeground(Color.WHITE);
 		lbLoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbLoaiPhong.setBounds(513, 80, 150, 25);
 		pnTTDDP_1.add(lbLoaiPhong);
 
-		txtLoaiPhong = new JTextField();
-		txtLoaiPhong.setBounds(643, 80, 250, 30);
-		pnTTDDP_1.add(txtLoaiPhong);
+		comboLP = new JComboBox();
+		comboLP.setModel(new DefaultComboBoxModel(new String[] { "Phòng thường", "Phòng VIP" }));
+		comboLP.setSelectedIndex(0);
+		comboLP.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboLP.setBounds(160, 80, 250, 30);
+		pnTTDDP_1.add(comboLP);
 
-		txtGiaPhong = new JTextField();
-		txtGiaPhong.setBounds(160, 130, 250, 30);
-		pnTTDDP_1.add(txtGiaPhong);
+		comboGP = new JComboBox();
+		comboGP.setModel(new DefaultComboBoxModel(new String[] { "150.000", "300.000", "500.000" }));
+		comboGP.setEditable(true);
+		comboGP.setSelectedIndex(0);
+		comboGP.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboGP.setBounds(160, 130, 250, 30);
+		pnTTDDP_1.add(comboGP);
 
 		lbGiaPhong = new JLabel("Giá phòng: ");
 		lbGiaPhong.setForeground(Color.WHITE);
@@ -208,16 +215,16 @@ public class Frm_ChuyenPhong extends JFrame {
 		lbGiaPhong.setBounds(10, 130, 200, 25);
 		pnTTDDP_1.add(lbGiaPhong);
 
-		FixButton btnHuy = new FixButton("Hủy đặt phòng");
+		btnHuy = new FixButton("Hủy đặt phòng");
 		btnHuy.setBounds(337, 467, 140, 40);
-		pnThanhToan.add(btnHuy);
+		pnChuyenPhong.add(btnHuy);
 		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
 		btnHuy.setText("Hủy");
 		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		FixButton btnChuyen = new FixButton("Làm mới");
+		btnChuyen = new FixButton("Làm mới");
 		btnChuyen.setBounds(507, 467, 140, 40);
-		pnThanhToan.add(btnChuyen);
+		pnChuyenPhong.add(btnChuyen);
 		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
 		btnChuyen.setText("Xác nhận");
 		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -226,7 +233,9 @@ public class Frm_ChuyenPhong extends JFrame {
 		lbBGQLDV.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_trong.png")));
 		lbBGQLDV.setBounds(0, 0, 1000, 820);
-		pnThanhToan.add(lbBGQLDV);
+		pnChuyenPhong.add(lbBGQLDV);
+
+		btnHuy.addActionListener(this);
 
 	}
 
@@ -234,4 +243,15 @@ public class Frm_ChuyenPhong extends JFrame {
 		new Frm_ChuyenPhong().setVisible(true);
 
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o == btnHuy) {
+			new Frm_ThuePhong().setVisible(true);
+			dispose();
+		}
+	}
+
 }
