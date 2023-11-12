@@ -11,9 +11,7 @@ public class ChucVu {
 	}
 	
 	
-	public ChucVu(String maChucVu) {
-		super();
-		this.maChucVu = maChucVu;
+	public ChucVu() {
 	}
 
 

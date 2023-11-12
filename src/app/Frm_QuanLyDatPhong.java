@@ -9,6 +9,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -49,6 +51,7 @@ public class Frm_QuanLyDatPhong extends JFrame {
 	private int ngay, thang, nam;
 	private JTable tableDSPhong, tableDSPhong1;
 	private DefaultTableModel model, model1;
+	ButtonGroup bg;
 
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
@@ -155,7 +158,12 @@ public class Frm_QuanLyDatPhong extends JFrame {
 
 		ngayDatPhong.setBounds(230, 155, 300, 30);
 
-		ngayHienTai = new Date(nam, thang, ngay);
+		LocalDateTime localDateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		ngay = localDateTime.getDayOfMonth();
+		thang = localDateTime.getMonthValue();
+		nam = localDateTime.getYear();
+		ngayHienTai = new Date(nam - 1900, thang - 1, ngay);
 		ngayDatPhong.setDate(ngayHienTai);
 		pnTTDDP.add(ngayDatPhong);
 
@@ -205,7 +213,7 @@ public class Frm_QuanLyDatPhong extends JFrame {
 		radioTrong.setBounds(295, 50, 103, 21);
 		pnLoaiPhong.add(radioTrong);
 
-		ButtonGroup bg = new ButtonGroup();
+		bg = new ButtonGroup();
 		bg.add(radioTrong);
 		bg.add(radioDangDat);
 
@@ -259,25 +267,25 @@ public class Frm_QuanLyDatPhong extends JFrame {
 
 		scrollPane.setViewportView(tableDSPhong);
 
-		FixButton btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_lammoi.png")));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(220, 350, 190, 40);
 		pnQLDP.add(btnLamMoi);
 
-		FixButton btnHuyDatPhong = new FixButton("Hủy đặt phòng");
+		btnHuyDatPhong = new FixButton("Hủy đặt phòng");
 		btnHuyDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_huydv.png")));
 		btnHuyDatPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnHuyDatPhong.setBounds(470, 350, 190, 40);
 		pnQLDP.add(btnHuyDatPhong);
 
-		FixButton btnDatPhong = new FixButton("Đặt phòng");
+		btnDatPhong = new FixButton("Đặt phòng");
 		btnDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_xacnhan.png")));
 		btnDatPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnDatPhong.setBounds(720, 350, 190, 40);
 		pnQLDP.add(btnDatPhong);
 
-		FixButton btnNhanPhong = new FixButton("Nhận phòng");
+		btnNhanPhong = new FixButton("Nhận phòng");
 		btnNhanPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_nhanphong.png")));
 		btnNhanPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnNhanPhong.setBounds(970, 350, 190, 40);
@@ -306,8 +314,6 @@ public class Frm_QuanLyDatPhong extends JFrame {
 		tbHeader1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		// Set màu các dòng
 
-//		tableDSPhong1.setShowHorizontalLines(true);
-//		tableDSPhong1.setShowGrid(true);
 		tableDSPhong1.setBackground(Color.white);
 		tableDSPhong1.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		tableDSPhong1.setSelectionBackground(new Color(158, 207, 0));
