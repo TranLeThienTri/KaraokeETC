@@ -154,7 +154,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener {
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
-		pnDSDichVu.setBounds(0, 310, 1390, 325);
+		pnDSDichVu.setBounds(40, 310, 1280, 270);
 		pnQLDV.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
@@ -187,7 +187,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
-		scrollPane.setBounds(0, 25, 1385, 300);
+		scrollPane.setBounds(0, 25, 1280, 300);
 		scrollPane.getHorizontalScrollBar();
 		pnDSDichVu.add(scrollPane);
 
