@@ -21,6 +21,21 @@ public class NhanVien {
 		this.ngaySinh = ngaySinh;
 		this.tinhTrang = tinhTrang;
 	}
+	
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public NhanVien(String manv) {
+		super();
+		this.maNhanVien = manv;
+	}
+	public NhanVien(String manv,String ten) {
+		super();
+		this.maNhanVien = manv;
+		this.hoTenNhanVien = ten;
+	}
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}

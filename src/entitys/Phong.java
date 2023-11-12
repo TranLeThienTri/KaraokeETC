@@ -6,11 +6,11 @@ public class Phong {
 	private String maPhong;
 	private LoaiPhong maLoaiPhong;
 	private int sucChua;
-	private double giaPhong;
+	private float giaPhong;
 	private TinhTrangPhong maTinhTrangPhong;
-	private double dienTich;
-	public Phong(String maPhong, LoaiPhong maLoaiPhong, int sucChua, double giaPhong, TinhTrangPhong maTinhTrangPhong,
-			double dienTich) {
+	private float dienTich;
+	public Phong(String maPhong, LoaiPhong maLoaiPhong, int sucChua, float giaPhong, TinhTrangPhong maTinhTrangPhong,
+			float dienTich) {
 		
 		this.maPhong = maPhong;
 		this.maLoaiPhong = maLoaiPhong;
@@ -19,6 +19,12 @@ public class Phong {
 		this.maTinhTrangPhong = maTinhTrangPhong;
 		this.dienTich = dienTich;
 	}
+	
+	public Phong(String ma) {
+		super();
+		this.maPhong = ma;
+	}
+
 	public String getMaPhong() {
 		return maPhong;
 	}
@@ -37,10 +43,10 @@ public class Phong {
 	public void setSucChua(int sucChua) {
 		this.sucChua = sucChua;
 	}
-	public double getGiaPhong() {
+	public float getGiaPhong() {
 		return giaPhong;
 	}
-	public void setGiaPhong(double giaPhong) {
+	public void setGiaPhong(float giaPhong) {
 		this.giaPhong = giaPhong;
 	}
 	public TinhTrangPhong getMaTinhTrangPhong() {
@@ -49,10 +55,10 @@ public class Phong {
 	public void setMaTinhTrangPhong(TinhTrangPhong maTinhTrangPhong) {
 		this.maTinhTrangPhong = maTinhTrangPhong;
 	}
-	public double getDienTich() {
+	public float getDienTich() {
 		return dienTich;
 	}
-	public void setDienTich(double dienTich) {
+	public void setDienTich(float dienTich) {
 		this.dienTich = dienTich;
 	}
 	@Override

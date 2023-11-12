@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 import connectDB.ConnectDB;
+
 import entitys.DichVu;
 import entitys.KhachHang;
 import entitys.LoaiDichVu;
@@ -50,11 +52,13 @@ public class DanhSachDichVu {
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call themKhachHang(?,?,?,?,?,?,?)}";
+			String sql = "{call themDichVu(?,?,?,?,?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			Dao_PhatSinhMa dao = new Dao_PhatSinhMa();
-			String maKH = dao.getMaNVCuoi();
-			myCall.setString(1, maKH);
+			String maDa = dao.getMaDATuDong();
+			String maNU = dao.getMaNUTuDong();
+			String ma;
+			myCall.setString(1, dv.getMaDichVu());
 			myCall.setString(2, dv.getTenDichVu());
 			myCall.setString(3, dv.getloaiDichVu().getMaLoaiDichVu());
 			myCall.setInt(4, dv.getSoLuongTon());
@@ -65,4 +69,43 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
+	
+	public ArrayList<DichVu> getDSDichVuTheoLoai(String maLDV) {
+		ArrayList<DichVu> dao = new ArrayList();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDSDVTheoLoai(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, maLDV);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String tenDV = rs.getString(2);
+				DichVu dv = new DichVu(tenDV);
+				dao.add(dv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dao;
+	}
+	public boolean suaDichVu(DichVu dv) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call SuaDichVu(?,?,?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, dv.getMaDichVu());
+			myCall.setString(2, dv.getTenDichVu());
+			myCall.setString(3, dv.getloaiDichVu().getMaLoaiDichVu());
+			myCall.setInt(4, dv.getSoLuongTon());
+			myCall.setDouble(5, dv.getDonGia());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
 }
