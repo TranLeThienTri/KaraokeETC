@@ -285,11 +285,7 @@ public void gui() {
 	btnSua.addActionListener(this);
 	btnThem.addActionListener(this);
 	
-	try {
-		ConnectDB.getInstance().connect();
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
+	ConnectDB.getInstance().connect();
 			dsNV = new DanhSachNhanVien();
 			upTable();
 			
