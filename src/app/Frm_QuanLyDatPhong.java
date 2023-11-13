@@ -10,10 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -34,7 +39,11 @@ import connectDB.ConnectDB;
 import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import dao.Dao_PhatSinhMa;
+import entitys.DichVu;
+import entitys.HoaDonPhong;
 import entitys.KhachHang;
+import entitys.LoaiDichVu;
 import entitys.NhanVien;
 import entitys.Phong;
 
@@ -51,26 +60,29 @@ import java.awt.SystemColor;
 import java.awt.Component;
 import javax.swing.SwingConstants;
 
-public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseListener {
-	JScrollPane scrDSPDD;
-	JScrollPane scrollPane;
-	JPanel pnLoaiPhong, pnDSP, pnTTDDP;
-	JLabel lbLoaiPhongTK, lbTinhTrang, lbDSPhong, lbBGQLDP, lbTTDDP, lbSDT, lbTenKH, lbLoaiKH, lbNgayDat, lbThoiGianDat,
-			lbIconSearch;
-	JComboBox comboLKH,cbGio,cbPhut;
-	JTextField txtSDT, txtKhachHang;
-	FixButton btnLamMoi, btnHuyDatPhong, btnDatPhong, btnNhanPhong;
-	FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
-	JDateChooser ngayDatPhong;
-	JRadioButton rDangDat, radioTrong;
+public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseListener, PropertyChangeListener {
+	private JScrollPane scrDSPDD;
+	private JScrollPane scrollPane;
+	private JPanel pnLoaiPhong, pnDSP, pnTTDDP;
+	private JLabel lbLoaiPhongTK, lbTinhTrang, lbDSPhong, lbBGQLDP, lbTTDDP, lbSDT, lbTenKH, lbLoaiKH, lbNgayDat,
+			lbThoiGianDat, lbIconSearch;
+	private JComboBox comboLKH, cbGio, cbPhut;
+	private JTextField txtSDT, txtKhachHang;
+	private FixButton btnLamMoi, btnHuyDatPhong, btnDatPhong, btnNhanPhong;
+	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
+	private JDateChooser ngayDatPhong;
+	private JRadioButton rDangDat, radioTrong;
 	private Date ngayHienTai;
-	Panel pnQLDP;
+	private Panel pnQLDP;
 	private int ngay, thang, nam;
 	private JTable tableDSPhong, tableDSPhong1;
 	private DefaultTableModel model, model1;
-	ButtonGroup bg;
-	DanhSachDatPhong dsDP;
-	DanhSachKhachHang dsKH;
+	private ButtonGroup bg;
+	public DanhSachDatPhong dsDP;
+	public DanhSachKhachHang dsKH;
+	Date ngayDat;
+	String dateString;
+
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
 	}
@@ -164,11 +176,11 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		comboLKH.setBounds(230, 120, 300, 30);
 		pnTTDDP.add(comboLKH);
 
-		lbIconSearch = new JLabel("New label");
+		lbIconSearch = new JLabel();
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(540, 52, 29, 20);
 		pnTTDDP.add(lbIconSearch);
-		lbIconSearch.addMouseListener(this);
+//		lbIconSearch.addMouseListener(this);
 		ngayDatPhong = new JDateChooser();
 		ngayDatPhong.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,7 +195,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		ngayDatPhong.setBounds(230, 155, 300, 30);
 
 		LocalDateTime localDateTime = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		ngay = localDateTime.getDayOfMonth();
 		thang = localDateTime.getMonthValue();
 		nam = localDateTime.getYear();
@@ -191,14 +202,14 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		ngayDatPhong.setDate(ngayHienTai);
 		pnTTDDP.add(ngayDatPhong);
 
-		 cbGio = new JComboBox();
+		cbGio = new JComboBox();
 		cbGio.setFont(new Font("Tahoma", Font.BOLD, 18));
 		cbGio.setModel(new DefaultComboBoxModel(new String[] { "9", "10", "11", "12", "13", "14", "15", "16", "17",
 				"18", "19", "20", "21", "22", "23", "24" }));
 		cbGio.setBounds(230, 199, 50, 30);
 		pnTTDDP.add(cbGio);
 
-		 cbPhut = new JComboBox();
+		cbPhut = new JComboBox();
 		cbPhut.setModel(new DefaultComboBoxModel(new String[] { "00", "15", "30", "45" }));
 		cbPhut.setFont(new Font("Tahoma", Font.BOLD, 18));
 		cbPhut.setBounds(290, 199, 50, 30);
@@ -237,7 +248,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 
 		lbTinhTrang.setBounds(46, 50, 100, 25);
 
-
 		pnLoaiPhong.add(lbTinhTrang);
 
 		rDangDat = new JRadioButton("Đang đặt");
@@ -268,6 +278,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP.add(lbDSPhong);
 
+		
 		String col[] = { "Mã phòng", "Loại phòng", "Sức chứa", "Giá phòng", "Tình trạng" };
 		model1 = new DefaultTableModel(col, 0) {
 			@Override
@@ -306,15 +317,13 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		scrollPane.setViewportView(tableDSPhong);
 
 		String col1[] = { "Mã hóa đơn", "Mã phòng", "Tên khách hàng", "SĐT", "Ngày", "Thời gian", "Tên nhân viên" };
-		model = new DefaultTableModel(col1, 7) {
+		model = new DefaultTableModel(col1, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // Không cho phép chỉnh sửa ô
 			}
 		};
-//		
 		tableDSPhong1 = new JTable(model);
-
 		tableDSPhong1.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -337,7 +346,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		scrDSPDD.setBackground(Color.BLACK);
 		scrDSPDD.setBounds(0, 25, 982, 229);
 		pnDSPDD.add(scrDSPDD);
-
 		scrDSPDD.setViewportView(tableDSPhong1);
 
 		btnLamMoi = new FixButton("Làm mới");
@@ -370,7 +378,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDP.setBounds(0, 0, 1400, 670);
 		pnQLDP.add(lbBGQLDP);
-		
+
 		btnDatPhong.addActionListener(this);
 		btnHuyDatPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
@@ -378,7 +386,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		btnPhongThuong.addActionListener(this);
 		btnPhongVip.addActionListener(this);
 		btnTatCa.addActionListener(this);
-		
+
 		btnDatPhong.addMouseListener(this);
 		btnHuyDatPhong.addMouseListener(this);
 		btnLamMoi.addMouseListener(this);
@@ -389,11 +397,18 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		lbIconSearch.addMouseListener(this);
 		tableDSPhong.addMouseListener(this);
 		tableDSPhong1.addMouseListener(this);
+		ngayDatPhong.addPropertyChangeListener(this);
 		ConnectDB.getInstance().connect();
 		dsDP = new DanhSachDatPhong();
 		dsKH = new DanhSachKhachHang();
-		upTable1(dsDP.getAllRoom());
-		
+
+		ngayDat = ngayDatPhong.getDate();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateString = dateFormat.format(ngayDat);
+
+		upTable1(dsDP.getAllRoomByDate(dateString));
+		upTable2(dsDP.getAllRoomStatusByDate());
+		getIndexRow();
 	}
 
 	public static void main(String[] args) {
@@ -402,100 +417,180 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if(o == btnDatPhong) {
-			
-		}else if (o == btnNhanPhong) {
-			
-		}else if (o == btnLamMoi) {
+		if (o == btnDatPhong) {
+			boolean isBooked = datPhong();
+		} else if (o == btnNhanPhong) {
+
+		} else if (o == btnLamMoi) {
 			xoaTrang();
-		}else if (o == btnPhongThuong) {
-			
+		} else if (o == btnPhongThuong) {
 			ArrayList<Phong> listN = dsDP.getAllRoomByType("NOR");
 			upTable1(listN);
-		}else if (o == btnTatCa) {
-			ArrayList<Phong> list = dsDP.getAllRoom();
+		} else if (o == btnTatCa) {
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
 			upTable1(list);
-		}else if (o == btnPhongVip) {
+		} else if (o == btnPhongVip) {
 			ArrayList<Phong> listT = dsDP.getAllRoomByType("VIP");
 			upTable1(listT);
-		}else {
-			
+		} else {
+
 		}
-		
 	}
-	
 
-public void upTable1(ArrayList<Phong> arr) {
-	model1.setRowCount(0);
-	for (Phong p : arr) {
-		Object[] obj = new Object[5];
-		obj[0] = p.getMaPhong().trim();
-		obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-		obj[2] = p.getSucChua();
-		obj[3] = p.getGiaPhong();
-		obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-		model1.addRow(obj);
+	public void getIndexRow() {
+		int isSelected1 = tableDSPhong.getSelectedRow();
+		int isSelected2 = tableDSPhong1.getSelectedRow();
+
+		if (isSelected1 == -1 && isSelected2 == -1) {
+			btnDatPhong.setEnabled(false);
+			btnNhanPhong.setEnabled(false);
+			tableDSPhong.clearSelection();
+			tableDSPhong1.clearSelection();
+		}
+
+		if (isSelected1 != -1) {
+			btnDatPhong.setEnabled(true);
+			btnNhanPhong.setEnabled(false);
+			tableDSPhong1.clearSelection();
+		}
+
+		if (isSelected2 != -1) {
+			btnDatPhong.setEnabled(false);
+			btnNhanPhong.setEnabled(true);
+			tableDSPhong.clearSelection();
+		}
 	}
-}
 
-public void ktraKH() {
-	String sdt = txtSDT.getText();
-	KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
-	if (kh != null) {
-		txtKhachHang.setText(kh.getHoTenKhachHang());
-		if(kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
-			comboLKH.setSelectedIndex(0);
-		else
-			comboLKH.setSelectedIndex(1);
-	} else {
-		JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \nthêm khách hàng mới!!!");
+	public void upTable1(ArrayList<Phong> arr) {
+		model1.setRowCount(0);
+		for (Phong p : arr) {
+			Object[] obj = new Object[5];
+			obj[0] = p.getMaPhong().trim();
+			obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
+			obj[2] = p.getSucChua();
+			obj[3] = p.getGiaPhong();
+			obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+			model1.addRow(obj);
+		}
 	}
-}
 
-public void xoaTrang() {
-	txtKhachHang.setText("");
-	ngayDatPhong.setDate(ngayHienTai);
-	txtSDT.setText("");
-	comboLKH.setSelectedIndex(0);
-	cbGio.setSelectedIndex(0);
-	cbPhut.setSelectedIndex(0);
-	tableDSPhong.clearSelection();
-	tableDSPhong1.clearSelection();
-}
+	public void upTable2(ArrayList<HoaDonPhong> arr) {
+		model.setRowCount(0);
+		for (HoaDonPhong hd : arr) {
+			Object[] obj = new Object[7];
+			obj[0] = hd.getMaHoaDon().trim();
+			obj[1] = hd.getPhong().getMaPhong().trim();
+			obj[2] = hd.getMaKhachHang().getHoTenKhachHang().trim();
+			obj[3] = hd.getMaKhachHang().getSoDienThoai().trim();
 
-@Override
-public void mouseClicked(MouseEvent e) {
-	// TODO Auto-generated method stub
-	Object o = e.getSource();
-	if(o == lbIconSearch)
-		ktraKH();
-}
+			obj[4] = hd.getNgayDat().toString();
+			obj[5] = hd.getGioDat().toString();
+			obj[6] = hd.getMaNhanVien().getHoTenNhanVien().trim();
+			model.addRow(obj);
+		}
+	}
 
-@Override
-public void mousePressed(MouseEvent e) {
-	// TODO Auto-generated method stub
-	
-}
+	public void ktraKH() {
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
+		if (kh != null) {
+			txtKhachHang.setText(kh.getHoTenKhachHang());
+			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
+				comboLKH.setSelectedIndex(0);
+			else
+				comboLKH.setSelectedIndex(1);
+		} else {
+			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
+					"Thông báo", JOptionPane.YES_NO_OPTION);
+			if (opt == JOptionPane.YES_OPTION) {
+				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang();
+				frm_ThemKH.setVisible(true);
+			}
+		}
+	}
 
-@Override
-public void mouseReleased(MouseEvent e) {
-	// TODO Auto-generated method stub
-	
-}
+	public void xoaTrang() {
+		txtKhachHang.setText("");
+		ngayDatPhong.setDate(ngayHienTai);
+		txtSDT.setText("");
+		comboLKH.setSelectedIndex(0);
+		cbGio.setSelectedIndex(0);
+		cbPhut.setSelectedIndex(0);
+		tableDSPhong.clearSelection();
+		tableDSPhong1.clearSelection();
+	}
 
-@Override
-public void mouseEntered(MouseEvent e) {
-	// TODO Auto-generated method stub
-	
-}
+	private boolean datPhong() {
+		String sdt = txtSDT.getText().trim();
+		String tenKhachString = txtKhachHang.getText().trim();
 
-@Override
-public void mouseExited(MouseEvent e) {
-	// TODO Auto-generated method stub
-	
-}
+		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
+		if (kh != null) {
+			ngayDat = ngayDatPhong.getDate();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String dateString = dateFormat.format(ngayDat);
 
+			Object[] obj = new Object[8];
+
+//	    	String ma = tableDSPhong1.getValueAt(row, 0).toString();
+
+//	    	String ten = txtHoTen.getText();
+//			String sdt = txtSDT.getText();
+//			String dt = txtDiaChi.getText();
+//			String cccd = txtCCCD.getText();
+//			String gt = (String) comboGT.getSelectedItem();
+//	        
+		}
+
+		return false;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		getIndexRow();
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		Object o = evt.getSource();
+		if (o == lbIconSearch) {
+			ktraKH();
+		} else if (o == ngayDatPhong) {
+			ngayDat = ngayDatPhong.getDate();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			dateString = dateFormat.format(ngayDat);
+			upTable1(dsDP.getAllRoomByDate(dateString));
+//			getIndexRow();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
+			upTable1(list);
+		}
+	}
 
 }

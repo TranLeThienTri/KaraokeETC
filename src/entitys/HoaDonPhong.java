@@ -19,6 +19,21 @@ public class HoaDonPhong {
 	private float thanhTien;
 
 	
+	
+	
+	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
+			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalDate ngayDat, LocalTime gioDat) {
+		super();
+		this.maHoaDon = maHoaDon;
+		this.phong = phong;
+		this.maNhanVien = maNhanVien;
+		this.maKhachHang = maKhachHang;
+		this.maLoaiHoaDon = maLoaiHoaDon;
+		this.ngayLapHoaDon = ngayLapHoaDon;
+		this.ngayDat = ngayDat;
+		this.gioDat = gioDat;
+	}
+
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
 			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue,
 			LocalTime gioTraPhong, LocalDate ngayDat, LocalTime gioDat, float thanhTien) {
