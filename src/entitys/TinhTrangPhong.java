@@ -10,13 +10,6 @@ public class TinhTrangPhong {
 	
 	public TinhTrangPhong(String maTinhTrangPhong) {
 		this.maTinhTrangPhong = maTinhTrangPhong;
-		if(maTinhTrangPhong.equals("BOOK")) {
-			this.tenTinhTrangPhong = "Phòng đã đặt";
-		}else if(maTinhTrangPhong.equals("EMPT")) {
-			this.tenTinhTrangPhong = "Phòng trống";
-		}else {
-			this.tenTinhTrangPhong = "Phòng đang thuê";
-		}
 	}
 	
 	public TinhTrangPhong(String maTinhTrangPhong, String tenTinhTrangPhong) {

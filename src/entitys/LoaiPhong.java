@@ -6,9 +6,6 @@ public class LoaiPhong {
 	private String maLoaiPhong, tenLoaiPhong;
 	public LoaiPhong(String maLoaiPhong) {
 		this.maLoaiPhong = maLoaiPhong;
-		if(maLoaiPhong.equals("NOR"))
-			this.tenLoaiPhong = "Phòng thường";
-		else this.tenLoaiPhong = "Phòng VIP";
 	}
 	public LoaiPhong(String maLoaiPhong, String tenLoaiPhong) {
 		this.maLoaiPhong = maLoaiPhong;

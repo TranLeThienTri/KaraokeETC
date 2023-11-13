@@ -258,7 +258,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnHuy) {
-			new Frm_ThuePhong().setVisible(true);
+
 			dispose();
 		}
 	}
