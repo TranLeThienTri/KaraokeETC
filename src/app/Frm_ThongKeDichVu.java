@@ -279,7 +279,8 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 	 */
 	public void upTable(ArrayList<DichVu> list) {
 		int i = 0;
-		for (DichVu dv  : list) {
+		System.out.println(list.size());
+		for (DichVu dv : list) {
 				Object[] obj = new Object[5];
 				obj[0] = dv.getMaDichVu().trim();
 				obj[1] = dv.getTenDichVu().trim();

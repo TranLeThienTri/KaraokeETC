@@ -35,7 +35,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-
 public class Frm_KhachHang extends JFrame implements ActionListener,MouseListener{
 	private JLabel lbTTKH,lblHoTen,lblSDT,lblCCCD,lblGioiTinh ,lblLoaiKhachHgang,lblDTL,lbDSPhong,lbBG;
 	private JTextField  txtTenKH, txtLoaiKH, txtSDT,  txtCCCD ,txtDTL;
@@ -48,7 +47,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 	private FixButton btnLamMoi,btnSua, btnThem;
 	private JComboBox comboGT,comboLKH ;
 	DanhSachKhachHang dsKh;
-
 	Panel pnQLKH;
 	JPanel panel,pnDSP;
 	public Panel getFrmQuanLyKhachHang() {
@@ -265,7 +263,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 				btnThem.setText("Thêm");
 			}else if(btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				btnSua.setText("Sửa");
-				themKH();
+				if(themKH() == true) {
+				}
 				btnThem.setText("Thêm");
 			}else if(btnThem.getText().equals("Xác nhận ")) {
 				suaKH();

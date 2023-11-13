@@ -80,5 +80,20 @@ public class Dao_PhatSinhMa {
 		return ma;
 	}
 	
-	
+	public String getMaHDCuoi()
+	{
+		String ma = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaHDTuDong}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while(rs.next())
+				ma = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ma;
+	}
 }
