@@ -60,9 +60,11 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 public class Frm_NhanVien extends JFrame implements MouseListener, ActionListener {
+
 	private JTextField txtHoTen, txtDiaChi, txtChucVu, txtSDT, txtGioiTinh, txtNgaySinh, txtCCCD, txtMess;
 	private JLabel lbTB, lbTTDV, lblHoTen, lblSDT, lblDiaChi, lblCCCD, lblChucVu, lblNgaySinh, lblGioiTinh,
 			lblTrangThai, lbDSPhong;
+
 	private DefaultTableModel model;
 	private FixButton btnLamMoi, btnSua, btnThem;
 	private JTable table;
@@ -299,51 +301,66 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbBG.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/bg_chot1.png")));
 		pnQLNV.add(lbBG);
 
-		table.addMouseListener(this);
-
-		btnLamMoi.addActionListener(this);
-		btnSua.addActionListener(this);
-		btnThem.addActionListener(this);
-
-		ConnectDB.getInstance().connect();
-		dsNV = new DanhSachNhanVien();
-		upTable();
-
-	}
+	btnLamMoi.addActionListener(this);
+	btnSua.addActionListener(this);
+	btnThem.addActionListener(this);
+	
+	table.addMouseListener(this);
+	
+	ConnectDB.getInstance().connect();
+			dsNV = new DanhSachNhanVien();
+			upTable();	
+			
+			comboTrangThai.setEnabled(false);
+			
+}
 
 //xoá trắng
-	public void xoaTrang() {
-		txtHoTen.setText("");
-		txtDiaChi.setText("");
-		txtCCCD.setText("");
-		comboChucVu.setSelectedIndex(0);
-		ngaySinh.setDate(ngayHienTai);
-		txtSDT.setText("");
-		lbTB.setText("");
-		comboGT.setSelectedIndex(0);
-		comboTrangThai.setSelectedIndex(0);
-		table.clearSelection();
-	}
+public void xoaTrang() {
+	txtHoTen.setText("");
+	txtDiaChi.setText("");
+	txtCCCD.setText("");
+	comboChucVu.setSelectedIndex(0);
+	ngaySinh.setDate(ngayHienTai);
+	txtSDT.setText("");
+	comboGT.setSelectedIndex(0);
+	comboTrangThai.setSelectedIndex(0);
+	table.clearSelection();
+}
 
-	public void upTable() {
-		ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
-		for (NhanVien nv : listE) {
-			Object[] obj = new Object[9];
-			obj[0] = nv.getMaNhanVien().trim();
-			obj[1] = nv.getHoTenNhanVien().trim();
 
-			obj[2] = nv.getchucVu().getTenChucVu();
-			obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
-			obj[4] = nv.getNgaySinh().toString();
-			obj[5] = nv.getDiaChi().trim();
-			obj[6] = nv.getSdt().trim();
-			obj[7] = nv.getSoCCCD().toString();
-			obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
-			;
-			model.addRow(obj);
-		}
-		xoaTrang();
+public void upTable() {
+	ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
+	for (NhanVien nv : listE) {
+		Object[] obj = new Object[9];
+		obj[0] = nv.getMaNhanVien().trim();
+		obj[1] = nv.getHoTenNhanVien().trim();
+		obj[2] = nv.getchucVu().getTenChucVu();
+		obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
+		obj[4] = nv.getNgaySinh().toString();
+		obj[5] = nv.getDiaChi().trim();
+		obj[6] = nv.getSdt().trim();
+		obj[7] = nv.getSoCCCD().toString();
+		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";;
+		model.addRow(obj);
 	}
+	xoaTrang();
+}
+
+//public void setTextTB() {
+//	int row = table.getSelectedRow();
+//	txtHoTen.setText(table.getValueAt(row, 1).toString());
+//	
+//	if(table.getValueAt(row, 2).toString().equalsIgnoreCase("Quản Lí"))
+//
+//		comboChucVu.setSelectedIndex(0);
+//		ngaySinh.setDate(ngayHienTai);
+//		txtSDT.setText("");
+//		lbTB.setText("");
+//		comboGT.setSelectedIndex(0);
+//		comboTrangThai.setSelectedIndex(0);
+//		table.clearSelection();
+//	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
@@ -570,7 +587,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	}
 
 	public boolean ktraDuLieu() {
-
 		String ten = txtHoTen.getText();
 		if (ten.equals("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
