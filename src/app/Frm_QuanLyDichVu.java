@@ -141,7 +141,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtDonGia = new JTextField();
 		txtDonGia.setBounds(877, 69, 300, 30);
 		pnTTDV.add(txtDonGia);
-		
+
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -331,7 +331,9 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		int row = tableDSDichVu.getSelectedRow();
 		if (row == -1) {
 			JOptionPane.showMessageDialog(this, "Chọn dịch vụ cần sửa");
+
 		} else {
+
 			Object[] obj = new Object[7];
 			if (ktraDuLieu()) {
 				Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
