@@ -140,7 +140,7 @@ public class DanhSachKhachHang {
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call getKhachHangTheoSDT(?)}";
+			String sql = "{call kiemTraKHTheoSDT(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, s);
 			ResultSet rs = myCall.executeQuery();
