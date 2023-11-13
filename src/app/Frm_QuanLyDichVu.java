@@ -135,11 +135,13 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnTTDV.add(comboTDV);
 
 		txtSoLuongTon = new JTextField();
+		txtSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSoLuongTon.setBounds(877, 29, 300, 30);
 		pnTTDV.add(txtSoLuongTon);
 
 		txtDonGia = new JTextField();
 		txtDonGia.setBounds(877, 69, 300, 30);
+		txtDonGia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnTTDV.add(txtDonGia);
 		
 		lbTB = new JLabel();
@@ -190,6 +192,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 14));
+		tbHeader.setPreferredSize(new Dimension(100, 30));
 		// Set màu các dòng
 
 		tableDSDichVu.setBackground(Color.white);

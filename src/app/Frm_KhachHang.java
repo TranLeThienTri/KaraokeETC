@@ -33,6 +33,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
 public class Frm_KhachHang extends JFrame implements ActionListener, MouseListener {
@@ -132,33 +134,35 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		panel.add(lblDTL);
 
 		txtTenKH = new JTextField();
-
+		txtTenKH.setFont(new Font("Tahoma", Font.BOLD, 17));
 		txtTenKH.setBounds(180, 19, 300, 30);
-
 		panel.add(txtTenKH);
 		txtTenKH.setColumns(10);
 
 		txtSDT = new JTextField();
 		txtSDT.setBounds(812, 19, 300, 30);
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 17));
 		panel.add(txtSDT);
 		txtSDT.setColumns(10);
 
 		txtCCCD = new JTextField();
 		txtCCCD.setColumns(10);
 		txtCCCD.setBounds(180, 83, 300, 30);
+		txtCCCD.setFont(new Font("Tahoma", Font.BOLD, 17));
 		panel.add(txtCCCD);
 
 		txtLoaiKH = new JTextField();
 		txtLoaiKH.setColumns(10);
-		txtLoaiKH.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtLoaiKH.setFont(new Font("Tahoma", Font.BOLD, 17));
 		txtLoaiKH.setBounds(180, 146, 300, 30);
-		txtLoaiKH.enable(false);
+		txtLoaiKH.setEditable(false);
 		panel.add(txtLoaiKH);
 
 		txtDTL = new JTextField();
 		txtDTL.setColumns(10);
 		txtDTL.setBounds(812, 145, 300, 31);
-		txtDTL.enable(false);
+		txtDTL.setFont(new Font("Tahoma", Font.BOLD, 17));
+		txtDTL.setEditable(false);
 		panel.add(txtDTL);
 
 		lbTB = new JLabel();
@@ -211,7 +215,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		tbHeader = table.getTableHeader();
-		tbHeader.setPreferredSize(new Dimension(100, 30));
+		
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -418,8 +422,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	public boolean ktraDuLieu() {
 
 		String ten = txtTenKH.getText();
-		if (ten.equals("") || !ten.matches("^[A-ĐĐ-Ỹ][a-đđ-ỹ]*( [A-ĐĐ-Ỹ][a-đđ-ỹ]*)*$")) {
-			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
+		if (ten.equals("") || !ten.matches("\\b\\p{Lu}[\\p{L} ]*\\b")) {
+			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu ");
 			txtTenKH.requestFocus();
 			return false;
 		}
@@ -480,4 +484,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		// TODO Auto-generated method stub
 
 	}
+	
+
 }

@@ -34,6 +34,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.toedter.calendar.JDateChooser;
 
+import entitys.ChucVu;
 import entitys.NhanVien;
 
 import javax.swing.JMenu;
@@ -328,9 +329,15 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrmQuanLyNhanVien() {
-		pnCenter.removeAll();
-		Frm_NhanVien frNV = new Frm_NhanVien();
-		pnCenter.add(frNV.getFrmQuanLyNhanVien());
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if(nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_NhanVien frNV = new Frm_NhanVien();
+			pnCenter.add(frNV.getFrmQuanLyNhanVien());
+		}else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	public void loadFrmQuanLyThuePhong() {
@@ -459,6 +466,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		else if (o == mnTKKH)
 			loadFrm_ThongKeKhachHang();
 		else if (o == mnTKNV)
+			
 			loadFrm_ThongKeNhanVien();
 		else if (o == btnDangxuat) {
 			dangXuat();
