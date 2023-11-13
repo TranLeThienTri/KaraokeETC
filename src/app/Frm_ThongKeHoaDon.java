@@ -323,6 +323,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
 		@SuppressWarnings("deprecation")
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
+		System.out.println(ngayBatDau);
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {

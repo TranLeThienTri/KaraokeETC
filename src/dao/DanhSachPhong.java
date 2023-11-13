@@ -14,7 +14,7 @@ import entitys.Phong;
 import entitys.TinhTrangPhong;
 
 public class DanhSachPhong {
-	//code ở đây
+	// code ở đây
 	ArrayList<Phong> list;
 
 	public DanhSachPhong() {
@@ -23,6 +23,7 @@ public class DanhSachPhong {
 
 	public ArrayList<Phong> getDSPhong() {
 		try {
+			list = new ArrayList<Phong>();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSPhong}";
@@ -34,10 +35,26 @@ public class DanhSachPhong {
 				int sucChua = rs.getInt(3);
 				Float giaPhong = rs.getFloat(4);
 				String matinhTrang = rs.getString(5);
+				String tenTinhTrangPhong = "";
+				if (matinhTrang.equals("BOOK")) {
+					tenTinhTrangPhong = "Phòng đã đặt";
+				} else if (matinhTrang.equals("EMPT")) {
+					tenTinhTrangPhong = "Phòng trống";
+				} else if (matinhTrang.equals("RENT")) {
+					tenTinhTrangPhong = "Phòng đang thuê";
+				}
 				float dienTich = rs.getFloat(6);
-				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong);
-				TinhTrangPhong maTinhTrang = new TinhTrangPhong(matinhTrang);
-				Phong phong = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrang, dienTich);
+				String tenLoaiPhong = "";
+				if (malPhong.equals("NOR")) {
+					tenLoaiPhong = "Phòng thường";
+				}
+
+				else if (malPhong.equals("VIP")) {
+					tenLoaiPhong = "Phòng VIP";
+				}
+				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong, tenLoaiPhong);
+				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang, tenTinhTrangPhong);
+				Phong phong = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrangP, dienTich);
 				list.add(phong);
 			}
 		} catch (SQLException e) {
@@ -45,7 +62,7 @@ public class DanhSachPhong {
 		}
 		return list;
 	}
-	
+
 	public boolean themPhong(Phong p) {
 		boolean b = true;
 		try {
@@ -67,8 +84,9 @@ public class DanhSachPhong {
 		}
 		return b;
 	}
+
 	public ArrayList<TinhTrangPhong> getDSTinhTrang() {
-		ArrayList<TinhTrangPhong> dao = new ArrayList<>(); 
+		ArrayList<TinhTrangPhong> dao = new ArrayList<>();
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
@@ -78,7 +96,7 @@ public class DanhSachPhong {
 			while (rs.next()) {
 				String ma = rs.getString(1);
 				String ten = rs.getString(2);
-				TinhTrangPhong ttp = new TinhTrangPhong(ma, ten); 
+				TinhTrangPhong ttp = new TinhTrangPhong(ma, ten);
 				dao.add(ttp);
 			}
 		} catch (SQLException e) {
@@ -86,10 +104,9 @@ public class DanhSachPhong {
 		}
 		return dao;
 	}
-	
-	
+
 	public ArrayList<LoaiPhong> getDSLoatPhong() {
-		ArrayList<LoaiPhong> dao = new ArrayList<>(); 
+		ArrayList<LoaiPhong> dao = new ArrayList<>();
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
@@ -99,7 +116,7 @@ public class DanhSachPhong {
 			while (rs.next()) {
 				String ma = rs.getString(1);
 				String ten = rs.getString(2);
-				LoaiPhong loaiPhong = new LoaiPhong(ma, ten); 
+				LoaiPhong loaiPhong = new LoaiPhong(ma, ten);
 				dao.add(loaiPhong);
 			}
 		} catch (SQLException e) {
@@ -107,7 +124,7 @@ public class DanhSachPhong {
 		}
 		return dao;
 	}
-	
+
 	public boolean suaPhong(Phong p) {
 		boolean b = true;
 		try {
@@ -127,4 +144,6 @@ public class DanhSachPhong {
 		}
 		return b;
 	}
+	
+	
 }

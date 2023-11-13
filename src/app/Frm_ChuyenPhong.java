@@ -39,9 +39,9 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	private JTextField txtKhachHang, txtSDT;
-	private JPanel pnTTDDP_1, pnTTDDP;
+	private JPanel pnTTPHT, pnTTKH;
 	private JLabel lbSucChua, lbMaPhong, lbLoaiPhong, lbSDT, lbTenKH, lbThongTinPhongHienTai, lbTinhTrang, lbGiaPhong,
-			lbDSDichVu, lbBGQLDV, lbTTKH;;
+			lbDSDichVu, lbBGQLDV, lbTTKH, lbChuyenPhong;
 	private JTextField txtMaPhong, txtTinhTrang, txtLoaiPhong, txtGiaPhong, txtSucChua;
 	private JComboBox comboTTP, comboLP, comboGP;
 	FixButton btnHuy, btnChuyen;
@@ -117,31 +117,32 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 		scrollPane.setViewportView(tableDSDichVu);
 
-		pnTTDDP = new JPanel();
-		pnTTDDP.setLayout(null);
-		pnTTDDP.setBackground(new Color(190, 157, 157, 190));
-		pnTTDDP.setBounds(34, 111, 926, 92);
-		pnChuyenPhong.add(pnTTDDP);
+		pnTTKH = new JPanel();
+		pnTTKH.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnTTKH.setLayout(null);
+		pnTTKH.setBackground(new Color(207, 169, 0));
+		pnTTKH.setBounds(34, 111, 926, 92);
+		pnChuyenPhong.add(pnTTKH);
 
 		lbSDT = new JLabel("Số điện thoại:");
 		lbSDT.setForeground(Color.WHITE);
 		lbSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSDT.setBounds(513, 30, 150, 25);
-		pnTTDDP.add(lbSDT);
+		pnTTKH.add(lbSDT);
 
 		lbTenKH = new JLabel("Tên khách hàng:");
 		lbTenKH.setForeground(Color.WHITE);
 		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTenKH.setBounds(10, 30, 200, 25);
-		pnTTDDP.add(lbTenKH);
+		pnTTKH.add(lbTenKH);
 
 		txtSDT = new JTextField();
 		txtSDT.setBounds(643, 30, 250, 30);
-		pnTTDDP.add(txtSDT);
+		pnTTKH.add(txtSDT);
 
 		txtKhachHang = new JTextField();
 		txtKhachHang.setBounds(160, 30, 250, 30);
-		pnTTDDP.add(txtKhachHang);
+		pnTTKH.add(txtKhachHang);
 
 		lbThongTinPhongHienTai = new JLabel("Thông tin phòng hiện tại");
 		lbThongTinPhongHienTai.setForeground(Color.WHITE);
@@ -149,57 +150,58 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbThongTinPhongHienTai.setBounds(46, 213, 200, 25);
 		pnChuyenPhong.add(lbThongTinPhongHienTai);
 
-		pnTTDDP_1 = new JPanel();
-		pnTTDDP_1.setLayout(null);
-		pnTTDDP_1.setBackground(new Color(190, 157, 157, 190));
-		pnTTDDP_1.setBounds(34, 240, 926, 208);
-		pnChuyenPhong.add(pnTTDDP_1);
+		pnTTPHT = new JPanel();
+		pnTTPHT.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnTTPHT.setLayout(null);
+		pnTTPHT.setBackground(new Color(189, 0, 88));
+		pnTTPHT.setBounds(34, 240, 926, 208);
+		pnChuyenPhong.add(pnTTPHT);
 
 		lbSucChua = new JLabel("Sức chứa: ");
 		lbSucChua.setForeground(Color.WHITE);
 		lbSucChua.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSucChua.setBounds(513, 30, 150, 25);
-		pnTTDDP_1.add(lbSucChua);
+		pnTTPHT.add(lbSucChua);
 
 		lbMaPhong = new JLabel("Mã phòng: ");
 		lbMaPhong.setForeground(Color.WHITE);
 		lbMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbMaPhong.setBounds(10, 30, 200, 25);
-		pnTTDDP_1.add(lbMaPhong);
+		pnTTPHT.add(lbMaPhong);
 
 		txtSucChua = new JTextField();
 		txtSucChua.setBounds(643, 30, 250, 30);
-		pnTTDDP_1.add(txtSucChua);
+		pnTTPHT.add(txtSucChua);
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setBounds(160, 30, 250, 30);
-		pnTTDDP_1.add(txtMaPhong);
+		pnTTPHT.add(txtMaPhong);
 
 		lbTinhTrang = new JLabel("Tình trạng: ");
 		lbTinhTrang.setForeground(Color.WHITE);
 		lbTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTinhTrang.setBounds(10, 80, 200, 25);
-		pnTTDDP_1.add(lbTinhTrang);
+		pnTTPHT.add(lbTinhTrang);
 
 		comboTTP = new JComboBox();
 		comboTTP.setModel(new DefaultComboBoxModel(new String[] { "Đang thuê", "Đã đặt", "Trống" }));
 		comboTTP.setSelectedIndex(0);
 		comboTTP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTTP.setBounds(643, 80, 250, 30);
-		pnTTDDP_1.add(comboTTP);
+		pnTTPHT.add(comboTTP);
 
 		lbLoaiPhong = new JLabel("Loại phòng: ");
 		lbLoaiPhong.setForeground(Color.WHITE);
 		lbLoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbLoaiPhong.setBounds(513, 80, 150, 25);
-		pnTTDDP_1.add(lbLoaiPhong);
+		pnTTPHT.add(lbLoaiPhong);
 
 		comboLP = new JComboBox();
 		comboLP.setModel(new DefaultComboBoxModel(new String[] { "Phòng thường", "Phòng VIP" }));
 		comboLP.setSelectedIndex(0);
 		comboLP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboLP.setBounds(160, 80, 250, 30);
-		pnTTDDP_1.add(comboLP);
+		pnTTPHT.add(comboLP);
 
 		comboGP = new JComboBox();
 		comboGP.setModel(new DefaultComboBoxModel(new String[] { "150.000", "300.000", "500.000" }));
@@ -207,13 +209,13 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		comboGP.setSelectedIndex(0);
 		comboGP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboGP.setBounds(160, 130, 250, 30);
-		pnTTDDP_1.add(comboGP);
+		pnTTPHT.add(comboGP);
 
 		lbGiaPhong = new JLabel("Giá phòng: ");
 		lbGiaPhong.setForeground(Color.WHITE);
 		lbGiaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbGiaPhong.setBounds(10, 130, 200, 25);
-		pnTTDDP_1.add(lbGiaPhong);
+		pnTTPHT.add(lbGiaPhong);
 
 		btnHuy = new FixButton("Hủy đặt phòng");
 		btnHuy.setBounds(337, 467, 140, 40);
@@ -228,6 +230,13 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
 		btnChuyen.setText("Xác nhận");
 		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
+
+		lbChuyenPhong = new JLabel("CHUYỂN PHÒNG");
+		lbChuyenPhong.setForeground(Color.WHITE);
+		lbChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 25));
+		lbChuyenPhong.setBounds(429, 40, 300, 35);
+		pnChuyenPhong.add(lbChuyenPhong);
+
 		// add background ở cuối
 		lbBGQLDV = new JLabel("");
 		lbBGQLDV.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -248,10 +257,9 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if(o == btnHuy) {
-			new Frm_ThuePhong().setVisible(true);
+		if (o == btnHuy) {
+
 			dispose();
 		}
 	}
-
 }

@@ -52,8 +52,7 @@ public class HoaDonPhong {
 	}
 
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
-			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue,
-			LocalTime gioTraPhong, float thanhTien) {
+			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue) {
 		super();
 		this.maHoaDon = maHoaDon;
 		this.phong = phong;
@@ -63,7 +62,6 @@ public class HoaDonPhong {
 		this.ngayLapHoaDon = ngayLapHoaDon;
 		this.gioBatDauThue = gioBatDauThue;
 		this.gioTraPhong = gioTraPhong;
-		this.thanhTien = thanhTien;
 	}
 	public HoaDonPhong() {
 		super();
