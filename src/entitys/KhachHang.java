@@ -33,6 +33,13 @@ public class KhachHang {
 		this.maKhachHang = makh;
 		this.hoTenKhachHang = ten;
 	}
+	public KhachHang(String makh,String ten,String sdt,int diem) {
+		super();
+		this.maKhachHang = makh;
+		this.hoTenKhachHang = ten;
+		this.soDienThoai = sdt;
+		this.diemTichLuy = diem;
+	}
 	public KhachHang(String makh,String ten,String sdt) {
 		super();
 		this.maKhachHang = makh;

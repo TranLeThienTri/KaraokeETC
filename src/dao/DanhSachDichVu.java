@@ -139,5 +139,38 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
-
+	public int getSLTheoMaDV(String ma) {
+		int tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSLTheoMaDV(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
+	public float getDGTheoMaDV(String ma) {
+		float tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDGTheoMaDV(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong = rs.getFloat(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
 }

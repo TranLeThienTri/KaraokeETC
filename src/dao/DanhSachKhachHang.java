@@ -115,5 +115,21 @@ public class DanhSachKhachHang {
 		}
 		return b;
 	}
-
+	public int getDTLTheoMa(String ma) {
+		int diem = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDTLTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				diem = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return diem;
+	}
 }

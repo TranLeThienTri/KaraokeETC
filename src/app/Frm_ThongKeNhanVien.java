@@ -204,17 +204,17 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke1.setForeground(new Color(189, 0, 88));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
-		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tknv.png")));
+		//lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tknv.png")));
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
 		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke1.setBounds(135, 123, 250, 35);
+		lblthongke1.setBounds(111, 122, 250, 35);
 		panel_thongke1.add(lblthongke1);
 		lbltongtk1 = new JLabel("");
-		lbltongtk1.setForeground(new Color(189, 0, 88));
+		lbltongtk1.setForeground(new Color(255, 255, 255));
 		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk1.setBounds(220, 131, 70, 43);
+		lbltongtk1.setBounds(199, 150, 70, 43);
 		panel_thongke1.add(lbltongtk1);
 
 		panel_thongke2 = new JPanel();
@@ -227,17 +227,17 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
-		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tkkh1.png")));
+		//lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tkkh1.png")));
 
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
 		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke2.setBounds(70, 120, 356, 35);
+		lblthongke2.setBounds(46, 120, 356, 35);
 		panel_thongke2.add(lblthongke2);
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
 		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk2.setBounds(220, 140, 79, 41);
+		lbltongtk2.setBounds(184, 154, 79, 41);
 		panel_thongke2.add(lbltongtk2);
 		String col[] = { "M\u00E3 NV", "H\u1ECD v\u00E0 t\u00EAn", "N\u0103m sinh", "CCCD", "Gi\u1EDBi t\u00EDnh",
 				"\u0110\u1ECBa ch\u1EC9", "SDT", "Ch\u1EE9c v\u1EE5" };
