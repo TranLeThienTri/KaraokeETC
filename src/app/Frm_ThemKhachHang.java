@@ -45,7 +45,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 	Panel pnThemKhachHang;
 	private JTextField txtKhachHang, txtSDT;
 	private JPanel pnTTDDP;
-	private JLabel lbGioiTinh, lbTenKH, lbBGQLDV, lbThemKH;;
+	private JLabel lbGioiTinh, lbTenKH, lbBGQLDV, lbThemKH, lbSDT_1;
 	private JTextField txtTinhTrang, txtLoaiPhong, txtGiaPhong;
 	FixButton btnHuy, btnXacNhan, btnLamMoi;
 	private JTextField txtCCCD;
@@ -116,7 +116,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		txtCCCD.setBounds(171, 99, 250, 30);
 		pnTTDDP.add(txtCCCD);
 
-		JLabel lbSDT_1 = new JLabel("Số điện thoại:");
+		lbSDT_1  = new JLabel("Số điện thoại:");
 		lbSDT_1.setForeground(Color.WHITE);
 		lbSDT_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSDT_1.setBounds(519, 47, 113, 25);

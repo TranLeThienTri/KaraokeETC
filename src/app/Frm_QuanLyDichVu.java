@@ -128,7 +128,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnTTDV.add(comboLDV);
 
 		comboTDV = new JComboBox();
-//		comboTDV.setSelectedIndex(0);
 		comboTDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTDV.setBounds(226, 69, 300, 30);
 		comboTDV.setEditable(true);
