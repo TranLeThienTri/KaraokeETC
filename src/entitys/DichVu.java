@@ -25,7 +25,6 @@ public class DichVu {
 		this.maDichVu = ma;
 		this.tenDichVu = ten;
 	}
-
 	public String getMaDichVu() {
 		return maDichVu;
 	}

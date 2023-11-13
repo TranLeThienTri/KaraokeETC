@@ -23,9 +23,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
-
-import entitys.NhanVien;
-
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -35,7 +32,6 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
 
 public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	JPanel pnDSDichVu;
@@ -48,7 +44,6 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 			lbDSDichVu, lbBGQLDV, lbTTKH, lbChuyenPhong;
 	private JTextField txtMaPhong, txtTinhTrang, txtLoaiPhong, txtGiaPhong, txtSucChua;
 	private JComboBox comboTTP, comboLP, comboGP;
-	NhanVien nv;
 	FixButton btnHuy, btnChuyen;
 
 	public Panel getFrmChuyenPhong() {
@@ -58,6 +53,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	public Frm_ChuyenPhong() {
 		setTitle("CHUYỂN PHÒNG");
 		setSize(1000, 820);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		gui();
@@ -252,6 +248,10 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 	}
 
+	public static void main(String[] args) {
+		new Frm_ChuyenPhong().setVisible(true);
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

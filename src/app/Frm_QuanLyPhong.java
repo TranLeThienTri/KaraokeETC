@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -54,11 +55,12 @@ import javax.swing.JFormattedTextField;
 public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnLoaiPhong, pnDSP, pnTTDDP;
 	private JLabel lbLoaiPhongTK, lbDSPhong, lbBGQLDP, lbTTDDP, lbLoaiPhong, lblDinTch, lblMPhng, lblGiPhng, lbSDT,
-			lbTenKH;
+			lbTenKH, lbTB;
 	private JTableHeader tbHeader1;
 	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
 	Panel pnQLDP;
 	private JComboBox comboLoaiPhong, comboTinhTrang, comboSucChua;
+	private int ngay, thang, nam;
 	private JTable tableDSPhong1;
 	private DefaultTableModel model1;
 	private JTextField txtGia, txtMaPhong, txtDienTich;
@@ -71,7 +73,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	}
 
 	public Frm_QuanLyPhong() {
-		setTitle("QUẢN LÝ Phòng");
+		setTitle("QUẢN LÝ PHÒNG");
 		setSize(1400, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -88,8 +90,11 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnQLDP.setLayout(null);
 
 		pnTTDDP = new JPanel();
-		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
-		pnTTDDP.setBounds(100, 23, 1200, 239);
+
+		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
+		pnTTDDP.setBounds(100, 23, 1200, 260);
+
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
 
@@ -106,7 +111,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(lbTenKH);
 
 		lbTTDDP = new JLabel("Thông tin đơn đặt phòng");
-		lbTTDDP.setBounds(10, -1, 190, 20);
+		lbTTDDP.setBounds(10, 10, 190, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTDDP.setForeground(new Color(255, 255, 255));
@@ -135,25 +140,38 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		lblMPhng.setBounds(676, 154, 126, 25);
 		pnTTDDP.add(lblMPhng);
 
+		lbTB = new JLabel();
+		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
+		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbTB.setBounds(60, 199, 500, 36);
+		lbTB.setForeground(Color.RED);
+		pnTTDDP.add(lbTB);
+
 		btnThem = new FixButton("Thêm");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThem.setBounds(350, 199, 150, 30);
+
+		btnThem.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnThem.setBounds(350, 200, 150, 40);
+
 		btnThem.setBackground(new java.awt.Color(153, 36, 36));
 		pnTTDDP.add(btnThem);
 
 		btnSua = new FixButton("Sửa");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSua.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSua.setBackground(new java.awt.Color(153, 36, 36));
-		btnSua.setBounds(550, 199, 150, 30);
+
+		btnSua.setBounds(550, 200, 150, 40);
+
 		pnTTDDP.add(btnSua);
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setBounds(750, 199, 150, 30);
+
+		btnLamMoi.setBounds(750, 200, 150, 40);
+
 		pnTTDDP.add(btnLamMoi);
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
 
 		txtGia = new JTextField();
 		txtGia.setBounds(795, 37, 323, 30);
@@ -165,7 +183,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setBounds(795, 151, 323, 28);
-		txtMaPhong.setEditable(false);
+		txtMaPhong.enable(false);
 		pnTTDDP.add(txtMaPhong);
 
 		comboLoaiPhong = new JComboBox();
@@ -188,6 +206,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(comboSucChua);
 
 		pnLoaiPhong = new JPanel();
+		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnLoaiPhong.setBackground(Color.ORANGE);
 		pnLoaiPhong.setBounds(393, 293, 650, 71);
 		pnQLDP.add(pnLoaiPhong);
@@ -196,22 +215,22 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		lbLoaiPhongTK = new JLabel("Loại phòng:");
 		lbLoaiPhongTK.setForeground(Color.WHITE);
 		lbLoaiPhongTK.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbLoaiPhongTK.setBounds(32, 23, 108, 25);
+		lbLoaiPhongTK.setBounds(32, 20, 108, 25);
 		pnLoaiPhong.add(lbLoaiPhongTK);
-		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
+		pnLoaiPhong.setBackground(new java.awt.Color(189, 0, 88));
 
 		pnQLDP.add(pnLoaiPhong);
 
 		btnTatCa = new FixButton2("Tất cả");
-		btnTatCa.setBounds(163, 23, 100, 25);
+		btnTatCa.setBounds(163, 20, 100, 30);
 		pnLoaiPhong.add(btnTatCa);
 
 		btnPhongVip = new FixButton2("Phòng VIP");
-		btnPhongVip.setBounds(292, 23, 120, 25);
+		btnPhongVip.setBounds(292, 20, 120, 30);
 		pnLoaiPhong.add(btnPhongVip);
 
 		btnPhongThuong = new FixButton2("Phòng thường");
-		btnPhongThuong.setBounds(447, 23, 150, 25);
+		btnPhongThuong.setBounds(447, 20, 150, 30);
 		pnLoaiPhong.add(btnPhongThuong);
 //
 		String col1[] = { "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
@@ -268,19 +287,20 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		if (o.equals(btnThem)) {
 			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
 				comboTinhTrang.setSelectedIndex(1);
-				comboTinhTrang.setEnabled(false);
+				comboTinhTrang.enable(false);
 				comboTinhTrang.setForeground(Color.black);
 				btnThem.setText("Xác nhận");
 				btnSua.setText("Huỷ");
 			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
-				btnSua.setText("Sửa");
-				themPhong();
-				btnThem.setText("Thêm");
+				if (themPhong()) {
+					btnSua.setText("Sửa");
+					btnThem.setText("Thêm");
+				}
 			} else if (btnThem.getText().equals("Xác nhận ")) {
-				suaPhong();
-				xoaTrang();
-				btnThem.setText("Thêm");
-				btnSua.setText("Sửa");
+				if (suaPhong()) {
+					btnThem.setText("Thêm");
+					btnSua.setText("Sửa");
+				}
 			}
 		} else if (o.equals(btnSua)) {
 			if (btnSua.getText().equals("Huỷ")) {
@@ -302,44 +322,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 	public boolean themPhong() {
 		Object[] obj = new Object[6];
-		Dao_PhatSinhMa maP = new Dao_PhatSinhMa();
-		String ma = maP.getMaPhongCuoi();
-		String tenLoaiPhong = String.valueOf(comboLoaiPhong.getSelectedItem());
-		int sucChua = Integer.parseInt((String) comboSucChua.getSelectedItem());
-		String tenTinhTang = String.valueOf(comboTinhTrang.getSelectedItem());
-		float Gia = Float.parseFloat(txtGia.getText());
-		float dienTich = Float.parseFloat(txtDienTich.getText());
-		String maLP = null;
-		if (tenLoaiPhong.equals("Phòng thường")) {
-			maLP = "NOR";
-		} else
-			maLP = "VIP";
-		LoaiPhong lp = new LoaiPhong(maLP);
-		TinhTrangPhong tt = new TinhTrangPhong("EMPT");
-		Phong p = new Phong(ma, lp, sucChua, Gia, tt, dienTich);
-		if (!dsPhong.themPhong(p)) {
-			JOptionPane.showMessageDialog(this, "Thêm thành công");
-			obj[0] = ma;
-			obj[1] = tt.getTenTinhTrangPhong();
-			obj[2] = sucChua;
-			obj[3] = tenLoaiPhong;
-			obj[4] = Gia;
-			obj[5] = dienTich;
-			model1.addRow(obj);
-			xoaTrang();
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean suaPhong() {
-		int row = tableDSPhong1.getSelectedRow();
-		if (row == -1) {
-			JOptionPane.showMessageDialog(this, "Chọn nhân viên cần sửa");
-		} else {
-			Object[] obj = new Object[7];
-			String ma = tableDSPhong1.getValueAt(row, 0).toString();
+		if (ktraDuLieu()) {
+			Dao_PhatSinhMa maP = new Dao_PhatSinhMa();
+			String ma = maP.getMaPhongCuoi();
 			String tenLoaiPhong = String.valueOf(comboLoaiPhong.getSelectedItem());
 			int sucChua = Integer.parseInt((String) comboSucChua.getSelectedItem());
 			String tenTinhTang = String.valueOf(comboTinhTrang.getSelectedItem());
@@ -353,20 +338,58 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			LoaiPhong lp = new LoaiPhong(maLP);
 			TinhTrangPhong tt = new TinhTrangPhong("EMPT");
 			Phong p = new Phong(ma, lp, sucChua, Gia, tt, dienTich);
-			obj[0] = ma;
-			obj[1] = tt.getTenTinhTrangPhong();
-			obj[2] = sucChua;
-			obj[3] = tenLoaiPhong;
-			obj[4] = Gia;
-			obj[5] = dienTich;
-			if (!dsPhong.suaPhong(p)) {
-				JOptionPane.showMessageDialog(this, "Sửa thành công");
-				tableDSPhong1.setValueAt(obj[2], row, 2);
-				tableDSPhong1.setValueAt(obj[3], row, 3);
-				tableDSPhong1.setValueAt(obj[4], row, 4);
-				tableDSPhong1.setValueAt(obj[5], row, 5);
+			if (!dsPhong.themPhong(p)) {
+				JOptionPane.showMessageDialog(this, "Thêm thành công");
+				obj[0] = ma;
+				obj[1] = tt.getTenTinhTrangPhong();
+				obj[2] = sucChua;
+				obj[3] = tenLoaiPhong;
+				obj[4] = Gia;
+				obj[5] = dienTich;
+				model1.addRow(obj);
 				xoaTrang();
 				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean suaPhong() {
+		int row = tableDSPhong1.getSelectedRow();
+		if (row == -1) {
+			JOptionPane.showMessageDialog(this, "Chọn nhân viên cần sửa");
+		} else {
+			Object[] obj = new Object[7];
+			if (ktraDuLieu()) {
+				String ma = tableDSPhong1.getValueAt(row, 0).toString();
+				String tenLoaiPhong = String.valueOf(comboLoaiPhong.getSelectedItem());
+				int sucChua = Integer.parseInt((String) comboSucChua.getSelectedItem());
+				String tenTinhTang = String.valueOf(comboTinhTrang.getSelectedItem());
+				float Gia = Float.parseFloat(txtGia.getText());
+				float dienTich = Float.parseFloat(txtDienTich.getText());
+				String maLP = null;
+				if (tenLoaiPhong.equals("Phòng thường")) {
+					maLP = "NOR";
+				} else
+					maLP = "VIP";
+				LoaiPhong lp = new LoaiPhong(maLP);
+				TinhTrangPhong tt = new TinhTrangPhong("EMPT");
+				Phong p = new Phong(ma, lp, sucChua, Gia, tt, dienTich);
+				obj[0] = ma;
+				obj[1] = tt.getTenTinhTrangPhong();
+				obj[2] = sucChua;
+				obj[3] = tenLoaiPhong;
+				obj[4] = Gia;
+				obj[5] = dienTich;
+				if (!dsPhong.suaPhong(p)) {
+					JOptionPane.showMessageDialog(this, "Sửa thành công");
+					tableDSPhong1.setValueAt(obj[2], row, 2);
+					tableDSPhong1.setValueAt(obj[3], row, 3);
+					tableDSPhong1.setValueAt(obj[4], row, 4);
+					tableDSPhong1.setValueAt(obj[5], row, 5);
+					xoaTrang();
+					return true;
+				}
 			}
 		}
 
@@ -378,6 +401,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		txtMaPhong.setText("");
 		txtDienTich.setText("");
 		tableDSPhong1.clearSelection();
+		lbTB.setText("");
 	}
 
 	public void upTable() {
@@ -442,6 +466,40 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			b = 1;
 		}
 		comboLoaiPhong.setSelectedIndex(b);
+	}
+
+	public void showMessage(String message) {
+		lbTB.setText(message);
+	}
+
+	public boolean ktraDuLieu() {
+
+		try {
+			float donGia = Float.parseFloat(txtGia.getText());
+			if (donGia <= 0) {
+				showMessage("(*)Đơn giá phải lớn hơn 0");
+				txtGia.requestFocus();
+				return false;
+			}
+		} catch (Exception e) {
+			showMessage("(*)Đơn giá phải là số và không được để trống");
+			txtGia.requestFocus();
+			return false;
+		}
+
+		try {
+			float dt = Float.parseFloat(txtDienTich.getText());
+			if (dt <= 0) {
+				showMessage("(*)Diện tích phải lớn hơn 0");
+				txtGia.requestFocus();
+				return false;
+			}
+		} catch (Exception e) {
+			showMessage("(*)Diện tích phải là số và không được để trống");
+			txtDienTich.requestFocus();
+			return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -54,6 +54,20 @@ public class DanhSachTaiKhoan {
 		}
 		return tk;
 	}
-
+	public boolean updatePassword(String ma,String newPass) {
+		connectDB.ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		boolean flag = true;
+		try {
+			String sql = "{call updatePassword(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			myCall.setString(2, newPass);
+			flag = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 
 }

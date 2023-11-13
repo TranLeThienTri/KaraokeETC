@@ -46,6 +46,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import org.apache.poi.examples.hsmf.Msg2txt;
 
+
 import connectDB.ConnectDB;
 import dao.ThuePhong;
 import dao.DanhSachHoaDon;
@@ -67,6 +68,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	private Date ngayHienTai;
 	private Panel pnQLDP;
 	private int ngay, thang, nam;
+
 	private JTable tableDSPhong, tableDSPhong1, tableDSPhong2, tableDSDichVu;
 	private DefaultTableModel model, model1, model2;
 	private JLabel lbIconSearch, lbSDT, lbTenKH, lbTTDDP;
@@ -105,8 +107,10 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnQLDP.setBounds(0, 0, 1400, 670);
 		getContentPane().add(pnQLDP);
 		pnQLDP.setLayout(null);
+
 		JPanel pnTTDDP = new JPanel();
-		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
+		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
 		pnTTDDP.setBounds(30, 10, 579, 97);
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -139,13 +143,16 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		lbIconSearch.setBorder(bottomBorder);
 		pnTTDDP.add(lbIconSearch);
+
 		lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
-		lbTTDDP.setBounds(10, -1, 190, 20);
+		lbTTDDP.setBounds(10, 3, 250, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTDDP.setForeground(new Color(255, 255, 255));
+
 		pnLoaiPhong = new JPanel();
-		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
+		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnLoaiPhong.setBackground(new java.awt.Color(189, 0, 88));
 		pnLoaiPhong.setBounds(689, 10, 655, 97);
 		pnQLDP.add(pnLoaiPhong);
 		pnLoaiPhong.setLayout(null);
@@ -157,23 +164,22 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnLoaiPhong.add(lbLoaiPhongTK);
 
 		btnTatCa = new FixButton2("Tất cả");
-		btnTatCa.setBounds(165, 10, 100, 25);
+		btnTatCa.setBounds(165, 10, 100, 30);
 		pnLoaiPhong.add(btnTatCa);
 
 		btnPhongVip = new FixButton2("Phòng VIP");
-		btnPhongVip.setBounds(295, 10, 120, 25);
+		btnPhongVip.setBounds(295, 10, 120, 30);
 		pnLoaiPhong.add(btnPhongVip);
 
 		btnPhongThuong = new FixButton2("Phòng thường");
-		btnPhongThuong.setBounds(440, 10, 150, 25);
+		btnPhongThuong.setBounds(440, 10, 150, 30);
 		pnLoaiPhong.add(btnPhongThuong);
 
 		lbTinhTrang = new JLabel("Tình trạng:");
 		lbTinhTrang.setForeground(Color.WHITE);
 		lbTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTinhTrang.setBounds(46, 50, 150, 25);
+		lbTinhTrang.setBounds(46, 55, 150, 25);
 		pnLoaiPhong.add(lbTinhTrang);
-
 		radioDangThue = new JRadioButton("Đang thuê");
 		radioDangThue.setOpaque(false);
 		radioDangThue.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -184,7 +190,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		radioTrong = new JRadioButton("Trống");
 		radioTrong.setContentAreaFilled(false);
 		radioTrong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		radioTrong.setBounds(295, 50, 103, 21);
+		radioTrong.setBounds(295, 55, 103, 21);
 		pnLoaiPhong.add(radioTrong);
 
 		bg = new ButtonGroup();
@@ -243,6 +249,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				"S\u1ED1 l\u01B0\u1EE3ng", "Giá bán" };
 		model2 = new DefaultTableModel(col2, 0);
 		tableDSDichVu = new JTable(model2);
+
 		tableDSDichVu.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -278,20 +285,20 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_btn_lammoi.png")));
 		// btnLamMoi.setBackground(new java.awt.Color(153, 36, 36));
-		btnLamMoi.setBounds(712, 20, 150, 30);
+		btnLamMoi.setBounds(745, 15, 200, 35);
 		pnCRUD.add(btnLamMoi);
 
 		btnTinhTien = new FixButton("Tính tiền");
-
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnTinhTien.setBounds(939, 20, 150, 30);
+		btnTinhTien.setBounds(985, 15, 200, 35);
 		// btnTinhTien.setBackground(new java.awt.Color(153, 36, 36));
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
+		btnThuePhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
-		btnThuePhong.setBounds(476, 20, 150, 30);
+		btnThuePhong.setBounds(505, 15, 200, 35);
 		pnCRUD.add(btnThuePhong);
 
 		btnChuyenPhong = new FixButton("Chuyển phòng");
@@ -299,12 +306,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
 
 		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnChuyenPhong.setBounds(25, 20, 150, 30);
+		btnChuyenPhong.setBounds(25, 15, 200, 35);
 		pnCRUD.add(btnChuyenPhong);
 		btnThemDV = new FixButton("Thêm dịch vụ");
 		// btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
 		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThemDV.setBounds(240, 20, 150, 30);
+		btnThemDV.setBounds(265, 15, 200, 35);
 		pnCRUD.add(btnThemDV);
 //table thong tin thuê phòng	
 		pnDSP2 = new JPanel();
@@ -345,6 +352,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		scrollPane2.setBounds(0, 25, 750, 200);
 		scrollPane2.getHorizontalScrollBar();
 		pnDSP2.add(scrollPane2);
+
 		// add background ở cuối
 		lbBGQLDP = new JLabel("");
 		lbBGQLDP.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
