@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import connectDB.ConnectDB;
 
 import entitys.DichVu;
@@ -20,7 +19,7 @@ public class DanhSachDichVu {
 	public DanhSachDichVu() {
 		list = new ArrayList<DichVu>();
 	}
-	
+
 	public ArrayList<DichVu> getDSDichVu() {
 		try {
 			ConnectDB.getInstance();
@@ -35,9 +34,10 @@ public class DanhSachDichVu {
 				int soLuongTon = rs.getInt(4);
 				Double donGia = rs.getDouble(5);
 				String tenLDV;
-				if(maLDV.equals("FOOD"))
+				if (maLDV.equals("FOOD"))
 					tenLDV = "Thực phẩm";
-				else tenLDV = "Nước uống";
+				else
+					tenLDV = "Nước uống";
 				LoaiDichVu maLoaiDV = new LoaiDichVu(maLDV, tenLDV);
 				DichVu dv = new DichVu(maDV, tenDV, maLoaiDV, soLuongTon, donGia);
 				list.add(dv);
@@ -47,6 +47,7 @@ public class DanhSachDichVu {
 		}
 		return list;
 	}
+
 	public boolean themDichVu(DichVu dv) {
 		boolean b = true;
 		try {
@@ -69,7 +70,7 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
-	
+
 	public DichVu getDVTheoMa(String ma) {
 		DichVu dv = null;
 		try {
@@ -86,9 +87,10 @@ public class DanhSachDichVu {
 				int soLuongTon = rs.getInt(4);
 				Double donGia = rs.getDouble(5);
 				String tenLDV;
-				if(maLDV.equals("FOOD"))
+				if (maLDV.equals("FOOD"))
 					tenLDV = "Thực phẩm";
-				else tenLDV = "Nước uống";
+				else
+					tenLDV = "Nước uống";
 				LoaiDichVu maLoaiDV = new LoaiDichVu(maLDV, tenLDV);
 				dv = new DichVu(maDV, tenDV, maLoaiDV, soLuongTon, donGia);
 			}
@@ -97,7 +99,7 @@ public class DanhSachDichVu {
 		}
 		return dv;
 	}
-	
+
 	public ArrayList<DichVu> getDSDichVuTheoLoai(String maLDV) {
 		ArrayList<DichVu> dao = new ArrayList();
 		try {
@@ -108,11 +110,9 @@ public class DanhSachDichVu {
 			myCall.setString(1, maLDV);
 			ResultSet rs = myCall.executeQuery();
 			while (rs.next()) {
-
-				String maDV = rs.getString(1);
+				String ma = rs.getString(1);
 				String tenDV = rs.getString(2);
-				DichVu dv = new DichVu(maDV, tenDV);
-
+				DichVu dv = new DichVu(ma, tenDV);
 				dao.add(dv);
 			}
 		} catch (SQLException e) {
@@ -120,6 +120,7 @@ public class DanhSachDichVu {
 		}
 		return dao;
 	}
+
 	public boolean suaDichVu(DichVu dv) {
 		boolean b = true;
 		try {
@@ -138,5 +139,5 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
-	
+
 }

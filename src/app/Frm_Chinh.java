@@ -342,7 +342,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 	public void loadFrmQuanLyThuePhong() {
 		pnCenter.removeAll();
-		Frm_ThuePhong frTP = new Frm_ThuePhong();
+		Frm_ThuePhong frTP = new Frm_ThuePhong(nv);
 		pnCenter.add(frTP.getFrmQuanLyThuePhong());
 	}
 
