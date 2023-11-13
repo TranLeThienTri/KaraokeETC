@@ -23,6 +23,7 @@ public class DanhSachPhong {
 
 	public ArrayList<Phong> getDSPhong() {
 		try {
+			list = new ArrayList<Phong>();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSPhong}";
@@ -44,11 +45,15 @@ public class DanhSachPhong {
 				}
 				float dienTich = rs.getFloat(6);
 				String tenLoaiPhong = "";
-				if(malPhong.equals("NOR"))
+				if (malPhong.equals("NOR")) {
 					tenLoaiPhong = "Phòng thường";
-				else tenLoaiPhong = "Phòng VIP";
-				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong,tenLoaiPhong);
-				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang,tenTinhTrangPhong);
+				}
+
+				else if (malPhong.equals("VIP")) {
+					tenLoaiPhong = "Phòng VIP";
+				}
+				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong, tenLoaiPhong);
+				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang, tenTinhTrangPhong);
 				Phong phong = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrangP, dienTich);
 				list.add(phong);
 			}
@@ -139,4 +144,6 @@ public class DanhSachPhong {
 		}
 		return b;
 	}
+	
+	
 }
