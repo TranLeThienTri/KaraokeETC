@@ -123,14 +123,16 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbTenKH = new JLabel("Tên khách hàng:");
 		lbTenKH.setForeground(Color.WHITE);
 		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTenKH.setBounds(41, 60, 140, 25);
+		lbTenKH.setBounds(38, 60, 140, 25);
 		pnTTDDP.add(lbTenKH);
 
 		txtSDT = new JTextField();
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(174, 25, 323, 25);
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
+		txtKhachHang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtKhachHang.setForeground(new Color(0, 0, 0));
 		txtKhachHang.setBounds(174, 62, 323, 25);
 		txtKhachHang.setEditable(false);
@@ -183,13 +185,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		radioDangThue.setOpaque(false);
 		radioDangThue.setFont(new Font("Tahoma", Font.BOLD, 15));
 		radioDangThue.setSelected(true);
-		radioDangThue.setBounds(164, 55, 120, 21);
+		radioDangThue.setBounds(164, 57, 120, 21);
 		pnLoaiPhong.add(radioDangThue);
 
 		radioTrong = new JRadioButton("Trống");
 		radioTrong.setContentAreaFilled(false);
 		radioTrong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		radioTrong.setBounds(295, 55, 103, 21);
+		radioTrong.setBounds(295, 57, 103, 21);
 		pnLoaiPhong.add(radioTrong);
 
 		bg = new ButtonGroup();
@@ -207,7 +209,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP.add(lbDSPhong);
 		String col[] = { "Mã phòng", "Loại phòng", "Sức chứa", "Giá phòng", "Tình trạng" };
-		model = new DefaultTableModel(col, 0);
+		model = new DefaultTableModel(col, 0){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
+		
 
 		tableDSPhong = new JTable(model);
 		// Set màu cho table
@@ -246,7 +254,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnDSP1.add(lbDSPhong);
 		String col2[] = { "M\u00E3 ph\u00F2ng", "Lo\u1EA1i d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5",
 				"S\u1ED1 l\u01B0\u1EE3ng", "Giá bán" };
-		model2 = new DefaultTableModel(col2, 0);
+		
+		model1 = new DefaultTableModel(col2, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
 		tableDSDichVu = new JTable(model2);
 
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -288,6 +302,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnLamMoi);
 
 		btnTinhTien = new FixButton("Tính tiền");
+		btnTinhTien.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_tinhtien.png")));
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTinhTien.setBounds(985, 15, 200, 35);
 		// btnTinhTien.setBackground(new java.awt.Color(153, 36, 36));
@@ -301,6 +316,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnThuePhong);
 
 		btnChuyenPhong = new FixButton("Chuyển phòng");
+		btnChuyenPhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_chuyenphong.png")));
 
 		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
 
@@ -308,6 +324,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnChuyenPhong.setBounds(25, 15, 200, 35);
 		pnCRUD.add(btnChuyenPhong);
 		btnThemDV = new FixButton("Thêm dịch vụ");
+		btnThemDV.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/btn_them.png")));
 		// btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
 		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThemDV.setBounds(265, 15, 200, 35);
@@ -324,10 +341,15 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnDSP2.add(lbDSPhong1);
 
 		String col1[] = { "Mã hóa đơn", "Mã phòng", "Tên khách hàng", "SĐT", "Ngày", "Thời gian" };
-		model1 = new DefaultTableModel(col1, 0);
+		model1 = new DefaultTableModel(col1, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
+
 		tableDSPhong2 = new JTable(model1);
 		tableDSPhong2.setBackground(Color.WHITE);
-//		tableDSPhong1.setColumnSelectionAllowed(true);
 
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
