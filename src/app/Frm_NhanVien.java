@@ -287,9 +287,7 @@ public void gui() {
 	
 	ConnectDB.getInstance().connect();
 			dsNV = new DanhSachNhanVien();
-			upTable();
-			
-			
+			upTable();	
 }
 
 //xoá trắng
@@ -312,7 +310,6 @@ public void upTable() {
 		Object[] obj = new Object[9];
 		obj[0] = nv.getMaNhanVien().trim();
 		obj[1] = nv.getHoTenNhanVien().trim();
-		System.out.println(nv.getchucVu().getTenChucVu());
 		obj[2] = nv.getchucVu().getTenChucVu();
 		obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
 		obj[4] = nv.getNgaySinh().toString();
