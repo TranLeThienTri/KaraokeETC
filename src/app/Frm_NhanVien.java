@@ -85,7 +85,8 @@ public void gui() {
 	pnQLNV.setLayout(null);
 //
 	JPanel panel = new JPanel();
-    panel.setBackground(new Color(190, 157, 157,181));	
+	panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+    panel.setBackground(new Color(207, 169, 0));	
 	panel.setBounds(102, 60, 1200, 286);
 	pnQLNV.add(panel);
 	panel.setLayout(null);

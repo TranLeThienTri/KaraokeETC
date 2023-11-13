@@ -72,7 +72,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	}
 
 	public Frm_QuanLyPhong() {
-		setTitle("QUẢN LÝ Phòng");
+		setTitle("QUẢN LÝ PHÒNG");
 		setSize(1400, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -89,8 +89,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnQLDP.setLayout(null);
 
 		pnTTDDP = new JPanel();
-		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
-		pnTTDDP.setBounds(100, 23, 1200, 239);
+		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
+		pnTTDDP.setBounds(100, 23, 1200, 260);
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
 
@@ -107,7 +108,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(lbTenKH);
 
 		lbTTDDP = new JLabel("Thông tin đơn đặt phòng");
-		lbTTDDP.setBounds(10, -1, 190, 20);
+		lbTTDDP.setBounds(10, 10, 190, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTTDDP.setForeground(new Color(255, 255, 255));
@@ -138,23 +139,23 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		btnThem = new FixButton("Thêm");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThem.setBounds(350, 199, 150, 30);
+		btnThem.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnThem.setBounds(350, 200, 150, 40);
 		btnThem.setBackground(new java.awt.Color(153, 36, 36));
 		pnTTDDP.add(btnThem);
 
 		btnSua = new FixButton("Sửa");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSua.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSua.setBackground(new java.awt.Color(153, 36, 36));
-		btnSua.setBounds(550, 199, 150, 30);
+		btnSua.setBounds(550, 200, 150, 40);
 		pnTTDDP.add(btnSua);
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setBounds(750, 199, 150, 30);
+		btnLamMoi.setBounds(750, 200, 150, 40);
 		pnTTDDP.add(btnLamMoi);
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
 
 		txtGia = new JTextField();
 		txtGia.setBounds(795, 37, 323, 30);
@@ -189,6 +190,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(comboSucChua);
 
 		pnLoaiPhong = new JPanel();
+		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnLoaiPhong.setBackground(Color.ORANGE);
 		pnLoaiPhong.setBounds(393, 293, 650, 71);
 		pnQLDP.add(pnLoaiPhong);
@@ -197,22 +199,22 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		lbLoaiPhongTK = new JLabel("Loại phòng:");
 		lbLoaiPhongTK.setForeground(Color.WHITE);
 		lbLoaiPhongTK.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbLoaiPhongTK.setBounds(32, 23, 108, 25);
+		lbLoaiPhongTK.setBounds(32, 20, 108, 25);
 		pnLoaiPhong.add(lbLoaiPhongTK);
-		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
+		pnLoaiPhong.setBackground(new java.awt.Color(189, 0, 88));
 
 		pnQLDP.add(pnLoaiPhong);
 
 		btnTatCa = new FixButton2("Tất cả");
-		btnTatCa.setBounds(163, 23, 100, 25);
+		btnTatCa.setBounds(163, 20, 100, 30);
 		pnLoaiPhong.add(btnTatCa);
 
 		btnPhongVip = new FixButton2("Phòng VIP");
-		btnPhongVip.setBounds(292, 23, 120, 25);
+		btnPhongVip.setBounds(292, 20, 120, 30);
 		pnLoaiPhong.add(btnPhongVip);
 
 		btnPhongThuong = new FixButton2("Phòng thường");
-		btnPhongThuong.setBounds(447, 23, 150, 25);
+		btnPhongThuong.setBounds(447, 20, 150, 30);
 		pnLoaiPhong.add(btnPhongThuong);
 //
 		String col1[] = { "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
