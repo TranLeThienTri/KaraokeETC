@@ -8,7 +8,11 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.function.DoubleToLongFunction;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -17,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
@@ -26,6 +31,16 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.SpinnerUI;
 
 import com.toedter.calendar.JDateChooser;
+
+import connectDB.ConnectDB;
+import dao.DanhSachDichVu;
+import dao.Dao_PhatSinhMa;
+import entitys.DichVu;
+import entitys.LoaiDichVu;
+import entitys.LoaiPhong;
+import entitys.Phong;
+import entitys.TinhTrangPhong;
+
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -38,17 +53,18 @@ import javax.swing.table.JTableHeader;
 
 import org.apache.poi.hssf.record.cf.BorderFormatting;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.EtchedBorder;
 
-public class Frm_ThemDichVu extends JFrame {
+public class Frm_ThemDichVu extends JFrame implements MouseListener,ActionListener {
 	JPanel pnDSDichVu, pnDV;
 	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL;
 	JComboBox comboTDV, comboLDV;
 	JTextField txtSoLuongTon;
 	Panel pnTDV;
-	FixButton btnHuyDV, btnXacNhan, btnLamMoi;
+	FixButton btnHuyDV, btnXacNhan, btnLamMoi,btnThemDV;
 	FixButton2 btnQuayLai;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
@@ -57,6 +73,7 @@ public class Frm_ThemDichVu extends JFrame {
 	private JLabel lbPhong;
 	private JLabel lbTenKH;
 	private JLabel lbGioVao;
+	DanhSachDichVu dsDV;
 
 	public Panel getFrmThemDichVu() {
 		return this.pnTDV;
@@ -65,7 +82,6 @@ public class Frm_ThemDichVu extends JFrame {
 	public Frm_ThemDichVu() {
 		setTitle("THÊM DỊCH VỤ");
 		setSize(1400, 670);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		gui();
@@ -110,30 +126,25 @@ public class Frm_ThemDichVu extends JFrame {
 		pnDV.add(lbSoLuong);
 
 		comboLDV = new JComboBox();
-		comboLDV.setModel(new DefaultComboBoxModel(new String[] { "Đồ ăn", "Thức uống" }));
+		comboLDV.setModel(new DefaultComboBoxModel(new String[] { "Thực phẩm", "Nước uống" }));
 		comboLDV.setSelectedIndex(0);
 		comboLDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboLDV.setBounds(129, 45, 300, 30);
 		pnDV.add(comboLDV);
 
 		comboTDV = new JComboBox();
-		comboTDV.setModel(new DefaultComboBoxModel(new String[] { "Bia Tiger", "Bia Heineken", "Bia Sài Gòn Xanh",
-				"Nước Suối", "Sting", "Pepsi", "Coca", "Snack Oishi", "Snack Lays", "Snack Swing", "Khô Bò Miếng",
-				"Khô Heo Cháy Tỏi", "Mực Rim Me", "Mực Hấp Nước Dừa", "Ghẹ Rim Me", "Trái Cây Tổng Hợp" }));
-		comboTDV.setSelectedIndex(0);
 		comboTDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTDV.setBounds(129, 85, 300, 30);
+		comboTDV.setEditable(true);
 		pnDV.add(comboTDV);
+		
 
-		txtSoLuongTon = new JTextField();
+		txtSoLuongTon = new JTextField("3");
 		txtSoLuongTon.setBounds(200, 125, 80, 30);
+		txtSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnDV.add(txtSoLuongTon);
 
-		FixButton btnThemDV = new FixButton("Làm mới");
-		btnThemDV.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnThemDV = new FixButton();
 		btnThemDV.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/cart.png")));
 		btnThemDV.setText("Thêm dịch vụ");
 		btnThemDV.setBounds(129, 206, 300, 35);
@@ -149,16 +160,18 @@ public class Frm_ThemDichVu extends JFrame {
 
 		lbGiamSL = new JLabel("");
 		lbGiamSL.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_giam.png")));
-		lbGiamSL.setForeground(Color.WHITE);
 		lbGiamSL.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGiamSL.setBounds(161, 120, 40, 40);
+		lbGiamSL.setBounds(158, 125, 30, 27);
+//		Border bottomBorder1 = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
+//		lbGiamSL.setBorder(bottomBorder1);
 		pnDV.add(lbGiamSL);
 
 		lbTangSL = new JLabel("");
 		lbTangSL.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_them.png")));
 		lbTangSL.setForeground(Color.WHITE);
 		lbTangSL.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTangSL.setBounds(286, 120, 40, 40);
+		lbTangSL.setBounds(286, 125, 30, 27);
+//		lbTangSL.setBorder(bottomBorder1);
 		pnDV.add(lbTangSL);
 
 		lbTongTien = new JLabel("Tổng tiền:");
@@ -184,16 +197,9 @@ public class Frm_ThemDichVu extends JFrame {
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-
-		tableDSDichVu = new JTable(new DefaultTableModel(
-				new Object[][] { { "1", "Thức uống", "Bia Tiger", "10", "30.000 VNĐ", "300.000 VNĐ" },
-						{ "2", "Đồ ăn", "Mực Rim Me", "5", "100.000 VNĐ", "500.000 VNĐ" },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null }, },
-				new String[] { "STT", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền" }));
-		tableDSDichVu.setBackground(Color.WHITE);
+		String col[] = { "STT","Loại Dịch Vụ", "Tên Dịch Vụ", "Số Lượng ", "Giá Bán","Thành tiền" };
+		model = new DefaultTableModel(col, 0);
+		tableDSDichVu = new JTable(model);
 
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
@@ -226,7 +232,7 @@ public class Frm_ThemDichVu extends JFrame {
 		btnHuyDV.setBounds(700, 470, 200, 40);
 		pnTDV.add(btnHuyDV);
 
-		btnXacNhan = new FixButton("Hủy đặt phòng");
+		btnXacNhan = new FixButton();
 		btnXacNhan.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_xacnhan.png")));
 		btnXacNhan.setText("Xác nhận");
 		btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -260,20 +266,208 @@ public class Frm_ThemDichVu extends JFrame {
 		lbGioVao.setBounds(591, 52, 150, 20);
 		pnTTPhong.add(lbGioVao);
 		
-		
-		
-		
 
 		// add background ở cuối
 		lbBGQLDV = new JLabel("");
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_chot1.png")));
 		lbBGQLDV.setBounds(0, 0, 1400, 670);
 		pnTDV.add(lbBGQLDV);
+		
+		lbTangSL.addMouseListener(this);
+		lbGiamSL.addMouseListener(this);
+		btnQuayLai.addActionListener(this);
+		comboLDV.addActionListener(this);
+		btnThemDV.addActionListener(this);
+		
+		ConnectDB.getInstance().connect();
+		dsDV = new DanhSachDichVu();
+		phanLoaiCombobox();
 
 	}
 
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == lbTangSL)
+			ktTangSL();
+		if (o == lbGiamSL)
+			ktGiamSL();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
+		// Đặt đường gạch chân cho JLabel
+		lbTangSL.setBorder(bottomBorder);
+		lbGiamSL.setBorder(bottomBorder);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK);
+		// Đặt đường gạch chân cho JLabel
+		lbTangSL.setBorder(bottomBorder);
+		lbGiamSL.setBorder(bottomBorder);
+		
+	}
+	
 	public static void main(String[] args) {
 		new Frm_ThemDichVu().setVisible(true);
-
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == comboLDV) {
+			phanLoaiCombobox();
+		}else if(o == btnThemDV) {
+			//upTable2();
+			themDVvaoTable();
+		}
+//		if(o == btnQuayLai ) {
+//			dispose();
+//		}
+	}
+	
+	public void themDVvaoTable() {
+		Object[] obj = new Object[5];
+			
+			String loai = (String) comboLDV.getSelectedItem();
+			String tendv = (String) comboTDV.getSelectedItem();
+			int sl = Integer.parseInt(txtSoLuongTon.getText());
+			double giaban = 0 ;
+			Frm_QuanLyDichVu qldv = new Frm_QuanLyDichVu();
+			
+			double thanhTien = sl*giaban;
+				obj[0] = loai;
+				obj[1] = tendv;
+				obj[2] = sl;
+				obj[3] = giaban;
+				obj[4] =giaban *sl;
+				model.addRow(obj);
+	
+	}
+	
+//	public boolean themDV() {
+//		Object[] obj = new Object[6];
+//	
+//			Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
+//			String mada = matp1.getMaDATuDong();
+//			String manu = matp1.getMaNUTuDong();
+//			String loai = (String) comboLDV.getSelectedItem();
+//			String tendv = (String) comboTDV.getSelectedItem();
+//			LoaiDichVu ldv;
+//			String ma;
+//			if (loai.equals("Thực phẩm")) {
+//				ma = mada;
+//				ldv = new LoaiDichVu("FOOD", "Thực phẩm");
+//
+//			} else {
+//				ldv = new LoaiDichVu("WATER", "Nước uống");
+//				ma = manu;
+//			}
+//			int sl = Integer.parseInt(txtSoLuongTon.getText());
+//			
+//			DichVu dv = new DichVu(ma, tendv, ldv, sl, giaban);
+//			double giaban = dv.getDonGia();
+//			double thanhTien = sl*giaban;
+//
+//			if (!dsDV.themDichVu(dv)) {
+//				JOptionPane.showMessageDialog(this, "Thêm thành công");
+//				obj[0] = ma;
+//				obj[1] = tendv;
+//				obj[2] = ldv.getTenLoaiDichVu();
+//				obj[3] = slt;
+//				obj[4] = giaban;
+//				obj[5] = thanhTien;
+//				model.addRow(obj);
+//			
+//				return true;
+//			}
+//		
+//		return false;
+//	}
+	
+	public void upTable2() {
+		
+		Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
+		String mada = matp1.getMaDATuDong();
+		String manu = matp1.getMaNUTuDong();
+		String loai = (String) comboLDV.getSelectedItem();
+		String tendv = (String) comboTDV.getSelectedItem();
+		LoaiDichVu ldv;
+		String ma;
+		if (loai.equals("Thực phẩm")) {
+			ma = mada;
+			ldv = new LoaiDichVu("FOOD", "Thực phẩm");
+
+		} else {
+			ldv = new LoaiDichVu("WATER", "Nước uống");
+			ma = manu;
+		}
+		int sl = Integer.parseInt(txtSoLuongTon.getText());
+		
+		
+		int i = 0;
+		ArrayList<DichVu> list = dsDV.getDSDichVu();
+		for (DichVu dv : list) {
+			if (dv.getMaDichVu().equals(ma)) {
+				Object[] obj = new Object[6];
+				obj[0] = ma;
+				obj[1] = loai;
+				obj[2] = tendv;	
+				obj[3] = sl;
+				obj[4] = dv.getDonGia();
+				obj[5] = dv.getDonGia()*sl;
+				model.addRow(obj);
+			}
+		}
+	}
+	
+	public void phanLoaiCombobox() {
+		String loai = String.valueOf(comboLDV.getSelectedItem());
+		ArrayList<DichVu> list = null;
+		comboTDV.removeAllItems();
+		if (loai.equals("Thực phẩm")) {
+			comboTDV.removeAllItems();
+			list = dsDV.getDSDichVuTheoLoai("FOOD");
+		} else {
+			comboTDV.removeAllItems();
+			list = dsDV.getDSDichVuTheoLoai("WATER");
+		}
+		for (DichVu s : list) {
+			comboTDV.addItem(s.getTenDichVu());
+		}
+	}
+	
+	
+	public void ktTangSL() {
+		int tang =  Integer.parseInt(txtSoLuongTon.getText());
+		int value = tang +1 ;
+		txtSoLuongTon.setText(String.valueOf(value));	
+	}
+	
+	public void ktGiamSL() {
+		int giam =  Integer.parseInt(txtSoLuongTon.getText());
+		int value = Math.max(0, giam-1) ;
+		txtSoLuongTon.setText(String.valueOf(value));	
+	}
+	
 }

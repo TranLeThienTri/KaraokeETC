@@ -119,7 +119,45 @@ public class DanhSachPhong {
 		}
 		return dao;
 	}
-
+	public ArrayList<Phong> getDSPhongTheoMa() {
+		ArrayList<Phong> dao = new ArrayList<>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getPhongTheoMa}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maPhong = rs.getString(6);
+				String malPhong = rs.getString(1);
+				int sucChua = rs.getInt(2);
+				Float giaPhong = rs.getFloat(3);
+				String matinhTrang = rs.getString(4);
+				String tenTinhTrangPhong = "";
+				if (matinhTrang.equals("BOOK")) {
+					tenTinhTrangPhong = "Phòng đã đặt";
+				} else if (matinhTrang.equals("EMPT")) {
+					tenTinhTrangPhong = "Phòng trống";
+				} else if (matinhTrang.equals("RENT")) {
+					tenTinhTrangPhong = "Phòng đang thuê";
+				}
+				float dienTich = rs.getFloat(5);
+				String tenLoaiPhong = "";
+				if(malPhong.equals("NOR"))
+					tenLoaiPhong = "Phòng thường";
+				else tenLoaiPhong = "Phòng VIP";
+				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong,tenLoaiPhong);
+				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang,tenTinhTrangPhong);
+				Phong phong = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrangP, dienTich);
+				dao.add(phong);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dao;
+	}
+	
+	
 	public boolean suaPhong(Phong p) {
 		boolean b = true;
 		try {

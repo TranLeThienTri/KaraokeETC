@@ -535,7 +535,20 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		if(o == btnChuyenPhong) {
 			new Frm_ChuyenPhong().setVisible(true);
 		}
+		if(o == btnThemDV) {
+			ktDichVu();
+		}
 	}
+	
+	public void ktDichVu() {
+		int row = tableDSPhong.getSelectedRow();
+		if (row == -1) {
+			JOptionPane.showMessageDialog(this, "Chọn phòng đang thuê để thêm dịch vu");
+		} else {
+			new Frm_ThemDichVu().setVisible(true);
+		}
+	}
+	
 	public void loaiPALL() {
 		clearTable1();
 		if(radioDangThue.isSelected()) {
