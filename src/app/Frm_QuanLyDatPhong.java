@@ -104,7 +104,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		pnDSPDD.add(lbDSPDD);
 
 		pnTTDDP = new JPanel();
-		pnTTDDP.setBackground(new java.awt.Color(190, 157, 157, 190));
+		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
 		pnTTDDP.setBounds(32, 10, 650, 320);
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -204,7 +205,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		pnTTDDP.add(cbPhut);
 
 		pnLoaiPhong = new JPanel();
-		pnLoaiPhong.setBackground(new java.awt.Color(250, 154, 0));
+		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnLoaiPhong.setBackground(new java.awt.Color(189, 0, 88));
 		pnLoaiPhong.setBounds(700, 10, 650, 80);
 		pnQLDP.add(pnLoaiPhong);
 		pnLoaiPhong.setLayout(null);
@@ -232,7 +234,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener,MouseLi
 		lbTinhTrang = new JLabel("Tình trạng:");
 		lbTinhTrang.setForeground(Color.WHITE);
 		lbTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
+
 		lbTinhTrang.setBounds(46, 50, 100, 25);
+
+
 		pnLoaiPhong.add(lbTinhTrang);
 
 		rDangDat = new JRadioButton("Đang đặt");

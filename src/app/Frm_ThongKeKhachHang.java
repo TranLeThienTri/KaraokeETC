@@ -114,8 +114,8 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 
 		lbltg = new JLabel("");
 		lbltg.setForeground(new Color(255, 255, 255));
-		lbltg.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbltg.setBounds(550, 62, 310, 41);
+		lbltg.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lbltg.setBounds(650, 62, 310, 41);
 		panel_tong.add(lbltg);
 
 		panel_tknv = new JPanel();
@@ -132,12 +132,13 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 
 		lbltgtk = new JLabel("Thời gian thống kê:");
 		lbltgtk.setForeground(new Color(255, 255, 255));
-		lbltgtk.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbltgtk.setBounds(394, 70, 165, 25);
+		lbltgtk.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lbltgtk.setBounds(450, 70, 230, 25);
 		panel_tong.add(lbltgtk);
 
 		panel_ngay = new JPanel();
-		panel_ngay.setBackground(new Color(190, 157, 157, 190));
+		panel_ngay.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		panel_ngay.setBackground(new Color(207, 169, 0));
 		panel_ngay.setBounds(10, 112, 427, 228);
 		panel_tong.add(panel_ngay);
 		panel_ngay.setLayout(null);
@@ -192,17 +193,18 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		btnThongKe = new FixButton("Thống kê");
 		btnThongKe.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThongKe.setBounds(84, 128, 253, 42);
-		btnThongKe.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_thongke.png")));
+		btnThongKe.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/thongke.png")));
 		panel_ngay.add(btnThongKe);
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(84, 176, 253, 42);
-		btnLamMoi.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_lammoi.png")));
+		btnLamMoi.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/btn_lammoi.png")));
 		panel_ngay.add(btnLamMoi);
 
 		panel_thongke1 = new JPanel();
-		panel_thongke1.setBackground(new Color(190, 157, 157, 190));
+		panel_thongke1.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		panel_thongke1.setBackground(new Color(189, 0, 88));
 		panel_thongke1.setBounds(447, 112, 471, 228);
 		panel_tong.add(panel_thongke1);
 		panel_thongke1.setLayout(null);
@@ -211,22 +213,23 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		lbliconthongke1.setForeground(new Color(255, 255, 255));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
-		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_tong.png")));
+		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_tkkh.png")));
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
-		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblthongke1.setBounds(149, 97, 199, 33);
+		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblthongke1.setBounds(135, 123, 250, 35);
 		panel_thongke1.add(lblthongke1);
 
 		lbltongtk1 = new JLabel("");
 		lbltongtk1.setForeground(new Color(255, 255, 255));
-		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbltongtk1.setBounds(220, 131, 70, 43);
+		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lbltongtk1.setBounds(225, 143, 70, 43);
 		panel_thongke1.add(lbltongtk1);
 
 		panel_thongke2 = new JPanel();
-		panel_thongke2.setBackground(new Color(190, 157, 157, 190));
+		panel_thongke2.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		panel_thongke2.setBackground(new Color(222,155,0));
 		panel_thongke2.setBounds(928, 112, 448, 228);
 		panel_tong.add(panel_thongke2);
 		panel_thongke2.setLayout(null);
@@ -234,18 +237,18 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
-		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_funnel.png")));
+		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeKhachHang.class.getResource("/imgs/icon_tkkh1.png")));
 
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
-		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblthongke2.setBounds(91, 99, 265, 28);
+		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblthongke2.setBounds(57, 118, 356, 35);
 		panel_thongke2.add(lblthongke2);
 
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
-		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbltongtk2.setBounds(200, 131, 79, 41);
+		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lbltongtk2.setBounds(209, 143, 79, 41);
 		panel_thongke2.add(lbltongtk2);
 
 		String col[] = { "Mã KH", "Họ tên", "Loại KH", "Giới tính", "SĐT", "CCCD", "Điểm tích luỹ" };

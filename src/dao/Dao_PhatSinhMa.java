@@ -17,7 +17,8 @@ import entitys.Phong;
 import entitys.TinhTrangPhong;
 
 public class Dao_PhatSinhMa {
-	public String getMaNVCuoi() {
+	public String getMaKHCuoi()
+	{
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
@@ -32,8 +33,27 @@ public class Dao_PhatSinhMa {
 		}
 		return ma;
 	}
+	//getmaNVCuoi
+	public String getMaNVCuoi()
+	{
+		String ma = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaNVTuDong}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while(rs.next())
+				ma = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ma;
+	}
 
-	public String getMaDATuDong() {
+	public String getMaDATuDong()
+	{
+
 		String ma = "";
 		try {
 			ConnectDB.getInstance();
