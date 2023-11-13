@@ -84,7 +84,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnQLDV.setLayout(null);
 
 		pnTTDV = new JPanel();
-		pnTTDV.setBackground(new java.awt.Color(190, 157, 157));
+		pnTTDV.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		pnTTDV.setBackground(new java.awt.Color(207, 169, 0));
 		pnTTDV.setBounds(40, 45, 1280, 181);
 		pnQLDV.add(pnTTDV);
 		pnTTDV.setLayout(null);

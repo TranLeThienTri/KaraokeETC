@@ -46,12 +46,12 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	private JComboBox comboTTP, comboLP, comboGP;
 	FixButton btnHuy, btnChuyen;
 
-	public Panel getFrmThanhToan() {
+	public Panel getFrmChuyenPhong() {
 		return this.pnChuyenPhong;
 	}
 
 	public Frm_ChuyenPhong() {
-		setTitle("THANH TOÁN HÓA ĐƠN");
+		setTitle("CHUYỂN PHÒNG");
 		setSize(1000, 820);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);

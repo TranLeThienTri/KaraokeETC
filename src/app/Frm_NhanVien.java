@@ -94,61 +94,150 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		getContentPane().add(pnQLNV);
 		pnQLNV.setLayout(null);
 //
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(190, 157, 157));
-		panel.setBounds(102, 60, 1200, 286);
-		pnQLNV.add(panel);
-		panel.setLayout(null);
 
-		JLabel lbTTDV = new JLabel("Thông tin nhân viên");
+	JPanel panel = new JPanel();
+	panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+    panel.setBackground(new Color(207, 169, 0));	
+	panel.setBounds(102, 60, 1200, 286);
+	pnQLNV.add(panel);
+	panel.setLayout(null);
+	
+	JLabel lbTTDV = new JLabel("Thông tin nhân viên");
+	lbTTDV.setBounds(102, 30, 250, 20);
+	pnQLNV.add(lbTTDV);
+	lbTTDV.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lbTTDV.setForeground(new Color(255, 255, 255));
+	
+	JLabel lblHoTen = new JLabel("Họ và tên: ");
+	lblHoTen.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblHoTen.setBounds(79, 21, 91, 27);
+	lblHoTen.setForeground(new Color(255, 255, 255));
+	panel.add(lblHoTen);
+	
+	JLabel lblSDT = new JLabel("Số điện thoại:");
+	lblSDT.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblSDT.setBounds(679, 20, 123, 28);
+	lblSDT.setForeground(new Color(255, 255, 255));
+	panel.add(lblSDT);
+	
+	JLabel lblDiaChi = new JLabel("Địa chỉ:");
+	lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblDiaChi.setBounds(79, 71, 72, 28);
+	lblDiaChi.setForeground(new Color(255, 255, 255));
+	panel.add(lblDiaChi);
+	
+	JLabel lblCCCD = new JLabel("CCCD:");
+	lblCCCD.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblCCCD.setBounds(79, 114, 72, 36);
+	lblCCCD.setForeground(new Color(255, 255, 255));
+	panel.add(lblCCCD);
+	
+	JLabel lblChucVu = new JLabel("Chức vụ:");
+	lblChucVu.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblChucVu.setBounds(79, 160, 81, 36);
+	lblChucVu.setForeground(new Color(255, 255, 255));
+	panel.add(lblChucVu);
+	
+	JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+	lblNgaySinh.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblNgaySinh.setForeground(new Color(255, 255, 255));
+	lblNgaySinh.setBounds(74, 228, 96, 27);
+	panel.add(lblNgaySinh);
+	
+	JLabel lblGioiTinh = new JLabel("Giới tính:");
+	lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblGioiTinh.setForeground(new Color(255, 255, 255));
+	lblGioiTinh.setBounds(679, 114, 95, 36);
+	panel.add(lblGioiTinh);
+	
+	JLabel lblTrangThai = new JLabel("Trạng thái:");
+	lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 17));
+	lblTrangThai.setForeground(new Color(255, 255, 255));
+	lblTrangThai.setBounds(679, 161, 123, 41);
+	panel.add(lblTrangThai);
+	
+	txtHoTen = new JTextField();
+	txtHoTen.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	txtHoTen.setBounds(180, 19,300 , 30);
+	panel.add(txtHoTen);
+	txtHoTen.setColumns(10);
+	
+	txtSDT = new JTextField();
+	txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	txtSDT.setBounds(812, 19, 300, 30);
+	panel.add(txtSDT);
+	txtSDT.setColumns(10);
+	
+	txtDiaChi = new JTextField();
+	txtDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	txtDiaChi.setBounds(180, 69, 932, 30);
+	panel.add(txtDiaChi);
+	txtDiaChi.setColumns(10);
+	
+	
+	txtCCCD = new JTextField();
+	txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	txtCCCD.setColumns(10);
+	txtCCCD.setBounds(180, 115, 300, 30);
+	panel.add(txtCCCD);
+	
+	
+	comboChucVu = new JComboBox();
+	comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
+	comboChucVu.setSelectedIndex(0);
+	comboChucVu.setBounds(180, 166, 300, 30);
+	panel.add(comboChucVu);
+
+		 lbTTDV = new JLabel("Thông tin nhân viên");
 		lbTTDV.setBounds(102, 30, 250, 20);
 		pnQLNV.add(lbTTDV);
 		lbTTDV.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lbTTDV.setForeground(new Color(255, 255, 255));
 
-		JLabel lblHoTen = new JLabel("Họ và tên: ");
+		 lblHoTen = new JLabel("Họ và tên: ");
 		lblHoTen.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblHoTen.setBounds(79, 21, 91, 27);
 		lblHoTen.setForeground(new Color(255, 255, 255));
 		panel.add(lblHoTen);
 
-		JLabel lblSDT = new JLabel("Số điện thoại:");
+		 lblSDT = new JLabel("Số điện thoại:");
 		lblSDT.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblSDT.setBounds(679, 20, 123, 28);
 		lblSDT.setForeground(new Color(255, 255, 255));
 		panel.add(lblSDT);
 
-		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		 lblDiaChi = new JLabel("Địa chỉ:");
 		lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblDiaChi.setBounds(79, 71, 72, 28);
 		lblDiaChi.setForeground(new Color(255, 255, 255));
 		panel.add(lblDiaChi);
 
-		JLabel lblCCCD = new JLabel("CCCD:");
+		 lblCCCD = new JLabel("CCCD:");
 		lblCCCD.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblCCCD.setBounds(79, 114, 72, 36);
 		lblCCCD.setForeground(new Color(255, 255, 255));
 		panel.add(lblCCCD);
 
-		JLabel lblChucVu = new JLabel("Chức vụ:");
+		 lblChucVu = new JLabel("Chức vụ:");
 		lblChucVu.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblChucVu.setBounds(79, 160, 81, 36);
 		lblChucVu.setForeground(new Color(255, 255, 255));
 		panel.add(lblChucVu);
 
-		JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+		 lblNgaySinh = new JLabel("Ngày sinh:");
 		lblNgaySinh.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblNgaySinh.setForeground(new Color(255, 255, 255));
 		lblNgaySinh.setBounds(74, 228, 96, 27);
 		panel.add(lblNgaySinh);
 
-		JLabel lblGioiTinh = new JLabel("Giới tính:");
+		 lblGioiTinh = new JLabel("Giới tính:");
 		lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblGioiTinh.setForeground(new Color(255, 255, 255));
 		lblGioiTinh.setBounds(679, 114, 95, 36);
 		panel.add(lblGioiTinh);
 
-		JLabel lblTrangThai = new JLabel("Trạng thái:");
+		 lblTrangThai = new JLabel("Trạng thái:");
 		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblTrangThai.setForeground(new Color(255, 255, 255));
 		lblTrangThai.setBounds(679, 161, 123, 41);
