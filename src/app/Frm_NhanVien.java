@@ -61,9 +61,8 @@ import javax.swing.DefaultComboBoxModel;
 
 public class Frm_NhanVien extends JFrame implements MouseListener, ActionListener {
 	private JTextField txtHoTen, txtDiaChi, txtChucVu, txtSDT, txtGioiTinh, txtNgaySinh, txtCCCD, txtMess;
-	private JLabel lbTB, lbTTDV, lblHoTen, lblSDT, lblDiaChi, lblCCCD, lblChucVu, lblNgaySinh, lblGioiTinh,
-			lblTrangThai;
-	private JPanel panel;
+	private JLabel lbTB, lbTTDV, lblHoTen, lblSDT, lblDiaChi, lblCCCD, lblChucVu, lblNgaySinh, lblGioiTinh,lblTrangThai,lbDSPhong;
+
 	private DefaultTableModel model;
 	private FixButton btnLamMoi, btnSua, btnThem;
 	private JTable table;
@@ -74,9 +73,10 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	private Date ngayHienTai;
 	private int ngay, thang, nam;
 	DanhSachNhanVien dsNV;
+	JPanel pnDSP, panel;
 
 	public Frm_NhanVien() {
-		setTitle("QUẢN LÝ Nhân Viên");
+		setTitle("QUẢN LÝ NHÂN VIÊN");
 		setSize(1400, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -104,7 +104,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		pnQLNV.add(panel);
 		panel.setLayout(null);
 
-	
 
 		lbTTDV = new JLabel("Thông tin nhân viên");
 		lbTTDV.setBounds(102, 30, 250, 20);
@@ -191,6 +190,8 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		comboChucVu.setBounds(180, 166, 300, 30);
 		panel.add(comboChucVu);
 
+	
+
 		ngaySinh = new JDateChooser();
 		ngaySinh.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -215,7 +216,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTB.setBounds(680, 202, 500, 36);
+		lbTB.setBounds(620, 200, 570, 36);
 		lbTB.setForeground(Color.RED);
 		panel.add(lbTB);
 
@@ -249,18 +250,18 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 		comboTrangThai = new JComboBox();
 		comboTrangThai.setFont(new Font("Tahoma", Font.BOLD, 17));
-		comboTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm việc", "Ngưng làm việc" }));
+		comboTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm việc", "Đã thôi việc" }));
 		comboTrangThai.setBounds(812, 165, 300, 31);
 		panel.add(comboTrangThai);
 
 // Add the menu bar to the NORTH of the content pane
-		JPanel pnDSP = new JPanel();
+		pnDSP = new JPanel();
 		pnDSP.setBounds(100, 370, 1200, 270);
 		pnDSP.setLayout(null);
 
-		JLabel lbDSPhong = new JLabel("Danh Sách Nhân Viên");
+		lbDSPhong = new JLabel("Danh Sách Nhân Viên");
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbDSPhong.setBounds(10, 0, 150, 25);
+		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
 
 		String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
@@ -571,7 +572,8 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	public boolean ktraDuLieu() {
 
 		String ten = txtHoTen.getText();
-		if (ten.equals("") || !ten.matches("^[A-ĐĐ-Ỹ][a-đđ-ỹ]*( [A-ĐĐ-Ỹ][a-đđ-ỹ]*)*$")) {
+		if (ten.equals("") || !ten.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
 			txtHoTen.requestFocus();
 			return false;
@@ -584,8 +586,8 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 				return false;
 			}
 		}
-		if (dt.equals("") || !dt.matches("\\d{10}")) {
-			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số");
+		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
 			txtSDT.requestFocus();
 			return false;
 		}

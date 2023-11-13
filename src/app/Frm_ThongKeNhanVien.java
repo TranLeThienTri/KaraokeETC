@@ -212,9 +212,9 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lblthongke1.setBounds(135, 123, 250, 35);
 		panel_thongke1.add(lblthongke1);
 		lbltongtk1 = new JLabel("");
-		lbltongtk1.setForeground(new Color(189, 0, 88));
+		lbltongtk1.setForeground(Color.WHITE);
 		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk1.setBounds(220, 131, 70, 43);
+		lbltongtk1.setBounds(220, 146, 70, 43);
 		panel_thongke1.add(lbltongtk1);
 
 		panel_thongke2 = new JPanel();

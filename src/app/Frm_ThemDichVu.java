@@ -353,7 +353,7 @@ public class Frm_ThemDichVu extends JFrame implements MouseListener,ActionListen
 			String tendv = (String) comboTDV.getSelectedItem();
 			int sl = Integer.parseInt(txtSoLuongTon.getText());
 			double giaban = 0 ;
-			Frm_QuanLyDichVu qldv = new Frm_QuanLyDichVu();
+//			Frm_QuanLyDichVu qldv = new Frm_QuanLyDichVu();
 			
 			double thanhTien = sl*giaban;
 				obj[0] = loai;

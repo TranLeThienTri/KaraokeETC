@@ -58,7 +58,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 
 	public Frm_KhachHang() throws SQLException {
 		// getContentPane().setBackground(Color.CYAN);
-		setTitle("QUẢN LÝ Khách Hàng");
+		setTitle("QUẢN LÝ KHÁCH HÀNG");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -79,7 +79,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		panel = new JPanel();
 
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-	    panel.setBackground(new Color(207, 169, 0));	
+		panel.setBackground(new Color(207, 169, 0));
 
 		panel.setBounds(102, 51, 1200, 271);
 		pnQLKH.add(panel);
@@ -126,7 +126,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		lblLoaiKhachHgang.setBounds(79, 143, 81, 36);
 		panel.add(lblLoaiKhachHgang);
 
-		lblDTL = new JLabel("ĐIểm tích luỹ:");
+		lblDTL = new JLabel("Điểm tích luỹ:");
 		lblDTL.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblDTL.setForeground(new Color(255, 255, 255));
 		lblDTL.setBounds(679, 141, 123, 41);
@@ -167,7 +167,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTB.setBounds(400, 178, 500, 36);
+		lbTB.setBounds(380, 180, 700, 36);
 		lbTB.setForeground(Color.RED);
 		panel.add(lbTB);
 
@@ -270,6 +270,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
 				btnThem.setText("Xác nhận");
 				btnSua.setText("Huỷ");
+
 			}  else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				if(themKH()) {
 				btnSua.setText("Sửa");
@@ -426,8 +427,11 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 	public boolean ktraDuLieu() {
 
 		String ten = txtTenKH.getText();
-		if (ten.equals("") || !ten.matches("\\b\\p{Lu}[\\p{L} ]*\\b")) {
-			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu ");
+
+		if (ten.equals("") || !ten.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
+
 			txtTenKH.requestFocus();
 			return false;
 		}
@@ -439,8 +443,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 				return false;
 			}
 		}
-		if (dt.equals("") || !dt.matches("\\d{10}")) {
-			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số");
+		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
 			txtSDT.requestFocus();
 			return false;
 		}
@@ -457,8 +461,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 		}
 		return true;
 	}
-	
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
