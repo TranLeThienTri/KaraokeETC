@@ -251,7 +251,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		tableDSPhong1 = new JTable(model1);
 
-		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		tbHeader1 = tableDSPhong1.getTableHeader();
 		tbHeader1.setBackground(new java.awt.Color(0, 0, 0));

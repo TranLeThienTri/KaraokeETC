@@ -264,7 +264,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 		tableDSDichVu.setBackground(Color.WHITE);
 
-		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		JTableHeader tbHeader3 = tableDSDichVu.getTableHeader();
 		tbHeader3.setBackground(new java.awt.Color(0, 0, 0));

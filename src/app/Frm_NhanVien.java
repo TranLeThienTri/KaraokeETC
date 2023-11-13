@@ -347,20 +347,6 @@ public void upTable() {
 	xoaTrang();
 }
 
-//public void setTextTB() {
-//	int row = table.getSelectedRow();
-//	txtHoTen.setText(table.getValueAt(row, 1).toString());
-//	
-//	if(table.getValueAt(row, 2).toString().equalsIgnoreCase("Quản Lí"))
-//
-//		comboChucVu.setSelectedIndex(0);
-//		ngaySinh.setDate(ngayHienTai);
-//		txtSDT.setText("");
-//		lbTB.setText("");
-//		comboGT.setSelectedIndex(0);
-//		comboTrangThai.setSelectedIndex(0);
-//		table.clearSelection();
-//	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
