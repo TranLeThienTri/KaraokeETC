@@ -115,6 +115,24 @@ public class DanhSachKhachHang {
 		}
 		return b;
 	}
+
+	public int getDTLTheoMa(String ma) {
+		int diem = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDTLTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				diem = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return diem;
+	}
 	
 	
 	public KhachHang getKhachHangTheoSDT(String s) {
@@ -122,7 +140,7 @@ public class DanhSachKhachHang {
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call getKhachHangTheoSDT(?)}";
+			String sql = "{call kiemTraKHTheoSDT(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, s);
 			ResultSet rs = myCall.executeQuery();
@@ -134,12 +152,11 @@ public class DanhSachKhachHang {
 				Boolean gioiTinh = rs.getBoolean(4);
 				int dtl = rs.getInt(6);
 				LoaiKhachHang lkh = new LoaiKhachHang(rs.getString(7));
-				kh = new KhachHang(makh, tenKH, cccd, cccd, dtl, false, lkh);
+				kh = new KhachHang(makh, tenKH, cccd, cccd, dtl, gioiTinh, lkh);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return kh;
 	}
-
 }

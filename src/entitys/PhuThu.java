@@ -10,6 +10,11 @@ public class PhuThu {
 		this.lyDoPhuThu = lyDoPhuThu;
 		this.soTien = soTien;
 	}
+	public PhuThu() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaPhuThu() {
 		return maPhuThu;
 	}
