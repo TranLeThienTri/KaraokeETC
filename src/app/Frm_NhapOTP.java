@@ -31,6 +31,8 @@ import mail.Config;
 
 import javax.swing.UIManager;
 
+import org.apache.poi.ss.formula.functions.T;
+
 public class Frm_NhapOTP extends JFrame implements ActionListener {
 	private JButton btnSend;
 	private JPanel pnSendOTP;
@@ -39,12 +41,15 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 	private Date ngayHienTai;
 	ImageIcon originalIcon, resizedIcon;
 	Image image, resizedImage;
-
+	String otp;
+	public TaiKhoan tk;
 	public JPanel get_FrmSendMail() {
 		return this.pnSendOTP;
 	}
 
-	public Frm_NhapOTP() {
+	public Frm_NhapOTP(TaiKhoan tk,String otp) {
+		this.tk =tk;
+		this.otp = otp;
 		getContentPane().setBackground(SystemColor.controlHighlight);
 		setTitle("Gửi Mail");
 		setSize(800, 500);
@@ -55,9 +60,9 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		showGui();
 	}
 
-	public static void main(String[] args) {
-		new Frm_NhapOTP().setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		new Frm_NhapOTP(otp).setVisible(true);
+//	}
 
 	private void formSendMail() {
 		btnDangNhap();
@@ -171,16 +176,20 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnSend) {
-			sendMail();
+			compareOTP();
 		}
-
 	}
 
-	public void sendMail() {
-		String mail = txtOtp.getText().trim();
-		Config sendMail = new Config(mail);
-//		sendMail.main(null);
-		xoaTrang();
+	public void compareOTP() {
+		String s = txtOtp.getText().trim();
+		if(s.equalsIgnoreCase(otp)) {
+			Frm_DoiMatKhau frmDoiMatKhau = new Frm_DoiMatKhau(tk);
+			frmDoiMatKhau.setVisible(true);
+			this.setVisible(false);
+		}else {
+			txtOtp.setText("Nhập sai OTP rồi ông cóc");
+		}
+			
 	}
 
 	public void xoaTrang() {

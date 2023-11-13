@@ -39,25 +39,22 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 	ImageIcon originalIcon, resizedIcon;
 	JLabel lbQuenMatKhau;
 	Image image, resizedImage;
-
+	public TaiKhoan tk;
 	public JPanel get_FrmSendMail() {
 		return this.pnSendMail;
 	}
 
-	public Frm_GuiMail() {
+	public Frm_GuiMail(TaiKhoan tk) {
+		this.tk = tk;
 		getContentPane().setBackground(SystemColor.controlHighlight);
 		setTitle("Gửi Mail");
 		setSize(800, 500);
-
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		showGui();
 	}
 
-	public static void main(String[] args) {
-		new Frm_GuiMail().setVisible(true);
-	}
 
 	private void formSendMail() {
 		btnDangNhap();
@@ -152,7 +149,6 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		JLabel lbBGR = new JLabel(resizedIcon);
 		lbBGR.setBounds(0, 0, 800, 500);
 		pnBGR.add(lbBGR);
-		
 	}
 
 	// Hiển thị ngày hiện tại
@@ -183,15 +179,16 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		if (o == btnDangNhap) {
 			sendMail();
 		}
-
 	}
 
 	public void sendMail() {
 		String mail = txtTaiKhoan.getText().trim();
 		Config sendMail = new Config(mail);
-//		sendMail.main(null);
+		sendMail.main(null);// send mail
+		String rd = sendMail.getRd();
+
 		xoaTrang();
-		Frm_NhapOTP frmOtp = new Frm_NhapOTP();
+		Frm_NhapOTP frmOtp = new Frm_NhapOTP(tk,rd);
 		frmOtp.setVisible(true);
 		this.setVisible(false);
 	}
