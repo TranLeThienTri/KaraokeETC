@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import dao.Dao_PhatSinhMa;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
 import entitys.LoaiPhong;
+import entitys.NhanVien;
 import entitys.Phong;
 import entitys.TinhTrangPhong;
 
@@ -65,14 +67,18 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	private DefaultTableModel model1;
 	private JTextField txtGia, txtMaPhong, txtDienTich;
 	private FixButton btnSua, btnThem, btnLamMoi;
-
+	private DecimalFormat df;
+	private DecimalFormat dfs;
+	NhanVien nv;
 	DanhSachPhong dsPhong;
+	
 
 	public Panel getFrmQuanLyPhong() {
 		return this.pnQLDP;
 	}
 
-	public Frm_QuanLyPhong() {
+	public Frm_QuanLyPhong(NhanVien nv) {
+		this.nv = nv;
 		setTitle("QUẢN LÝ PHÒNG");
 		setSize(1400, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -269,16 +275,24 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		upCombobox();
 		upCombobox2();
 
+		btnTatCa.addActionListener(this);
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnLamMoi.addActionListener(this);
+		btnPhongVip.addActionListener(this);
+		btnPhongThuong.addActionListener(this);
 		tableDSPhong1.addMouseListener(this);
+		
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		
+		
 	}
 
-	public static void main(String[] args) {
-		new Frm_QuanLyPhong().setVisible(true);
-
-	}
+//	public static void main(String[] args) {
+//		new Frm_QuanLyPhong(nv).setVisible(true);
+//
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -317,6 +331,15 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		} else if (o.equals(btnLamMoi)) {
 			xoaTrang();
 
+		} else if (o.equals(btnPhongVip)) {
+			locTheoLoaiPhongVIP();
+		} else if (o.equals(btnPhongThuong)) {
+			
+			locTheoLoaiPhongThuong();
+		}
+		else if (o.equals(btnTatCa)) {
+			clearTable();
+			upTable();
 		}
 	}
 
@@ -407,14 +430,16 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	public void upTable() {
 		int i = 0;
 		ArrayList<Phong> list = dsPhong.getDSPhong();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
 		for (Phong p : list) {
 			Object[] obj = new Object[7];
 			obj[0] = p.getMaPhong().trim();
 			obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 			obj[2] = p.getSucChua();
 			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
-			obj[4] = p.getGiaPhong();
-			obj[5] = p.getDienTich();
+			obj[4] = df.format(p.getGiaPhong());
+			obj[5] = dfs.format(p.getDienTich());
 			model1.addRow(obj);
 		}
 		xoaTrang();
@@ -500,6 +525,54 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			return false;
 		}
 		return true;
+	}
+
+	// Lọc phòng theo loại
+	public void locTheoLoaiPhongVIP() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		ArrayList<Phong> list = dsPhong.getDSPhong();
+		int i = 0;
+		for (Phong p : list) {
+			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+				obj[4] = df.format(p.getGiaPhong());
+				obj[5] = dfs.format(p.getDienTich());
+				model1.addRow(obj);
+			}
+		}
+	}
+
+	// Lọc phòng theo loại
+	public void locTheoLoaiPhongThuong() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		ArrayList<Phong> list = dsPhong.getDSPhong();
+		int i = 0;
+		for (Phong p : list) {
+			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+				obj[4] = df.format(p.getGiaPhong());
+				obj[5] = dfs.format(p.getDienTich());
+				model1.addRow(obj);
+			}
+		}
+	}
+
+	public void clearTable() {
+		while (tableDSPhong1.getRowCount() > 0) {
+			model1.removeRow(0);
+		}
 	}
 
 	@Override
