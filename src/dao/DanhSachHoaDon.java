@@ -175,7 +175,7 @@ public class DanhSachHoaDon {
 				String map = rs.getString(10);
 				Phong phong = new Phong(map);
 				float tongtien = rs.getFloat(11);
-				HoaDonPhong hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue, giotra, tongtien);
+				HoaDonPhong hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue, giotra, ngaylap, giotra, tongtien);
 				list.add(hd);
 			}
 		} catch (SQLException e) {
@@ -206,6 +206,23 @@ public class DanhSachHoaDon {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getTenKHTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				ten = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ten;
+	}
+	public String getSDTKHTheoMa (String ma) {
+		String ten = null ;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSDTKHTheoMa(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, ma);
 			ResultSet rs = myCall.executeQuery();
@@ -251,17 +268,18 @@ public class DanhSachHoaDon {
 				DichVu dv = new DichVu(madv);
 				dsdv.add(dv);
 			}
-			list = getDSDVTheoDSMaNV(dsdv);
+			list = getDSDVTheoDSMaDV(dsdv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
-	public ArrayList<DichVu> getDSDVTheoDSMaNV(ArrayList<DichVu> dsMa) {
+	public ArrayList<DichVu> getDSDVTheoDSMaDV(ArrayList<DichVu> dsMa) {
 		ArrayList<DichVu> list = new ArrayList<DichVu>();
 		DanhSachDichVu dao = new DanhSachDichVu();
 		for (DichVu dv : dsMa) {
 			DichVu dichvu = dao.getDVTheoMa(dv.getMaDichVu());
+			System.out.println(dv.getMaDichVu());
 				list.add(dichvu);
 		}
 		return list;
@@ -303,5 +321,37 @@ public class DanhSachHoaDon {
 			e.printStackTrace();
 		}
 		return tong;
+	}
+	public ArrayList<HoaDonPhong> getDSHD() {
+		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDSHD}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maHD = rs.getString(1);
+				LocalDate ngaylap = LocalDate.parse(rs.getString(2));
+				LocalTime giothue = LocalTime.parse(rs.getString(3));
+				String maloaihd = rs.getString(9);
+				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
+				String makh = rs.getString(7);
+				String tenkh = getTenKHTheoMa(makh);
+				String sodt = getSDTKHTheoMa(makh);
+				KhachHang kh = new KhachHang(makh,tenkh,sodt);
+				String manv = rs.getString(8);
+				String tennv = getTenNVTheoMa(manv);
+				NhanVien nv = new NhanVien(manv,tennv);
+				String map = rs.getString(10);
+				Phong phong = new Phong(map);
+				float tongtien = rs.getFloat(11);
+				HoaDonPhong hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue);
+				list.add(hd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

@@ -35,10 +35,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class Frm_KhachHang extends JFrame implements ActionListener, MouseListener {
-	private JLabel lbTTKH, lblHoTen, lblSDT, lblCCCD, lblGioiTinh, lblLoaiKhachHgang, lblDTL, lbDSPhong, lbBG, lbTB;
-	private JTextField txtTenKH, txtLoaiKH, txtSDT, txtCCCD, txtDTL;
 
+public class Frm_KhachHang extends JFrame implements ActionListener,MouseListener{
+	private JLabel lbTTKH,lblHoTen,lblSDT,lblCCCD,lblGioiTinh ,lblLoaiKhachHgang,lblDTL,lbDSPhong,lbBG,lbTB;
+	private JTextField  txtTenKH, txtLoaiKH, txtSDT,  txtCCCD ,txtDTL;
 	private DefaultTableModel model;
 	private JTableHeader tbHeader;
 	private JTable table;
@@ -47,7 +47,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	private FixButton btnLamMoi, btnSua, btnThem;
 	private JComboBox comboGT, comboLKH;
 	DanhSachKhachHang dsKh;
-
 	Panel pnQLKH;
 	JPanel panel, pnDSP;
 
@@ -271,9 +270,14 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 				if(themKH()) {
 				btnSua.setText("Sửa");
 				btnThem.setText("Thêm");
+			}else if(btnThem.getText().equalsIgnoreCase("Xác nhận")) {
+				btnSua.setText("Sửa");
+				if(themKH() == true) {
 				}
-			} else if (btnThem.getText().equals("Xác nhận ")) {
-				if(suaKH()) {
+				btnThem.setText("Thêm");
+			}else if(btnThem.getText().equals("Xác nhận ")) {
+				suaKH();
+				xoaTrang();				
 				btnThem.setText("Thêm");
 				btnSua.setText("Sửa");
 				}
