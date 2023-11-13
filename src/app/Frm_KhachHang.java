@@ -458,7 +458,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener,MouseListene
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 		setTextTB();
 	}
 
