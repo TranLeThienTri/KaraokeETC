@@ -76,7 +76,10 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		//
 
 		panel = new JPanel();
-		panel.setBackground(new Color(190, 157, 157));
+
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+	    panel.setBackground(new Color(207, 169, 0));	
+
 		panel.setBounds(102, 51, 1200, 271);
 		pnQLKH.add(panel);
 		panel.setLayout(null);
