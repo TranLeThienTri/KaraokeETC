@@ -411,8 +411,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 		try {
 			int slt = Integer.parseInt(txtSoLuongTon.getText());
-			if (slt <= 0) {
-				showMessage("(*)Số lượng tồn phải lớn hơn 0");
+			if (slt <0) {
+				showMessage("(*)Số lượng tồn phải lớn hơn bằng 0");
 				txtSoLuongTon.requestFocus();
 				return false;
 			}
@@ -425,7 +425,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		try {
 			float donGia = Float.parseFloat(txtDonGia.getText());
 			if (donGia <= 0) {
-				showMessage("(*)Lương phải lớn hơn 0");
+				showMessage("(*)Đơn giá  phải lớn hơn 0");
 				txtDonGia.requestFocus();
 				return false;
 			}
