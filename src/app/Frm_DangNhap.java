@@ -28,6 +28,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
@@ -276,4 +278,6 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	public static void main(String[] args) {
 		new Frm_DangNhap().setVisible(true);
 	}
+
+	
 }

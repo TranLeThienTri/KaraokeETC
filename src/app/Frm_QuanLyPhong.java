@@ -1,4 +1,3 @@
-
 package app;
 
 import java.awt.Color;
@@ -12,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +38,7 @@ import dao.Dao_PhatSinhMa;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
 import entitys.LoaiPhong;
+import entitys.NhanVien;
 import entitys.Phong;
 import entitys.TinhTrangPhong;
 
@@ -65,14 +66,18 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	private DefaultTableModel model1;
 	private JTextField txtGia, txtMaPhong, txtDienTich;
 	private FixButton btnSua, btnThem, btnLamMoi;
-
+	private DecimalFormat df;
+	private DecimalFormat dfs;
+	NhanVien nv;
 	DanhSachPhong dsPhong;
+	
 
 	public Panel getFrmQuanLyPhong() {
 		return this.pnQLDP;
 	}
 
-	public Frm_QuanLyPhong() {
+	public Frm_QuanLyPhong(NhanVien nv) {
+		this.nv = nv;
 		setTitle("QUẢN LÝ PHÒNG");
 		setSize(1400, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -93,7 +98,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
-		pnTTDDP.setBounds(100, 23, 1200, 260);
+		pnTTDDP.setBounds(100, 23, 1200, 280);
 
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -142,8 +147,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
-		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTB.setBounds(60, 199, 500, 36);
+		lbTB.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lbTB.setBounds(55, 185, 500, 36);
 		lbTB.setForeground(Color.RED);
 		pnTTDDP.add(lbTB);
 
@@ -151,7 +156,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_btn_them.png")));
 
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 17));
-		btnThem.setBounds(350, 200, 150, 40);
+		btnThem.setBounds(357, 220, 150, 40);
 
 		btnThem.setBackground(new java.awt.Color(153, 36, 36));
 		pnTTDDP.add(btnThem);
@@ -161,27 +166,30 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSua.setBackground(new java.awt.Color(153, 36, 36));
 
-		btnSua.setBounds(550, 200, 150, 40);
+		btnSua.setBounds(557, 220, 150, 40);
 
 		pnTTDDP.add(btnSua);
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
 
-		btnLamMoi.setBounds(750, 200, 150, 40);
+		btnLamMoi.setBounds(757, 220, 150, 40);
 
 		pnTTDDP.add(btnLamMoi);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
 
 		txtGia = new JTextField();
+		txtGia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtGia.setBounds(795, 37, 323, 30);
 		pnTTDDP.add(txtGia);
 
 		txtDienTich = new JTextField();
+		txtDienTich.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtDienTich.setBounds(795, 93, 323, 30);
 		pnTTDDP.add(txtDienTich);
 
 		txtMaPhong = new JTextField();
+		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtMaPhong.setBounds(795, 151, 323, 28);
 		txtMaPhong.enable(false);
 		pnTTDDP.add(txtMaPhong);
@@ -208,7 +216,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnLoaiPhong = new JPanel();
 		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnLoaiPhong.setBackground(Color.ORANGE);
-		pnLoaiPhong.setBounds(393, 293, 650, 71);
+		pnLoaiPhong.setBounds(393, 310, 650, 71);
 		pnQLDP.add(pnLoaiPhong);
 		pnLoaiPhong.setLayout(null);
 
@@ -234,7 +242,12 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnLoaiPhong.add(btnPhongThuong);
 //
 		String col1[] = { "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
-		model1 = new DefaultTableModel(col1, 0);
+		model1 = new DefaultTableModel(col1, 0){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
 
 		tableDSPhong1 = new JTable(model1);
 
@@ -269,16 +282,24 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		upCombobox();
 		upCombobox2();
 
+		btnTatCa.addActionListener(this);
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnLamMoi.addActionListener(this);
+		btnPhongVip.addActionListener(this);
+		btnPhongThuong.addActionListener(this);
 		tableDSPhong1.addMouseListener(this);
+		
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		
+		
 	}
 
-	public static void main(String[] args) {
-		new Frm_QuanLyPhong().setVisible(true);
-
-	}
+//	public static void main(String[] args) {
+//		new Frm_QuanLyPhong(nv).setVisible(true);
+//
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -317,6 +338,15 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		} else if (o.equals(btnLamMoi)) {
 			xoaTrang();
 
+		} else if (o.equals(btnPhongVip)) {
+			locTheoLoaiPhongVIP();
+		} else if (o.equals(btnPhongThuong)) {
+			
+			locTheoLoaiPhongThuong();
+		}
+		else if (o.equals(btnTatCa)) {
+			clearTable();
+			upTable();
 		}
 	}
 
@@ -357,7 +387,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	public boolean suaPhong() {
 		int row = tableDSPhong1.getSelectedRow();
 		if (row == -1) {
-			JOptionPane.showMessageDialog(this, "Chọn nhân viên cần sửa");
+			JOptionPane.showMessageDialog(this, "Chọn phòng cần sửa");
 		} else {
 			Object[] obj = new Object[7];
 			if (ktraDuLieu()) {
@@ -407,14 +437,16 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	public void upTable() {
 		int i = 0;
 		ArrayList<Phong> list = dsPhong.getDSPhong();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
 		for (Phong p : list) {
 			Object[] obj = new Object[7];
 			obj[0] = p.getMaPhong().trim();
 			obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 			obj[2] = p.getSucChua();
 			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
-			obj[4] = p.getGiaPhong();
-			obj[5] = p.getDienTich();
+			obj[4] = df.format(p.getGiaPhong());
+			obj[5] = dfs.format(p.getDienTich());
 			model1.addRow(obj);
 		}
 		xoaTrang();
@@ -500,6 +532,54 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			return false;
 		}
 		return true;
+	}
+
+	// Lọc phòng theo loại
+	public void locTheoLoaiPhongVIP() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		ArrayList<Phong> list = dsPhong.getDSPhong();
+		int i = 0;
+		for (Phong p : list) {
+			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+				obj[4] = df.format(p.getGiaPhong());
+				obj[5] = dfs.format(p.getDienTich());
+				model1.addRow(obj);
+			}
+		}
+	}
+
+	// Lọc phòng theo loại
+	public void locTheoLoaiPhongThuong() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		ArrayList<Phong> list = dsPhong.getDSPhong();
+		int i = 0;
+		for (Phong p : list) {
+			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+				obj[4] = df.format(p.getGiaPhong());
+				obj[5] = dfs.format(p.getDienTich());
+				model1.addRow(obj);
+			}
+		}
+	}
+
+	public void clearTable() {
+		while (tableDSPhong1.getRowCount() > 0) {
+			model1.removeRow(0);
+		}
 	}
 
 	@Override

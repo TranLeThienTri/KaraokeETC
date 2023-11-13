@@ -115,6 +115,7 @@ public class DanhSachKhachHang {
 		}
 		return b;
 	}
+
 	public int getDTLTheoMa(String ma) {
 		int diem = 0;
 		try {
@@ -131,5 +132,31 @@ public class DanhSachKhachHang {
 			e.printStackTrace();
 		}
 		return diem;
+	}
+	
+	
+	public KhachHang getKhachHangTheoSDT(String s) {
+		KhachHang kh = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getKhachHangTheoSDT(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, s);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String makh = rs.getString(1);
+				String tenKH = rs.getString(2);
+				String sdt = rs.getString(5);
+				String cccd = rs.getString(3);
+				Boolean gioiTinh = rs.getBoolean(4);
+				int dtl = rs.getInt(6);
+				LoaiKhachHang lkh = new LoaiKhachHang(rs.getString(7));
+				kh = new KhachHang(makh, tenKH, cccd, cccd, dtl, gioiTinh, lkh);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return kh;
 	}
 }
