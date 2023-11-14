@@ -102,7 +102,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel.setBackground(new Color(207, 169, 0));
-		panel.setBounds(102, 60, 1200, 286);
+panel.setBounds(102, 60, 1200, 286);
 		pnQLNV.add(panel);
 		panel.setLayout(null);
 
@@ -187,7 +187,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		comboChucVu = new JComboBox();
 		comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
-		comboChucVu.setSelectedIndex(0);
+comboChucVu.setSelectedIndex(0);
 		comboChucVu.setBounds(180, 166, 300, 30);
 		panel.add(comboChucVu);
 
@@ -264,8 +264,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
-
-		String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
+String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
 				"Trạng thái" };
 		model = new DefaultTableModel(col, 0) {
 			@Override
@@ -317,6 +316,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 //xoá trắng
 public void xoaTrang() {
+	lbTB.setText("");
 	txtHoTen.setText("");
 	txtDiaChi.setText("");
 	txtCCCD.setText("");
@@ -341,26 +341,12 @@ public void upTable() {
 		obj[5] = nv.getDiaChi().trim();
 		obj[6] = nv.getSdt().trim();
 		obj[7] = nv.getSoCCCD().toString();
-		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";;
+		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
 		model.addRow(obj);
 	}
 	xoaTrang();
 }
 
-//public void setTextTB() {
-//	int row = table.getSelectedRow();
-//	txtHoTen.setText(table.getValueAt(row, 1).toString());
-//	
-//	if(table.getValueAt(row, 2).toString().equalsIgnoreCase("Quản Lí"))
-//
-//		comboChucVu.setSelectedIndex(0);
-//		ngaySinh.setDate(ngayHienTai);
-//		txtSDT.setText("");
-//		lbTB.setText("");
-//		comboGT.setSelectedIndex(0);
-//		comboTrangThai.setSelectedIndex(0);
-//		table.clearSelection();
-//	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
@@ -377,7 +363,7 @@ public void upTable() {
 			comboGT.setSelectedIndex(1);
 
 		String selectedDate = table.getValueAt(row, 4).toString();
-		LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		ngay = curent.getDayOfMonth();
 		thang = curent.getMonthValue();
 		nam = curent.getYear();
@@ -469,7 +455,7 @@ public void upTable() {
 			String ma = makh.getMaNVCuoi();
 			String ten = txtHoTen.getText();
 			String sdt = txtSDT.getText();
-			String dt = txtDiaChi.getText();
+			String dc = txtDiaChi.getText();
 			String cccd = txtCCCD.getText();
 			String gt = (String) comboGT.getSelectedItem();
 			boolean gioitinh;
@@ -477,7 +463,7 @@ public void upTable() {
 				gioitinh = true;
 			} else
 				gioitinh = false;
-			String tt = (String) comboGT.getSelectedItem();
+			String tt = (String) comboTrangThai.getSelectedItem();
 			boolean trangThai;
 			if (tt.equals("Đang làm việc")) {
 				trangThai = true;
@@ -488,22 +474,22 @@ public void upTable() {
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
 
 			String tenChucVu = String.valueOf(comboChucVu.getSelectedItem());
-			String maChucVu = null;
+String maChucVu = null;
 			if (tenChucVu.equals("Quản lý")) {
 				maChucVu = "QL";
 			} else
 				maChucVu = "NV";
-			LocalDate ngayinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			ChucVu cv = new ChucVu(maChucVu);
-			NhanVien nv = new NhanVien(ma, ten, cccd, maChucVu, dt, gioitinh, cv, ngayinh, trangThai);
+			NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
 			if (!dsNV.themNhanVien(nv)) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
 				obj[0] = ma;
 				obj[1] = ten;
 				obj[2] = cv.getTenChucVu();
 				obj[3] = gt;
-				obj[4] = ngayinh;
-				obj[5] = dt;
+				obj[4] = ngaysinh;
+				obj[5] = dc;
 				obj[6] = sdt;
 				obj[7] = cccd;
 				obj[8] = tt;
@@ -526,7 +512,7 @@ public void upTable() {
 				String ma = table.getValueAt(row, 0).toString();
 				String ten = txtHoTen.getText();
 				String sdt = txtSDT.getText();
-				String dt = txtDiaChi.getText();
+				String dc = txtDiaChi.getText();
 				String cccd = txtCCCD.getText();
 				String gt = (String) comboGT.getSelectedItem();
 				boolean gioitinh;
@@ -534,7 +520,7 @@ public void upTable() {
 					gioitinh = true;
 				} else
 					gioitinh = false;
-				String tt = (String) comboGT.getSelectedItem();
+				String tt = (String) comboTrangThai.getSelectedItem();
 				boolean trangThai;
 				if (tt.equals("Đang làm việc")) {
 					trangThai = true;
@@ -550,15 +536,15 @@ public void upTable() {
 					maChucVu = "QL";
 				} else
 					maChucVu = "NV";
-				LocalDate ngayinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				ChucVu cv = new ChucVu(maChucVu);
-				NhanVien nv = new NhanVien(ma, ten, cccd, maChucVu, dt, gioitinh, cv, ngayinh, trangThai);
+				NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
 				obj[0] = ma;
 				obj[1] = ten;
 				obj[2] = cv.getTenChucVu();
 				obj[3] = gt;
-				obj[4] = ngayinh;
-				obj[5] = dt;
+				obj[4] = ngaysinh;
+				obj[5] = dc;
 				obj[6] = sdt;
 				obj[7] = cccd;
 				obj[8] = tt;
@@ -587,7 +573,7 @@ public void upTable() {
 	}
 
 	public boolean ktraDuLieu() {
-		String ten = txtHoTen.getText();
+String ten = txtHoTen.getText();
 		if (ten.equals("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
