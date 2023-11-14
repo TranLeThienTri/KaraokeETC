@@ -307,8 +307,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
-		// btnThuePhong.setIcon(new
-		// ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
+		 btnThuePhong.setIcon(new
+		 ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
 		btnThuePhong.setBounds(505, 15, 200, 35);
@@ -611,12 +611,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")
-						|| p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT"))
-					break;
+				
 				obj[2] = p.getSucChua();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[3] = df.format(p.getGiaPhong());
+				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT"))
 				model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -633,9 +632,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 					model.addRow(obj);
 			}
 		}
+		
+
 	}
 
-	// Lọc phòng theo loại
+	// Lọc phòng theo loại VIP
 	public void locTheoLoaiPhongVIP() {
 		clearTable1();
 		if (radioDangThue.isSelected()) {
@@ -645,15 +646,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")
-						|| p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT"))
-					break;
+				
 				obj[2] = p.getSucChua();
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-
-				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP"))
+				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
 					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -667,8 +665,41 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT"))
-					if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP"))
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
+						model.addRow(obj);
+			}
+		}
+	}
+
+	// Lọc phòng theo loại thường
+	public void locTheoLoaiPhongThuong() {
+		clearTable1();
+		if (radioDangThue.isSelected()) {
+			int i = 0;
+			ArrayList<Phong> list = dsPhong.getDSPhong();
+			for (Phong p : list) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = df.format(p.getGiaPhong());
+				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+	
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
+					model.addRow(obj);
+			}
+		} else if (radioTrong.isSelected()) {
+			int i = 0;
+			ArrayList<Phong> list = dsPhong.getDSPhong();
+			for (Phong p : list) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+
+				obj[3] = df.format(p.getGiaPhong());
+				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
 						model.addRow(obj);
 			}
 		}
@@ -676,6 +707,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 	public void clickTable1() {
 		int row = tableDSPhong.getSelectedRow();
+		System.out.println(row);
 		int i = 0;
 		while (tableDSPhong2.getRowCount() > 0) {
 			if (tableDSPhong2.getValueAt(i, 1).equals(tableDSPhong.getValueAt(row, 0))) {
@@ -687,44 +719,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	}
 
 	// Lọc phòng theo loại
-	public void locTheoLoaiPhongThuong() {
-		clearTable1();
-		if (radioDangThue.isSelected()) {
-			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
-			for (Phong p : list) {
-				Object[] obj = new Object[6];
-				obj[0] = p.getMaPhong().trim();
-				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")
-						|| p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT"))
-					break;
-				obj[2] = p.getSucChua();
-
-				obj[3] = df.format(p.getGiaPhong());
-				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-
-				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR"))
-					model.addRow(obj);
-			}
-		} else if (radioTrong.isSelected()) {
-			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
-			for (Phong p : list) {
-				Object[] obj = new Object[6];
-				obj[0] = p.getMaPhong().trim();
-				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				obj[2] = p.getSucChua();
-
-				obj[3] = df.format(p.getGiaPhong());
-				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT"))
-					if (p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR"))
-						model.addRow(obj);
-			}
-		}
-	}
-
+	
 	public void clickTable() {
 	}
 
@@ -744,8 +739,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Object o = e.getSource();
 		if (o == lbIconSearch)
 			ktraKH();
-		if (o == tableDSPhong)
+		if (o == tableDSPhong) {
 			clickTable1();
+		}
 	}
 
 	@Override
