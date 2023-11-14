@@ -491,7 +491,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		}
 	}
 
-	public void ktraKH() {
+	public void ktraKHDAT() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		if (kh != null) {
@@ -551,7 +551,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		getIndexRow();
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
-			ktraKH();
+			ktraKHDAT();
 		}
 	}
 

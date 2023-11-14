@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	DanhSachDichVu dsDV;
-
+	DecimalFormat df;
+	
 	public Panel getFrmQuanLyDichVu() {
 		return this.pnQLDV;
 	}
@@ -139,6 +142,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnTTDV.add(txtSoLuongTon);
 
 		txtDonGia = new JTextField();
+		txtDonGia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtDonGia.setBounds(877, 69, 300, 30);
 		txtDonGia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnTTDV.add(txtDonGia);
@@ -180,7 +184,12 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnDSDichVu.add(lbDSDichVu);
 		// bảng table
 		String col[] = { "Mã DV", "Tên Dịch Vụ", "Loại Dịch Vụ", "Số Lượng Tồn", "Giá Bán" };
-		model = new DefaultTableModel(col, 0);
+		model = new DefaultTableModel(col, 0){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
 
 		tableDSDichVu = new JTable(model);
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -276,6 +285,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 	public void upTable() {
 		int i = 0;
+		df = new DecimalFormat("###,### VNĐ");
 		ArrayList<DichVu> list = dsDV.getDSDichVu();
 		for (DichVu dv : list) {
 			Object[] obj = new Object[7];
@@ -283,7 +293,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			obj[1] = dv.getTenDichVu().trim();
 			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
 			obj[3] = dv.getSoLuongTon();
-			obj[4] = dv.getDonGia();
+			obj[4] = df.format(dv.getDonGia());
 			model.addRow(obj);
 		}
 		xoaTrang();
@@ -291,6 +301,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 	// thêm dịch vụ
 	public boolean themDV() {
+		df = new DecimalFormat("###,### VNĐ");
 		Object[] obj = new Object[6];
 		if (ktraDuLieu()) {
 			Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
@@ -319,7 +330,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				obj[1] = tendv;
 				obj[2] = ldv.getTenLoaiDichVu();
 				obj[3] = slt;
-				obj[4] = giaban;
+				obj[4] = df.format(giaban);
 				model.addRow(obj);
 				xoaTrang();
 				return true;
@@ -330,6 +341,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 	// update dịch vụ
 	public boolean suaDichVu() {
+		df = new DecimalFormat("###,### VNĐ");
 		int row = tableDSDichVu.getSelectedRow();
 		if (row == -1) {
 			JOptionPane.showMessageDialog(this, "Chọn dịch vụ cần sửa");
@@ -360,7 +372,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				obj[1] = tendv;
 				obj[2] = ldv.getTenLoaiDichVu();
 				obj[3] = slt;
-				obj[4] = giaban;
+				obj[4] = df.format(giaban);
 
 				if (!dsDV.suaDichVu(dv)) {
 					int optThanhToan = JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn SỬA không?",
@@ -404,7 +416,12 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		comboLDV.setSelectedItem(tableDSDichVu.getValueAt(row, 2).toString());
 		comboTDV.setSelectedItem(tableDSDichVu.getValueAt(row, 1).toString());
 		txtSoLuongTon.setText(tableDSDichVu.getValueAt(row, 3).toString());
-		txtDonGia.setText(tableDSDichVu.getValueAt(row, 4).toString());
+		try {
+			txtDonGia.setText(df.parse(tableDSDichVu.getValueAt(row, 4).toString()) + "");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
