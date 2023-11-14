@@ -9,6 +9,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -16,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
@@ -23,6 +26,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import dao.DanhSachHoaDon;
+import dao.DanhSachPhong;
+import dao.ThuePhong;
+import entitys.HoaDonPhong;
+import entitys.Phong;
+
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -36,7 +46,7 @@ import javax.swing.table.JTableHeader;
 public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	JPanel pnDSDichVu;
 	Panel pnChuyenPhong;
-	private JTable tableDSDichVu;
+	private JTable tableDSPhong;
 	private DefaultTableModel model;
 	private JTextField txtKhachHang, txtSDT;
 	private JPanel pnTTPHT, pnTTKH;
@@ -45,17 +55,23 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	private JTextField txtMaPhong, txtTinhTrang, txtLoaiPhong, txtGiaPhong, txtSucChua;
 	private JComboBox comboTTP, comboLP, comboGP;
 	FixButton btnHuy, btnChuyen;
+	private DecimalFormat df;
+	HoaDonPhong hd;
+	DanhSachPhong p;
+	DanhSachHoaDon dsHD;
+	ThuePhong tp;
 
 	public Panel getFrmChuyenPhong() {
 		return this.pnChuyenPhong;
 	}
 
-	public Frm_ChuyenPhong() {
+	public Frm_ChuyenPhong(HoaDonPhong hd) {
 		setTitle("CHUYỂN PHÒNG");
 		setSize(1000, 820);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
+		this.hd = hd;
 		gui();
 	}
 
@@ -79,35 +95,32 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		pnChuyenPhong.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
-		lbDSDichVu = new JLabel("Danh sách dịch vụ");
+		lbDSDichVu = new JLabel("Danh sách phòng");
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-
-		tableDSDichVu = new JTable(new DefaultTableModel(
-				new Object[][] { { "MP001", "Trống", "20", "Phòng VIP", "300.000 VNĐ", "50m2" },
-						{ "MP002", "Trống", "20", "Phòng VIP", "300.000 VNĐ", "50m2" },
-						{ "MP003", "Trống", "20", "Phòng VIP", "300.000 VNĐ", "50m2" },
-						{ null, null, null, null, null }, { null, null, null, null, null }, },
-				new String[] { "Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" }));
-		tableDSDichVu.setBackground(Color.WHITE);
+		String col[] = {"Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng"};
+		model = new DefaultTableModel(col,0);
+		tableDSPhong = new JTable(model);
+		
+		tableDSPhong.setBackground(Color.WHITE);
 
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
-		JTableHeader tbHeader = tableDSDichVu.getTableHeader();
+		JTableHeader tbHeader = tableDSPhong.getTableHeader();
 		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		// Set màu các dòng
 
-		tableDSDichVu.setBackground(Color.white);
-		tableDSDichVu.setFont(new Font("SansSerif", Font.PLAIN, 13));
-		tableDSDichVu.setSelectionBackground(new Color(158, 207, 0));
-		tableDSDichVu.setSelectionForeground(new Color(255, 255, 255));
-		tableDSDichVu.setRowHeight(30);
+		tableDSPhong.setBackground(Color.white);
+		tableDSPhong.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		tableDSPhong.setSelectionBackground(new Color(158, 207, 0));
+		tableDSPhong.setSelectionForeground(new Color(255, 255, 255));
+		tableDSPhong.setRowHeight(30);
 
-		JScrollPane scrollPane = new JScrollPane(tableDSDichVu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scrollPane = new JScrollPane(tableDSPhong, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
@@ -115,7 +128,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		scrollPane.getHorizontalScrollBar();
 		pnDSDichVu.add(scrollPane);
 
-		scrollPane.setViewportView(tableDSDichVu);
+		scrollPane.setViewportView(tableDSPhong);
 
 		pnTTKH = new JPanel();
 		pnTTKH.setBorder(new LineBorder(new Color(0, 0, 0), 3));
@@ -138,6 +151,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 		txtSDT = new JTextField();
 		txtSDT.setBounds(643, 30, 250, 30);
+		txtSDT.setEditable(false);
 		pnTTKH.add(txtSDT);
 
 		txtKhachHang = new JTextField();
@@ -175,6 +189,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setBounds(160, 30, 250, 30);
+		txtMaPhong.setEditable(false);
 		pnTTPHT.add(txtMaPhong);
 
 		lbTinhTrang = new JLabel("Tình trạng: ");
@@ -183,12 +198,10 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbTinhTrang.setBounds(10, 80, 200, 25);
 		pnTTPHT.add(lbTinhTrang);
 
-		comboTTP = new JComboBox();
-		comboTTP.setModel(new DefaultComboBoxModel(new String[] { "Đang thuê", "Đã đặt", "Trống" }));
-		comboTTP.setSelectedIndex(0);
-		comboTTP.setFont(new Font("Tahoma", Font.BOLD, 15));
-		comboTTP.setBounds(643, 80, 250, 30);
-		pnTTPHT.add(comboTTP);
+		txtTinhTrang = new JTextField();
+		txtTinhTrang.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtTinhTrang.setBounds(643, 80, 250, 30);
+		pnTTPHT.add(txtTinhTrang);
 
 		lbLoaiPhong = new JLabel("Loại phòng: ");
 		lbLoaiPhong.setForeground(Color.WHITE);
@@ -196,20 +209,15 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbLoaiPhong.setBounds(513, 80, 150, 25);
 		pnTTPHT.add(lbLoaiPhong);
 
-		comboLP = new JComboBox();
-		comboLP.setModel(new DefaultComboBoxModel(new String[] { "Phòng thường", "Phòng VIP" }));
-		comboLP.setSelectedIndex(0);
-		comboLP.setFont(new Font("Tahoma", Font.BOLD, 15));
-		comboLP.setBounds(160, 80, 250, 30);
-		pnTTPHT.add(comboLP);
+		txtLoaiPhong = new JTextField();
+		txtLoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtLoaiPhong.setBounds(160, 80, 250, 30);
+		pnTTPHT.add(txtLoaiPhong);
 
-		comboGP = new JComboBox();
-		comboGP.setModel(new DefaultComboBoxModel(new String[] { "150.000", "300.000", "500.000" }));
-		comboGP.setEditable(true);
-		comboGP.setSelectedIndex(0);
-		comboGP.setFont(new Font("Tahoma", Font.BOLD, 15));
-		comboGP.setBounds(160, 130, 250, 30);
-		pnTTPHT.add(comboGP);
+		txtGiaPhong = new JTextField();
+		txtGiaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtGiaPhong.setBounds(160, 130, 250, 30);
+		pnTTPHT.add(txtGiaPhong);
 
 		lbGiaPhong = new JLabel("Giá phòng: ");
 		lbGiaPhong.setForeground(Color.WHITE);
@@ -243,15 +251,19 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_trong.png")));
 		lbBGQLDV.setBounds(0, 0, 1000, 820);
 		pnChuyenPhong.add(lbBGQLDV);
-
+		txtGiaPhong.setEditable(false);
+		txtKhachHang.setEditable(false);
+		txtSucChua.setEditable(false);
+		txtTinhTrang.setEditable(false);
 		btnHuy.addActionListener(this);
-
+		btnChuyen.addActionListener(this);
+		df = new DecimalFormat("###,### VNĐ");
+		p = new DanhSachPhong();
+		tp = new ThuePhong();
+		upTT();
+		upTable();
 	}
 
-	public static void main(String[] args) {
-		new Frm_ChuyenPhong().setVisible(true);
-
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -261,5 +273,52 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 			dispose();
 		}
+		if(o == btnChuyen) {
+			if(chuyenPhong(hd)) {
+				JOptionPane.showMessageDialog(this, "Chuyển phòng thành công");
+				dispose();
+			}
+		}
+	}
+
+	public void upTT() {
+		int i = 0;
+		txtKhachHang.setText(hd.getMaKhachHang().getHoTenKhachHang());
+		txtSDT.setText(hd.getMaKhachHang().getSoDienThoai());
+		txtMaPhong.setText(hd.getPhong().getMaPhong());
+		Phong phong = p.getPhongTheoMa(hd.getPhong().getMaPhong());
+		String gia = df.format(phong.getGiaPhong());
+		String loai = String.valueOf(phong.getMaLoaiPhong().getTenLoaiPhong());
+		String succhua = String.valueOf(phong.getSucChua());
+		String tt = String.valueOf(phong.getMaTinhTrangPhong().getTenTinhTrangPhong());
+		txtGiaPhong.setText(gia);
+		txtTinhTrang.setText(loai);
+		txtSucChua.setText(succhua);
+		txtLoaiPhong.setText(tt);
+	}
+	public void upTable() {
+		ArrayList<Phong> list = p.getDSPhong();
+		for (Phong p : list) {
+			Object[] obj = new Object[5];
+			obj[0] = p.getMaPhong().trim();
+			obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+			obj[2] = p.getSucChua();
+			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+			obj[4] = df.format(p.getGiaPhong());
+			if (p.getMaTinhTrangPhong().getTenTinhTrangPhong().trim().equals("RENT")) {
+				break;
+			}
+			model.addRow(obj);
+		}
+	}
+	public boolean chuyenPhong(HoaDonPhong p) {
+		int row = tableDSPhong.getSelectedRow();
+		String map = (String) tableDSPhong.getValueAt(row, 0);
+		if(!tp.chuyenPhong(p.getMaHoaDon(), map)) {
+			tp.setTTPhongTheoMa(map, "RENT");
+			tp.setTTPhongTheoMa(p.getPhong().getMaPhong(), "EMPT");
+			return true;
+		}
+		return false;
 	}
 }

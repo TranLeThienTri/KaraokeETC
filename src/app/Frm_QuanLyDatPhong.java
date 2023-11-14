@@ -180,7 +180,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(540, 52, 29, 20);
 		pnTTDDP.add(lbIconSearch);
-//		lbIconSearch.addMouseListener(this);
+
 		ngayDatPhong = new JDateChooser();
 		ngayDatPhong.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -549,7 +549,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		getIndexRow();
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			ktraKH();
+		}
 	}
 
 	@Override
@@ -573,16 +576,13 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		Object o = evt.getSource();
-		if (o == lbIconSearch) {
-			ktraKH();
-		} else if (o == ngayDatPhong) {
+		 if (o == ngayDatPhong) {
 			ngayDat = ngayDatPhong.getDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateString = dateFormat.format(ngayDat);

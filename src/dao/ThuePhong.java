@@ -2,16 +2,25 @@ package dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entitys.ChiTietHoaDon;
 import entitys.ChucVu;
+import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
+import entitys.LoaiHoaDon;
 import entitys.NhanVien;
+import entitys.Phong;
+import entitys.PhuThu;
 import dao.DanhSachPhong;
+import dao.DanhSachHoaDon;
 
 public class ThuePhong {
 	public KhachHang ktraKHTheoSDt(String sdt) {
@@ -64,6 +73,116 @@ public class ThuePhong {
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, ma);
 			myCall.setString(2, tinhtrang);
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public HoaDonPhong getHDTheoMa(String ma) {
+		HoaDonPhong hd = null;
+		DanhSachHoaDon dao = new DanhSachHoaDon();
+		DanhSachPhong daop = new DanhSachPhong();
+		DanhSachKhachHang daokh = new DanhSachKhachHang();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getHDTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maHD = rs.getString(1);
+				LocalDate ngaylap = LocalDate.parse(rs.getString(2));
+				LocalTime giothue = LocalTime.parse(rs.getString(3));
+				String maloaihd = rs.getString(9);
+				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
+				String makh = rs.getString(7);
+				String tenkh = dao.getTenKHTheoMa(makh);
+				String sodt = dao.getSDTKHTheoMa(makh);
+				int diem = daokh.getDTLTheoMa(makh);
+				KhachHang kh = new KhachHang(makh, tenkh, sodt, diem);
+				String manv = rs.getString(8);
+				String tennv = dao.getTenNVTheoMa(manv);
+				NhanVien nv = new NhanVien(manv, tennv);
+				String map = rs.getString(10);
+				Phong phong = new Phong(map);
+				float tongtien = rs.getFloat(11);
+				hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return hd;
+	}
+
+	public ArrayList<ChiTietHoaDon> getCTHDTheoMa(String ma) {
+		ArrayList<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
+		DanhSachDichVu daov = new DanhSachDichVu();
+		DanhSachPhuThu daopt = new DanhSachPhuThu();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getCTHDTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String mahd = rs.getString(1);
+				String madv = rs.getString(2);
+				int sl = rs.getInt(3);
+				String mapt = rs.getString(4);
+				HoaDonPhong p = getHDTheoMa(mahd);
+				DichVu dv = daov.getDVTheoMa(madv);
+				PhuThu pt = daopt.getPTTheoMa(mapt);
+				ChiTietHoaDon ct = new ChiTietHoaDon(p, dv, sl, pt);
+				list.add(ct);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public boolean tinhTien(String mahd,float tien,LocalTime giotra) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call setTTHD(?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, mahd);
+			myCall.setFloat(2, tien);
+			myCall.setString(3,giotra.toString());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	public boolean congDTL(String makh) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateDTL(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, makh);
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	public boolean chuyenPhong(String mahd,String map) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call chuyenPhong(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, mahd);
+			myCall.setString(2, map);
 			b = myCall.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
