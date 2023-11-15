@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
@@ -333,7 +334,10 @@ public class DanhSachHoaDon {
 			while (rs.next()) {
 				String maHD = rs.getString(1);
 				LocalDate ngaylap = LocalDate.parse(rs.getString(2));
-				LocalTime giothue = LocalTime.parse(rs.getString(3));
+				LocalTime giothue = LocalTime.parse(rs.getString(3).split("\\.")[0]);
+	
+				
+				
 				String maloaihd = rs.getString(9);
 				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
 				String makh = rs.getString(7);

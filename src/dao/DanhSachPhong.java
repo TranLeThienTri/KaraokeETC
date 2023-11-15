@@ -145,5 +145,29 @@ public class DanhSachPhong {
 		return b;
 	}
 	
+	public Phong LayPhongTheoMa(String ma) {
+		Phong p = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call LayPhongTheoMa()}";
+			
+			CallableStatement myCall = con.prepareCall(sql);
+//			myCall.setString(1, ma);
+//			myCall.setString(6, p.getMaPhong());
+//			myCall.setString(1, p.getMaLoaiPhong().getMaLoaiPhong());
+//			myCall.setInt(2, p.getSucChua());
+//			myCall.setFloat(3, p.getGiaPhong());
+//			myCall.setString(4, p.getMaTinhTrangPhong().getMaTinhTrangPhong());
+//			myCall.setFloat(5, p.getDienTich());
+//			b = myCall.execute();
+//			p = new Phong();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	
 	
 }

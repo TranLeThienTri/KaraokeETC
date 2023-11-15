@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,11 +40,13 @@ import connectDB.ConnectDB;
 import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import dao.DanhSachPhong;
 import dao.Dao_PhatSinhMa;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.LoaiDichVu;
+import entitys.LoaiHoaDon;
 import entitys.NhanVien;
 import entitys.Phong;
 
@@ -180,7 +183,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(540, 52, 29, 20);
 		pnTTDDP.add(lbIconSearch);
-//		lbIconSearch.addMouseListener(this);
+
 		ngayDatPhong = new JDateChooser();
 		ngayDatPhong.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -278,7 +281,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP.add(lbDSPhong);
 
-		
 		String col[] = { "Mã phòng", "Loại phòng", "Sức chứa", "Giá phòng", "Tình trạng" };
 		model1 = new DefaultTableModel(col, 0) {
 			@Override
@@ -524,6 +526,12 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	private boolean datPhong() {
 		String sdt = txtSDT.getText().trim();
 		String tenKhachString = txtKhachHang.getText().trim();
+		String gio = (String) cbGio.getSelectedItem();
+		String phut = (String) cbPhut.getSelectedItem();
+
+		int row = tableDSPhong.getSelectedRow();
+
+		System.out.println(gio + phut);
 
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		if (kh != null) {
@@ -531,16 +539,21 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String dateString = dateFormat.format(ngayDat);
 
-			Object[] obj = new Object[8];
+			Object[] obj = new Object[10];
 
-//	    	String ma = tableDSPhong1.getValueAt(row, 0).toString();
+			String ma = tableDSPhong.getValueAt(row, 0).toString();
 
-//	    	String ten = txtHoTen.getText();
-//			String sdt = txtSDT.getText();
-//			String dt = txtDiaChi.getText();
-//			String cccd = txtCCCD.getText();
-//			String gt = (String) comboGT.getSelectedItem();
-//	        
+			String loaiPhong = tableDSPhong.getValueAt(row, 1).toString();
+			String sucChua = tableDSPhong.getValueAt(row, 2).toString();
+			String giaPhong = tableDSPhong.getValueAt(row, 3).toString();
+			String tinhTrangPhong = tableDSPhong.getValueAt(row, 4).toString();
+
+			DanhSachPhong dsP = new DanhSachPhong();
+//			Phong p = dsP.get
+//			
+//			HoaDonPhong hdp = new HoaDonPhong(ma,, NhanVien maNhanVien, KhachHang maKhachHang,
+//					LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalDate ngayDat, LocalTime gioDat) 
+//			
 		}
 
 		return false;
@@ -549,7 +562,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		getIndexRow();
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			ktraKH();
+		}
 	}
 
 	@Override
@@ -573,16 +589,13 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		Object o = evt.getSource();
-		if (o == lbIconSearch) {
-			ktraKH();
-		} else if (o == ngayDatPhong) {
+		if (o == ngayDatPhong) {
 			ngayDat = ngayDatPhong.getDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateString = dateFormat.format(ngayDat);

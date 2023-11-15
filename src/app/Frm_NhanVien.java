@@ -317,6 +317,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 //xoá trắng
 public void xoaTrang() {
+	lbTB.setText("");
 	txtHoTen.setText("");
 	txtDiaChi.setText("");
 	txtCCCD.setText("");
@@ -341,26 +342,12 @@ public void upTable() {
 		obj[5] = nv.getDiaChi().trim();
 		obj[6] = nv.getSdt().trim();
 		obj[7] = nv.getSoCCCD().toString();
-		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";;
+		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
 		model.addRow(obj);
 	}
 	xoaTrang();
 }
 
-//public void setTextTB() {
-//	int row = table.getSelectedRow();
-//	txtHoTen.setText(table.getValueAt(row, 1).toString());
-//	
-//	if(table.getValueAt(row, 2).toString().equalsIgnoreCase("Quản Lí"))
-//
-//		comboChucVu.setSelectedIndex(0);
-//		ngaySinh.setDate(ngayHienTai);
-//		txtSDT.setText("");
-//		lbTB.setText("");
-//		comboGT.setSelectedIndex(0);
-//		comboTrangThai.setSelectedIndex(0);
-//		table.clearSelection();
-//	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
@@ -477,12 +464,12 @@ public void upTable() {
 				gioitinh = true;
 			} else
 				gioitinh = false;
-			String tt = (String) comboGT.getSelectedItem();
+			String tt = (String) comboTrangThai.getSelectedItem();
 			boolean trangThai;
 			if (tt.equals("Đang làm việc")) {
-				trangThai = true;
-			} else
 				trangThai = false;
+			} else
+				trangThai = true;
 
 			Date date = ngaySinh.getDate();
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
