@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -72,6 +73,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 	private JLabel lbltkhd, lbltgtk, lblnbd, lblnkt, lbliconthongke1, lbliconthongke2, lblbackground;
 	private JTableHeader tbHeader;
 	private JButton btnThongKe, btnLamMoi;
+	private DateTimeFormatter dt;
 	DanhSachHoaDon dsHD;
 
 	public Panel getFrmThongKeHoaDon() {
@@ -275,6 +277,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		dfs = new DecimalFormat("### p");
 		dfh = new DecimalFormat("### h");
 		sf = new SimpleDateFormat("dd/MM/yyy");
+		dt = DateTimeFormatter.ofPattern("HH:mm");
 		// add su kien button
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
@@ -294,8 +297,8 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 			Object[] obj = new Object[8];
 			obj[0] = hd.getMaHoaDon().trim();
 			obj[1] = hd.getNgayLapHoaDon();
-			obj[2] = hd.getGioBatDauThue();
-			obj[3] = hd.getGioTraPhong();
+			obj[2] = hd.getGioBatDauThue().format(dt);
+			obj[3] = hd.getGioTraPhong().format(dt);
 			obj[4] = hd.getMaKhachHang().getHoTenKhachHang();
 			obj[5] = hd.getMaNhanVien().getHoTenNhanVien();
 			obj[6] = hd.getPhong().getMaPhong();
@@ -333,7 +336,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 			lbltongtk1.setText(String.valueOf(tong));
 			float tongtien = dsHD.tongTienHDTheoNgay(ngayBatDau, ngayKetThuc);
 			lblthongke2.setText("Tổng tiền các hóa đơn:");
-			lbltongtk2.setText(String.valueOf(tongtien));
+			lbltongtk2.setText(df.format(tongtien));
 			upTable(listHD);
 		} else
 			JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");

@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
 
 import javax.swing.BorderFactory;
@@ -42,9 +44,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.EtchedBorder;
 
-public class Frm_ThemDichVu extends JFrame {
+public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListener {
 	JPanel pnDSDichVu, pnDV;
-	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL;
+	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL, lbldongia;
 	JComboBox comboTDV, comboLDV;
 	JTextField txtSoLuongTon;
 	Panel pnTDV;
@@ -161,12 +163,17 @@ public class Frm_ThemDichVu extends JFrame {
 		lbTangSL.setBounds(286, 120, 40, 40);
 		pnDV.add(lbTangSL);
 
-		lbTongTien = new JLabel("Tổng tiền:");
+		lbTongTien = new JLabel("Đơn giá:");
 		lbTongTien.setBackground(Color.WHITE);
 		lbTongTien.setForeground(Color.WHITE);
-		lbTongTien.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lbTongTien.setBounds(14, 347, 200, 25);
+		lbTongTien.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbTongTien.setBounds(14, 165, 111, 30);
 		pnDV.add(lbTongTien);
+
+		lbldongia = new JLabel("");
+		lbldongia.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbldongia.setBounds(145, 165, 151, 30);
+		pnDV.add(lbldongia);
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
@@ -184,15 +191,9 @@ public class Frm_ThemDichVu extends JFrame {
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-
-		tableDSDichVu = new JTable(new DefaultTableModel(
-				new Object[][] { { "1", "Thức uống", "Bia Tiger", "10", "30.000 VNĐ", "300.000 VNĐ" },
-						{ "2", "Đồ ăn", "Mực Rim Me", "5", "100.000 VNĐ", "500.000 VNĐ" },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null }, },
-				new String[] { "STT", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền" }));
+		String col[] = { "STT", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền" };
+		model = new DefaultTableModel(col, 0);
+		tableDSDichVu = new JTable();
 		tableDSDichVu.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -234,35 +235,35 @@ public class Frm_ThemDichVu extends JFrame {
 		pnTDV.add(btnXacNhan);
 
 		JPanel pnTTPhong = new JPanel();
-		pnTTPhong.setBackground(new java.awt.Color(255, 255, 255,80));
+		pnTTPhong.setBackground(new java.awt.Color(255, 255, 255, 80));
 		pnTTPhong.setBounds(562, 0, 780, 75);
-		pnTTPhong.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin ph\u00F2ng", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE));
-		
-		
+		pnTTPhong.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+				"Th\u00F4ng tin ph\u00F2ng", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE));
+
 		pnTDV.add(pnTTPhong);
 		pnTTPhong.setLayout(null);
-		
+
 		lbPhong = new JLabel("Phòng: ");
 		lbPhong.setForeground(Color.WHITE);
 		lbPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbPhong.setBounds(10, 10, 100, 20);
 		pnTTPhong.add(lbPhong);
-		
+
 		lbTenKH = new JLabel("Tên khách hàng:");
 		lbTenKH.setForeground(Color.WHITE);
 		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTenKH.setBounds(10, 52, 150, 20);
 		pnTTPhong.add(lbTenKH);
-		
+
 		lbGioVao = new JLabel("Giờ vào:");
 		lbGioVao.setForeground(Color.WHITE);
 		lbGioVao.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbGioVao.setBounds(591, 52, 150, 20);
 		pnTTPhong.add(lbGioVao);
-		
-		
-		
-		
+
+		lbTangSL.addMouseListener(this);
+		lbGiamSL.addMouseListener(this);
 
 		// add background ở cuối
 		lbBGQLDV = new JLabel("");
@@ -274,6 +275,53 @@ public class Frm_ThemDichVu extends JFrame {
 
 	public static void main(String[] args) {
 		new Frm_ThemDichVu().setVisible(true);
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Object o = e.getSource();
+		int sl;
+		if(txtSoLuongTon.getText().equals("")) {
+			sl = 0;
+		}else sl = Integer.parseInt(txtSoLuongTon.getText().trim());
+		if (o == lbTangSL) {
+			sl += 1;
+			txtSoLuongTon.setText(String.valueOf(sl));
+		}
+		if(o == lbGiamSL) {
+			sl -= 1;
+			txtSoLuongTon.setText(String.valueOf(sl));
+		}
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 
 	}
 }

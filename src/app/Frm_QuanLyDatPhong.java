@@ -493,7 +493,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		}
 	}
 
-	public void ktraKH() {
+	public void ktraKHDAT() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		if (kh != null) {
@@ -564,7 +564,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		getIndexRow();
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
-			ktraKH();
+
+			ktraKHDAT();
 		}
 	}
 
@@ -595,6 +596,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		Object o = evt.getSource();
+
 		if (o == ngayDatPhong) {
 			ngayDat = ngayDatPhong.getDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

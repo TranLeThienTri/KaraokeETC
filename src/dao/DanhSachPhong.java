@@ -4,12 +4,17 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entitys.HoaDonPhong;
 import entitys.KhachHang;
+import entitys.LoaiHoaDon;
 import entitys.LoaiKhachHang;
 import entitys.LoaiPhong;
+import entitys.NhanVien;
 import entitys.Phong;
 import entitys.TinhTrangPhong;
 
@@ -22,6 +27,7 @@ public class DanhSachPhong {
 	}
 
 	public ArrayList<Phong> getDSPhong() {
+		list = new ArrayList<Phong>();
 		try {
 			list = new ArrayList<Phong>();
 			ConnectDB.getInstance();
@@ -36,11 +42,11 @@ public class DanhSachPhong {
 				Float giaPhong = rs.getFloat(4);
 				String matinhTrang = rs.getString(5);
 				String tenTinhTrangPhong = "";
-				if (matinhTrang.equals("BOOK")) {
+				if (matinhTrang.trim().equals("BOOK")) {
 					tenTinhTrangPhong = "Phòng đã đặt";
-				} else if (matinhTrang.equals("EMPT")) {
+				} else if (matinhTrang.trim().equals("EMPT")) {
 					tenTinhTrangPhong = "Phòng trống";
-				} else if (matinhTrang.equals("RENT")) {
+				} else if (matinhTrang.trim().equals("RENT")) {
 					tenTinhTrangPhong = "Phòng đang thuê";
 				}
 				float dienTich = rs.getFloat(6);
@@ -144,30 +150,46 @@ public class DanhSachPhong {
 		}
 		return b;
 	}
-	
-	public Phong LayPhongTheoMa(String ma) {
+
+	public Phong getPhongTheoMa(String ma) {
 		Phong p = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "{call LayPhongTheoMa()}";
-			
+
+			String sql = "{call getPhongTheoMa(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
-//			myCall.setString(1, ma);
-//			myCall.setString(6, p.getMaPhong());
-//			myCall.setString(1, p.getMaLoaiPhong().getMaLoaiPhong());
-//			myCall.setInt(2, p.getSucChua());
-//			myCall.setFloat(3, p.getGiaPhong());
-//			myCall.setString(4, p.getMaTinhTrangPhong().getMaTinhTrangPhong());
-//			myCall.setFloat(5, p.getDienTich());
-//			b = myCall.execute();
-//			p = new Phong();
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maPhong = rs.getString(1);
+				String malPhong = rs.getString(2);
+				int sucChua = rs.getInt(3);
+				Float giaPhong = rs.getFloat(4);
+				String matinhTrang = rs.getString(5);
+				String tenTinhTrangPhong = "";
+				if (matinhTrang.equals("BOOK")) {
+					tenTinhTrangPhong = "Phòng đã đặt";
+				} else if (matinhTrang.equals("EMPT")) {
+					tenTinhTrangPhong = "Phòng trống";
+				} else if (matinhTrang.equals("RENT")) {
+					tenTinhTrangPhong = "Phòng đang thuê";
+				}
+				float dienTich = rs.getFloat(6);
+				String tenLoaiPhong = "";
+				if (malPhong.equals("NOR"))
+					tenLoaiPhong = "Phòng thường";
+				else
+					tenLoaiPhong = "Phòng VIP";
+				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong, tenLoaiPhong);
+				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang, tenTinhTrangPhong);
+				p = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrangP, dienTich);
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return p;
 	}
-	
-	
-	
+
 }
