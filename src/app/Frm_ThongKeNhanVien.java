@@ -204,7 +204,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke1.setForeground(new Color(189, 0, 88));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
-		//lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tknv.png")));
+		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tknv.png")));
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
@@ -227,7 +227,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
-		//lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tkkh1.png")));
+		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tkkh1.png")));
 
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
