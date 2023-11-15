@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -470,11 +471,12 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		}
 	}
 
-	public void setTextTB() {
+	public void setTextTB() throws ParseException {
+	
 		int row = tableDSPhong1.getSelectedRow();
-		txtGia.setText(tableDSPhong1.getValueAt(row, 4).toString());
+		txtGia.setText(df.parse(tableDSPhong1.getValueAt(row, 4).toString()) + "");
 		txtMaPhong.setText(tableDSPhong1.getValueAt(row, 0).toString());
-		txtDienTich.setText(tableDSPhong1.getValueAt(row, 5).toString());
+		txtDienTich.setText(dfs.parse(tableDSPhong1.getValueAt(row, 5).toString()) + "");
 
 		int i = 2;
 		if (tableDSPhong1.getValueAt(row, 1).toString().equals("Phòng trống")) {
@@ -584,7 +586,12 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		setTextTB();
+		try {
+			setTextTB();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	@Override

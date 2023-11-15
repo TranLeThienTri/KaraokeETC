@@ -64,7 +64,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	private DefaultTableModel model;
 	DanhSachDichVu dsDV;
 	DecimalFormat df;
-	
+
 	public Panel getFrmQuanLyDichVu() {
 		return this.pnQLDV;
 	}
@@ -149,7 +149,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTB.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTB.setBounds(150, 128, 500, 36);
+		lbTB.setBounds(20, 128, 500, 36);
 		lbTB.setForeground(Color.RED);
 		pnTTDV.add(lbTB);
 // các nút CRUD
@@ -183,7 +183,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		pnDSDichVu.add(lbDSDichVu);
 		// bảng table
 		String col[] = { "Mã DV", "Tên Dịch Vụ", "Loại Dịch Vụ", "Số Lượng Tồn", "Giá Bán" };
-		model = new DefaultTableModel(col, 0){
+		model = new DefaultTableModel(col, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // Không cho phép chỉnh sửa ô
@@ -245,30 +245,41 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if (o == btnLamMoi) {
-			xoaTrang();
-		}
 		if (o.equals(btnThem)) {
-			if (btnThem.getText().equals("Thêm")) {
-				btnSua.setText("Hủy");
+			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
 				btnThem.setText("Xác nhận");
-			} else if (btnThem.getText().equals("Xác nhận")) {
-				themDV();
+				btnSua.setText("Hủy");
+
+			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
+				if (themDV()) {
+					btnSua.setText("Sửa");
+					btnThem.setText("Thêm");
+				}
+			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				btnSua.setText("Sửa");
+				if (themDV() == true) {
+				}
 				btnThem.setText("Thêm");
 			}
-
 		}
-		if (o.equals(btnSua)) {
+		if (o.equals(btnSua))
+
+		{
 			if (btnSua.getText().equals("Hủy")) {
 				btnSua.setText("Sửa");
 				btnThem.setText("Thêm");
 			} else if (btnSua.getText().equals("Sửa")) {
 				suaDichVu();
-
 			}
-		}
+		} else if (btnThem.getText().equals("Xác nhận ")) {
+			suaDichVu();
+			xoaTrang();
+			btnThem.setText("Thêm");
+			btnSua.setText("Sửa");
+		} else if (o.equals(btnLamMoi)) {
+			xoaTrang();
 
+		}
 		if (o == comboLDV) {
 			phanLoaiCombobox();
 		}
@@ -279,6 +290,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtDonGia.setText("");
 		tableDSDichVu.clearSelection();
 		lbTB.setText("");
+		comboLDV.setSelectedIndex(0);
 	}
 
 	public void upTable() {
@@ -454,6 +466,14 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			txtDonGia.requestFocus();
 			return false;
 		}
+		String tendv = comboTDV.getSelectedItem().toString();
+		if (tendv.equals("") || !tendv.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Tên dịch vụ không được để trống và viết hoa chữ cái đầu");
+			comboTDV.requestFocus();
+			return false;
+		}
+
 		return true;
 	}
 
