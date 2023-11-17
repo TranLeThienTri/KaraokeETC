@@ -74,6 +74,9 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	JDateChooser ngaySinh;
 	private Date ngayHienTai;
 	private int ngay, thang, nam;
+	LocalDate curent;
+	LocalDateTime localDateTime;
+	String selectedDate;
 	DanhSachNhanVien dsNV;
 	JPanel pnDSP, panel;
 
@@ -161,31 +164,31 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel.add(lblTrangThai);
 
 		txtHoTen = new JTextField();
-		txtHoTen.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtHoTen.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtHoTen.setBounds(180, 19, 300, 30);
 		panel.add(txtHoTen);
 		txtHoTen.setColumns(10);
 
 		txtSDT = new JTextField();
-		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(812, 19, 300, 30);
 		panel.add(txtSDT);
 		txtSDT.setColumns(10);
 
 		txtDiaChi = new JTextField();
-		txtDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtDiaChi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtDiaChi.setBounds(180, 69, 932, 30);
 		panel.add(txtDiaChi);
 		txtDiaChi.setColumns(10);
 
 		txtCCCD = new JTextField();
-		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtCCCD.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtCCCD.setColumns(10);
 		txtCCCD.setBounds(180, 115, 300, 30);
 		panel.add(txtCCCD);
 
 		comboChucVu = new JComboBox();
-		comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		comboChucVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
 		comboChucVu.setSelectedIndex(0);
 		comboChucVu.setBounds(180, 166, 300, 30);
@@ -197,13 +200,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			}
 		});
 		ngaySinh.setDateFormatString("dd/MM/yyyy");
-		ngaySinh.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		ngaySinh.setFont(new Font("Tahoma", Font.BOLD, 15));
 		ngaySinh.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		ngaySinh.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/calendar.png")));
 
 		ngaySinh.setBounds(180, 229, 300, 30);
 
-		LocalDateTime localDateTime = LocalDateTime.now();
+		localDateTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		ngay = localDateTime.getDayOfMonth();
 		thang = localDateTime.getMonthValue();
@@ -242,13 +245,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		comboGT = new JComboBox();
-		comboGT.setFont(new Font("Tahoma", Font.BOLD, 17));
+		comboGT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboGT.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
 		comboGT.setBounds(812, 119, 300, 31);
 		panel.add(comboGT);
 
 		comboTrangThai = new JComboBox();
-		comboTrangThai.setFont(new Font("Tahoma", Font.BOLD, 17));
+		comboTrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm việc", "Đã thôi việc" }));
 		comboTrangThai.setBounds(812, 165, 300, 31);
 		panel.add(comboTrangThai);
@@ -289,7 +292,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 20, 1200, 260);
+		scrollPane.setBounds(0, 20, 1200, 250);
 		pnDSP.add(scrollPane);
 		pnQLNV.add(pnDSP);
 
@@ -358,8 +361,9 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		else
 			comboGT.setSelectedIndex(1);
 
-		String selectedDate = table.getValueAt(row, 4).toString();
-		LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		selectedDate = table.getValueAt(row, 4).toString();
+		curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
 		ngay = curent.getDayOfMonth();
 		thang = curent.getMonthValue();
 		nam = curent.getYear();
@@ -477,7 +481,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 				maChucVu = "NV";
 			LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			ChucVu cv = new ChucVu(maChucVu);
-			NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
+			NhanVien nv = new NhanVien(ma, ten, cccd, dc, sdt, gioitinh, cv, ngaysinh, trangThai);
 			if (!dsNV.themNhanVien(nv)) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
 				obj[0] = ma;
@@ -534,7 +538,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 					maChucVu = "NV";
 				LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				ChucVu cv = new ChucVu(maChucVu);
-				NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
+				NhanVien nv = new NhanVien(ma, ten, cccd, dc, sdt, gioitinh, cv, ngaysinh, trangThai);
 				obj[0] = ma;
 				obj[1] = ten;
 				obj[2] = cv.getTenChucVu();
@@ -576,9 +580,16 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			txtHoTen.requestFocus();
 			return false;
 		}
+		String dc = txtDiaChi.getText();
+		if (dc.equals("") || !dc.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Địa chỉ không được để trống và viết hoa chữ cái đầu");
+			txtDiaChi.requestFocus();
+			return false;
+		}
 		String dt = txtSDT.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (dt.equals(table.getValueAt(i, 4).toString())) {
+			if (dt.equals(table.getValueAt(i, 6).toString())) {
 				showMessage("(*)Số điện thoại đã tồn tại");
 				txtSDT.requestFocus();
 				return false;
@@ -591,21 +602,29 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		}
 
 		String cccd = txtCCCD.getText();
-		if (cccd.equals("")) {
-			showMessage("(*) CCCD không được để trống ");
-			txtCCCD.requestFocus();
-			return false;
-		} else if (!cccd.matches("\\d{12}")) {
-			showMessage("(*) CCCD không được dùng kí tự và chỉ được 12 số ");
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (cccd.equals(table.getValueAt(i, 7).toString())) {
+				showMessage("(*)Số CCCD đã tồn tại");
+				txtCCCD.requestFocus();
+				return false;
+			}
+		}
+		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
 			txtCCCD.requestFocus();
 			return false;
 		}
-		String dc = txtDiaChi.getText();
-		if (dc.equals("") || !dc.matches("[A-Z][a-zA-Z \\d]*")) {
-			showMessage("Địa chỉ không được để trống và viết hoa chữ cái đầu");
-			txtDiaChi.requestFocus();
+		Date date = ngaySinh.getDate();
+		Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
+		LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int namsinh = ngaysinh.getYear();
+		int namhientai = localDateTime.getYear();
+		int tuoi = namhientai - namsinh;
+		if (tuoi < 18 || tuoi > 60) {
+			showMessage("(*) Tuổi phải lớn hơn 18 và nhỏ hơn 60");
 			return false;
 		}
+
 		return true;
 	}
 }

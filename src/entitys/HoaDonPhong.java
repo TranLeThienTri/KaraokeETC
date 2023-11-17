@@ -18,9 +18,6 @@ public class HoaDonPhong {
 	private LocalTime gioDat;
 	private float thanhTien;
 
-	
-	
-	
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
 			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalDate ngayDat, LocalTime gioDat) {
 		super();
@@ -34,9 +31,9 @@ public class HoaDonPhong {
 		this.gioDat = gioDat;
 	}
 
-	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
-			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue,
-			LocalTime gioTraPhong, LocalDate ngayDat, LocalTime gioDat, float thanhTien) {
+	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
+			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue, LocalTime gioTraPhong,
+			LocalDate ngayDat, LocalTime gioDat, float thanhTien) {
 		super();
 		this.maHoaDon = maHoaDon;
 		this.phong = phong;
@@ -51,8 +48,8 @@ public class HoaDonPhong {
 		this.thanhTien = thanhTien;
 	}
 
-	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
-			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue, LocalTime gioTraPhong) {
+	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
+			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue) {
 		super();
 		this.maHoaDon = maHoaDon;
 		this.phong = phong;
@@ -63,10 +60,12 @@ public class HoaDonPhong {
 		this.gioBatDauThue = gioBatDauThue;
 		this.gioTraPhong = gioTraPhong;
 	}
+
 	public HoaDonPhong() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public HoaDonPhong(String ma) {
 		super();
 		this.maHoaDon = ma;
@@ -76,125 +75,101 @@ public class HoaDonPhong {
 		return maHoaDon;
 	}
 
-
 	public void setMaHoaDon(String maHoaDon) {
 		this.maHoaDon = maHoaDon;
 	}
-
 
 	public Phong getPhong() {
 		return phong;
 	}
 
-
 	public void setPhong(Phong phong) {
 		this.phong = phong;
 	}
-
 
 	public NhanVien getMaNhanVien() {
 		return maNhanVien;
 	}
 
-
 	public void setMaNhanVien(NhanVien maNhanVien) {
 		this.maNhanVien = maNhanVien;
 	}
-
 
 	public KhachHang getMaKhachHang() {
 		return maKhachHang;
 	}
 
-
 	public void setMaKhachHang(KhachHang maKhachHang) {
 		this.maKhachHang = maKhachHang;
 	}
-
 
 	public LoaiHoaDon getMaLoaiHoaDon() {
 		return maLoaiHoaDon;
 	}
 
-
 	public void setMaLoaiHoaDon(LoaiHoaDon maLoaiHoaDon) {
 		this.maLoaiHoaDon = maLoaiHoaDon;
 	}
-
 
 	public LocalDate getNgayLapHoaDon() {
 		return ngayLapHoaDon;
 	}
 
-
 	public void setNgayLapHoaDon(LocalDate ngayLapHoaDon) {
 		this.ngayLapHoaDon = ngayLapHoaDon;
 	}
-
 
 	public LocalTime getGioBatDauThue() {
 		return gioBatDauThue;
 	}
 
-
 	public void setGioBatDauThue(LocalTime gioBatDauThue) {
 		this.gioBatDauThue = gioBatDauThue;
 	}
-
 
 	public LocalTime getGioTraPhong() {
 		return gioTraPhong;
 	}
 
-
 	public void setGioTraPhong(LocalTime gioTraPhong) {
 		this.gioTraPhong = gioTraPhong;
 	}
-
 
 	public LocalDate getNgayDat() {
 		return ngayDat;
 	}
 
-
 	public void setNgayDat(LocalDate ngayDat) {
 		this.ngayDat = ngayDat;
 	}
-
 
 	public LocalTime getGioDat() {
 		return gioDat;
 	}
 
-
 	public void setGioDat(LocalTime gioDat) {
 		this.gioDat = gioDat;
 	}
-
 
 	public float getThanhTien() {
 		return thanhTien;
 	}
 
-
 	public void setThanhTien(float thanhTien) {
 		this.thanhTien = thanhTien;
 	}
 
-	
 	public double tinhTienPhong() {
-		double mT = this.getGioBatDauThue().getHour() * 60 + this.getGioBatDauThue().getMinute(); 
+		double mT = this.getGioBatDauThue().getHour() * 60 + this.getGioBatDauThue().getMinute();
 		double mTra = this.getGioTraPhong().getHour() * 60 + this.getGioTraPhong().getMinute();
 		double tongGioThue = (mTra - mT) / 60;
-		return (double)(this.getPhong().getGiaPhong() * tongGioThue);
+		return (double) (this.getPhong().getGiaPhong() * tongGioThue);
 	}
-
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(maHoaDon);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

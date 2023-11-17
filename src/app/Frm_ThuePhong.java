@@ -184,7 +184,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		radioDangThue = new JRadioButton("Đang thuê");
 		radioDangThue.setOpaque(false);
 		radioDangThue.setFont(new Font("Tahoma", Font.BOLD, 15));
-		radioDangThue.setSelected(true);
+//		radioDangThue.setSelected(true);
 		radioDangThue.setBounds(164, 57, 120, 21);
 		pnLoaiPhong.add(radioDangThue);
 
@@ -307,8 +307,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
-		 btnThuePhong.setIcon(new
-		 ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
+		btnThuePhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
 		btnThuePhong.setBounds(505, 15, 200, 35);
@@ -380,6 +379,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnQLDP.add(lbBGQLDP);
 		// kết nối data
 		ConnectDB.getInstance().connect();
+
 		lbIconSearch.addMouseListener(this);
 		btnChuyenPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
@@ -392,6 +392,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnPhongThuong.addActionListener(this);
 		btnPhongVip.addActionListener(this);
 		btnTatCa.addActionListener(this);
+		radioDangThue.addActionListener(this);
+		radioTrong.addActionListener(this);
 		dsPhong = new DanhSachPhong();
 		dsTP = new ThuePhong();
 		dsHD = new DanhSachHoaDon();
@@ -497,7 +499,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		LoaiHoaDon lhd = new LoaiHoaDon("HDT");
 		LocalDate ngaythue = LocalDate.now();
 		LocalTime giothue = LocalTime.now();
-//		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
+		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
 		if (!dsTP.themHDThue(phong) && !dsTP.setTTPhongTheoMa(map, "RENT")) {
 //			Object[] obj = new Object[6];
 //			obj[0] = phong.getMaHoaDon().trim();
@@ -570,7 +572,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			lamMoi();
 		}
 		if (o == btnTatCa) {
-			loaiPALL();
+			lamMoi();
 		}
 		if (o == btnChuyenPhong) {
 			if (ktraPhong()) {
@@ -593,6 +595,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 			locTheoLoaiPhongThuong();
 		}
+		if (o == radioDangThue) {
+			loaiPALL();
+		}
+		if (o == radioTrong) {
+			loaiPALL();
+		}
 	}
 
 	public HoaDonPhong getHDPDuocChon() {
@@ -611,12 +619,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				
 				obj[2] = p.getSucChua();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[3] = df.format(p.getGiaPhong());
 				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT"))
-				model.addRow(obj);
+					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
@@ -632,7 +639,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 					model.addRow(obj);
 			}
 		}
-		
 
 	}
 
@@ -646,12 +652,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				
 				obj[2] = p.getSucChua();
-
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
+				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")
+						&& (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
 					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -662,11 +667,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 				obj[2] = p.getSucChua();
-
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
-						model.addRow(obj);
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
+					model.addRow(obj);
 			}
 		}
 	}
@@ -684,8 +689,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				obj[2] = p.getSucChua();
 				obj[3] = df.format(p.getGiaPhong());
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-	
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
+
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
 					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -699,8 +705,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
-						model.addRow(obj);
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
+					model.addRow(obj);
 			}
 		}
 	}
@@ -719,7 +726,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	}
 
 	// Lọc phòng theo loại
-	
+
 	public void clickTable() {
 	}
 
@@ -732,6 +739,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		tableDSPhong.clearSelection();
 		tableDSPhong2.clearSelection();
 		tableDSDichVu.clearSelection();
+
 	}
 
 	@Override
