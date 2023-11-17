@@ -102,7 +102,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel.setBackground(new Color(207, 169, 0));
-panel.setBounds(102, 60, 1200, 286);
+		panel.setBounds(102, 60, 1200, 286);
 		pnQLNV.add(panel);
 		panel.setLayout(null);
 
@@ -187,11 +187,9 @@ panel.setBounds(102, 60, 1200, 286);
 		comboChucVu = new JComboBox();
 		comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
-comboChucVu.setSelectedIndex(0);
+		comboChucVu.setSelectedIndex(0);
 		comboChucVu.setBounds(180, 166, 300, 30);
 		panel.add(comboChucVu);
-
-	
 
 		ngaySinh = new JDateChooser();
 		ngaySinh.getCalendarButton().addActionListener(new ActionListener() {
@@ -264,7 +262,7 @@ comboChucVu.setSelectedIndex(0);
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
-String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
+		String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
 				"Trạng thái" };
 		model = new DefaultTableModel(col, 0) {
 			@Override
@@ -300,53 +298,51 @@ String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày si
 		lbBG.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/bg_chot1.png")));
 		pnQLNV.add(lbBG);
 
-	btnLamMoi.addActionListener(this);
-	btnSua.addActionListener(this);
-	btnThem.addActionListener(this);
-	
-	table.addMouseListener(this);
-	
-	ConnectDB.getInstance().connect();
-			dsNV = new DanhSachNhanVien();
-			upTable();	
-			
-			comboTrangThai.setEnabled(false);
-			
-}
+		btnLamMoi.addActionListener(this);
+		btnSua.addActionListener(this);
+		btnThem.addActionListener(this);
+
+		table.addMouseListener(this);
+
+		ConnectDB.getInstance().connect();
+		dsNV = new DanhSachNhanVien();
+		upTable();
+
+		comboTrangThai.setEnabled(false);
+
+	}
 
 //xoá trắng
-public void xoaTrang() {
-	lbTB.setText("");
-	txtHoTen.setText("");
-	txtDiaChi.setText("");
-	txtCCCD.setText("");
-	comboChucVu.setSelectedIndex(0);
-	ngaySinh.setDate(ngayHienTai);
-	txtSDT.setText("");
-	comboGT.setSelectedIndex(0);
-	comboTrangThai.setSelectedIndex(0);
-	table.clearSelection();
-}
-
-
-public void upTable() {
-	ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
-	for (NhanVien nv : listE) {
-		Object[] obj = new Object[9];
-		obj[0] = nv.getMaNhanVien().trim();
-		obj[1] = nv.getHoTenNhanVien().trim();
-		obj[2] = nv.getchucVu().getTenChucVu();
-		obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
-		obj[4] = nv.getNgaySinh().toString();
-		obj[5] = nv.getDiaChi().trim();
-		obj[6] = nv.getSdt().trim();
-		obj[7] = nv.getSoCCCD().toString();
-		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
-		model.addRow(obj);
+	public void xoaTrang() {
+		lbTB.setText("");
+		txtHoTen.setText("");
+		txtDiaChi.setText("");
+		txtCCCD.setText("");
+		comboChucVu.setSelectedIndex(0);
+		ngaySinh.setDate(ngayHienTai);
+		txtSDT.setText("");
+		comboGT.setSelectedIndex(0);
+		comboTrangThai.setSelectedIndex(0);
+		table.clearSelection();
 	}
-	xoaTrang();
-}
 
+	public void upTable() {
+		ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
+		for (NhanVien nv : listE) {
+			Object[] obj = new Object[9];
+			obj[0] = nv.getMaNhanVien().trim();
+			obj[1] = nv.getHoTenNhanVien().trim();
+			obj[2] = nv.getchucVu().getTenChucVu();
+			obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
+			obj[4] = nv.getNgaySinh().toString();
+			obj[5] = nv.getDiaChi().trim();
+			obj[6] = nv.getSdt().trim();
+			obj[7] = nv.getSoCCCD().toString();
+			obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
+			model.addRow(obj);
+		}
+		xoaTrang();
+	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
@@ -363,7 +359,7 @@ public void upTable() {
 			comboGT.setSelectedIndex(1);
 
 		String selectedDate = table.getValueAt(row, 4).toString();
-LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		ngay = curent.getDayOfMonth();
 		thang = curent.getMonthValue();
 		nam = curent.getYear();
@@ -474,7 +470,7 @@ LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yy
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
 
 			String tenChucVu = String.valueOf(comboChucVu.getSelectedItem());
-String maChucVu = null;
+			String maChucVu = null;
 			if (tenChucVu.equals("Quản lý")) {
 				maChucVu = "QL";
 			} else
@@ -573,7 +569,7 @@ String maChucVu = null;
 	}
 
 	public boolean ktraDuLieu() {
-String ten = txtHoTen.getText();
+		String ten = txtHoTen.getText();
 		if (ten.equals("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");

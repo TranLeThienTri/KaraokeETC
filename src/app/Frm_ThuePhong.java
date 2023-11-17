@@ -497,7 +497,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		LoaiHoaDon lhd = new LoaiHoaDon("HDT");
 		LocalDate ngaythue = LocalDate.now();
 		LocalTime giothue = LocalTime.now();
-		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
+//		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
 		if (!dsTP.themHDThue(phong) && !dsTP.setTTPhongTheoMa(map, "RENT")) {
 //			Object[] obj = new Object[6];
 //			obj[0] = phong.getMaHoaDon().trim();

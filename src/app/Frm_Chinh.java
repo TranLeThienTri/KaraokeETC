@@ -354,7 +354,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	// load Frm Linh Kien
 	public void loadFrmQuanLyDatPhong() {
 		pnCenter.removeAll();
-		Frm_QuanLyDatPhong frmqldp = new Frm_QuanLyDatPhong();
+		Frm_QuanLyDatPhong frmqldp = new Frm_QuanLyDatPhong(nv);
 		pnCenter.add(frmqldp.getFrmQuanLyDatPhong());
 
 	}

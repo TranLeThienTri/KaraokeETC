@@ -13,9 +13,11 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +43,7 @@ import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
 import dao.DanhSachPhong;
+import dao.DanhSachTinhTrang;
 import dao.Dao_PhatSinhMa;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
@@ -49,6 +52,7 @@ import entitys.LoaiDichVu;
 import entitys.LoaiHoaDon;
 import entitys.NhanVien;
 import entitys.Phong;
+import entitys.TinhTrangPhong;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -85,12 +89,15 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	public DanhSachKhachHang dsKH;
 	Date ngayDat;
 	String dateString;
+	boolean flag = false;
+	static NhanVien nv;
 
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
 	}
 
-	public Frm_QuanLyDatPhong() {
+	public Frm_QuanLyDatPhong(NhanVien nv) {
+		this.nv = nv;
 		setTitle("QUẢN LÝ ĐẶT PHÒNG");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -169,6 +176,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		txtKhachHang = new JTextField();
 		txtKhachHang.setFont(new Font("Dialog", Font.PLAIN, 16));
 		txtKhachHang.setBounds(230, 85, 300, 25);
+		txtKhachHang.disable();
 		pnTTDDP.add(txtKhachHang);
 
 		comboLKH = new JComboBox();
@@ -207,7 +215,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		cbGio = new JComboBox();
 		cbGio.setFont(new Font("Tahoma", Font.BOLD, 18));
-		cbGio.setModel(new DefaultComboBoxModel(new String[] { "9", "10", "11", "12", "13", "14", "15", "16", "17",
+		cbGio.setModel(new DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17",
 				"18", "19", "20", "21", "22", "23", "24" }));
 		cbGio.setBounds(230, 199, 50, 30);
 		pnTTDDP.add(cbGio);
@@ -255,8 +263,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		rDangDat = new JRadioButton("Đang đặt");
 		rDangDat.setOpaque(false);
+		// bỏ viền
+		rDangDat.setFocusPainted(false);
 		rDangDat.setFont(new Font("Tahoma", Font.BOLD, 15));
-		rDangDat.setSelected(true);
+//		rDangDat.setSelected(true);
 		rDangDat.setBounds(164, 50, 111, 21);
 		pnLoaiPhong.add(rDangDat);
 
@@ -264,6 +274,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		radioTrong.setContentAreaFilled(false);
 		radioTrong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		radioTrong.setBounds(295, 50, 103, 21);
+		radioTrong.setFocusPainted(false);
 		pnLoaiPhong.add(radioTrong);
 
 		bg = new ButtonGroup();
@@ -409,12 +420,13 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		dateString = dateFormat.format(ngayDat);
 
 		upTable1(dsDP.getAllRoomByDate(dateString));
+		// đang chạy oke
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
 	}
 
 	public static void main(String[] args) {
-		new Frm_QuanLyDatPhong().setVisible(true);
+		new Frm_QuanLyDatPhong(nv).setVisible(true);
 	}
 
 	@Override
@@ -422,11 +434,13 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		Object o = e.getSource();
 		if (o == btnDatPhong) {
 			boolean isBooked = datPhong();
+
 		} else if (o == btnNhanPhong) {
 
 		} else if (o == btnLamMoi) {
 			xoaTrang();
 		} else if (o == btnPhongThuong) {
+//			btnPhongThuong.setBackground(getBackground());
 			ArrayList<Phong> listN = dsDP.getAllRoomByType("NOR");
 			upTable1(listN);
 		} else if (o == btnTatCa) {
@@ -484,7 +498,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			obj[0] = hd.getMaHoaDon().trim();
 			obj[1] = hd.getPhong().getMaPhong().trim();
 			obj[2] = hd.getMaKhachHang().getHoTenKhachHang().trim();
-			obj[3] = hd.getMaKhachHang().getSoDienThoai().trim();
+			obj[3] = hd.getMaKhachHang().getSoDienThoai();
 
 			obj[4] = hd.getNgayDat().toString();
 			obj[5] = hd.getGioDat().toString();
@@ -493,32 +507,16 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		}
 	}
 
-	public void ktraKHDAT() {
-		String sdt = txtSDT.getText();
-		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
-			txtKhachHang.setText(kh.getHoTenKhachHang());
-			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
-				comboLKH.setSelectedIndex(0);
-			else
-				comboLKH.setSelectedIndex(1);
-		} else {
-			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
-					"Thông báo", JOptionPane.YES_NO_OPTION);
-			if (opt == JOptionPane.YES_OPTION) {
-				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang();
-				frm_ThemKH.setVisible(true);
-			}
-		}
-	}
-
 	public void xoaTrang() {
 		txtKhachHang.setText("");
-		ngayDatPhong.setDate(ngayHienTai);
 		txtSDT.setText("");
 		comboLKH.setSelectedIndex(0);
 		cbGio.setSelectedIndex(0);
 		cbPhut.setSelectedIndex(0);
+		rDangDat.setSelected(false);
+		radioTrong.setSelected(false);
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
+		upTable1(list);
 		tableDSPhong.clearSelection();
 		tableDSPhong1.clearSelection();
 	}
@@ -529,31 +527,35 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		String gio = (String) cbGio.getSelectedItem();
 		String phut = (String) cbPhut.getSelectedItem();
 
-		int row = tableDSPhong.getSelectedRow();
+		String tgian = gio + ":" + phut + ":" + "00".trim();
+		System.out.println(tgian);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		LocalTime localTime = LocalTime.parse(tgian, formatter);
 
-		System.out.println(gio + phut);
+		int row = tableDSPhong.getSelectedRow();
 
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		if (kh != null) {
 			ngayDat = ngayDatPhong.getDate();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String dateString = dateFormat.format(ngayDat);
+			Instant instant = ngayDat.toInstant();
+
+			LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//			String dateString = dateFormat.format(ngayDat);
 
 			Object[] obj = new Object[10];
 
+			// Có thể lấy mã để tìm phòng theo mã. Sau đó set loại hoá đơn,
+			// sinh mã hoá đơn tự động, lấy nhân viên và khách hàng.
 			String ma = tableDSPhong.getValueAt(row, 0).toString();
-
-			String loaiPhong = tableDSPhong.getValueAt(row, 1).toString();
-			String sucChua = tableDSPhong.getValueAt(row, 2).toString();
-			String giaPhong = tableDSPhong.getValueAt(row, 3).toString();
-			String tinhTrangPhong = tableDSPhong.getValueAt(row, 4).toString();
-
 			DanhSachPhong dsP = new DanhSachPhong();
-//			Phong p = dsP.get
-//			
-//			HoaDonPhong hdp = new HoaDonPhong(ma,, NhanVien maNhanVien, KhachHang maKhachHang,
-//					LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalDate ngayDat, LocalTime gioDat) 
-//			
+			Phong p = dsP.getPhongTheoMa(ma);
+			LoaiHoaDon lhd = new LoaiHoaDon("HDD");
+			HoaDonPhong hdp = new HoaDonPhong(new Dao_PhatSinhMa().getMaHDCuoi(), p, nv, kh, lhd, null, localDate,
+					localTime);
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(this, "Không đặt được phòng, vui lòng kiểm tra lại");
 		}
 
 		return false;
@@ -564,9 +566,9 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		getIndexRow();
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
-
 			ktraKHDAT();
 		}
+
 	}
 
 	@Override
@@ -584,19 +586,36 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == btnTatCa) {
+			btnTatCa.setBackground(new Color(90, 125, 144));
+		}
+		if (o == btnPhongVip) {
+			btnPhongVip.setBackground(new Color(90, 125, 144));
+		}
+		if (o == btnPhongThuong) {
+			btnPhongThuong.setBackground(new Color(90, 125, 144));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == btnTatCa) {
+			btnTatCa.setBackground(new Color(255, 255, 255));
+		}
+		if (o == btnPhongVip) {
+			btnPhongVip.setBackground(new Color(255, 255, 255));
+		}
+		if (o == btnPhongThuong) {
+			btnPhongThuong.setBackground(new Color(255, 255, 255));
+		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
 		Object o = evt.getSource();
-
 		if (o == ngayDatPhong) {
 			ngayDat = ngayDatPhong.getDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -605,6 +624,29 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 //			getIndexRow();
 			ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
 			upTable1(list);
+		}
+	}
+
+	public void ktraKHDAT() {
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
+		if (kh != null) {
+			txtKhachHang.setText(kh.getHoTenKhachHang());
+			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
+				comboLKH.setSelectedIndex(0);
+			else
+				comboLKH.setSelectedIndex(1);
+		} else {
+			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
+					"Thông báo", JOptionPane.YES_NO_OPTION);
+			if (opt == JOptionPane.YES_OPTION) {
+				String sdtKH = txtSDT.getText();
+				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang(sdtKH);
+				frm_ThemKH.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "Xác nhận không thêm khách hàng!");
+				return;
+			}
 		}
 	}
 

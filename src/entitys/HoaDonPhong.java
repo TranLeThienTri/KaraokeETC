@@ -52,7 +52,7 @@ public class HoaDonPhong {
 	}
 
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien,
-			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue) {
+			KhachHang maKhachHang, LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue, LocalTime gioTraPhong) {
 		super();
 		this.maHoaDon = maHoaDon;
 		this.phong = phong;
@@ -207,7 +207,5 @@ public class HoaDonPhong {
 		HoaDonPhong other = (HoaDonPhong) obj;
 		return Objects.equals(maHoaDon, other.maHoaDon);
 	}
-	
-	
-	
+
 }

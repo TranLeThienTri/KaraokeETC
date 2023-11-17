@@ -23,9 +23,8 @@ public class DanhSachDatPhong {
 	ArrayList<Phong> listRoomByDate = new ArrayList<Phong>();
 	ArrayList<Phong> listRoomByType = new ArrayList<Phong>();
 	ArrayList<HoaDonPhong> listHD = new ArrayList<HoaDonPhong>();
-	
 
-	// lấy danh sách phòng theo ngày
+	// lấy danh sách phòng có tình trạng theo ngày theo ngày
 	public ArrayList<Phong> getAllRoomByDate(String date) {
 		listRoomByDate.clear();
 		try {
@@ -42,19 +41,23 @@ public class DanhSachDatPhong {
 				String maLoaiPhong = rs.getString(2);
 				int sucChua = rs.getInt(3);
 				float giaPhong = rs.getFloat(4);
-				
 				String maLoaiHoaDon = rs.getString(5);
-
+				
 				TinhTrangPhong ttp;
 				DanhSachLoaiPhong lsTypes = new DanhSachLoaiPhong();
 				DanhSachTinhTrang lsStatus = new DanhSachTinhTrang();
+
+				if (maLoaiHoaDon == null)
+					maLoaiHoaDon = "NULL";
 				
-				if(maLoaiHoaDon.equalsIgnoreCase("HDD")) {
-					ttp = new TinhTrangPhong("BOOK", "Đã được đặt");
-				}else if(maLoaiHoaDon.equalsIgnoreCase("EMPT")){
-					ttp = new TinhTrangPhong("EMPT", "Còn trống");					
-				}else
-					ttp = new TinhTrangPhong("RENT", "Đang Thuê");
+				
+				if (maLoaiHoaDon.equalsIgnoreCase("HDD")) {
+					ttp = lsStatus.getStatusRoomById("BOOK");
+				} else if (maLoaiHoaDon.equalsIgnoreCase("HDT")) {
+					ttp = lsStatus.getStatusRoomById("RENT");
+				} else
+					ttp = lsStatus.getStatusRoomById("EMPT");
+
 				LoaiPhong lp = lsTypes.getTypeById(maLoaiPhong);
 
 				Phong p = new Phong(maP, lp, sucChua, giaPhong, ttp);
@@ -66,11 +69,6 @@ public class DanhSachDatPhong {
 		return listRoomByDate;
 	}
 
-	
-
-	
-	
-	
 	// lấy danh sách phòng theo Loại
 	public ArrayList<Phong> getAllRoomByType(String type) {
 		listRoomByType.clear();
@@ -104,6 +102,7 @@ public class DanhSachDatPhong {
 		return listRoomByType;
 	}
 
+	//ok
 	// Lấy danh sách phòng theo ngày và đã được đặt
 	public ArrayList<HoaDonPhong> getAllRoomStatusByDate() {
 		listHD.clear();
@@ -122,21 +121,23 @@ public class DanhSachDatPhong {
 				String gioDat = gioDatt[0];
 				String maNhanVien = rs.getString(5);
 				String ngayDat = rs.getString(6);
-				String ngayLapHoaDon = rs.getString(7);
+//				String ngayLapHoaDon = rs.getString(7);
 				Phong p = new Phong(maPhong);
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-				 // Chuyển đổi chuỗi thành LocalTime
-			    LocalTime localTime = LocalTime.parse(gioDat, formatter);
+				// Chuyển đổi chuỗi thành LocalTime
+				LocalTime localTime = LocalTime.parse(gioDat, formatter);
 
 				DanhSachKhachHang dskh = new DanhSachKhachHang();
 				DanhSachNhanVien dsnv = new DanhSachNhanVien();
 				NhanVien nv = dsnv.getNhanVienTheoMa(maNhanVien);
 				KhachHang kh = dskh.getKHTheoMa(maKhachhang);
+
 				
 				// Chuyển đổi chuỗi thành đối tượng LocalDate
-		        LocalDate date = LocalDate.parse(ngayLapHoaDon);
-		        
-				HoaDonPhong hd = new HoaDonPhong(maHD, p, nv, kh, new LoaiHoaDon("HDD"), date, LocalDate.parse(ngayDat,DateTimeFormatter.ofPattern("yyyy-MM-dd")), localTime);
+//				LocalDate date = LocalDate.parse(ngayLapHoaDon);
+
+				HoaDonPhong hd = new HoaDonPhong(maHD, p, nv, kh, new LoaiHoaDon("HDD"), null,
+						LocalDate.parse(ngayDat, DateTimeFormatter.ofPattern("yyyy-MM-dd")), localTime);
 				listHD.add(hd);
 			}
 		} catch (SQLException e) {
@@ -144,7 +145,5 @@ public class DanhSachDatPhong {
 		}
 		return listHD;
 	}
-	
-	
 
 }
