@@ -17,6 +17,10 @@ public class HoaDonPhong {
 	private LocalDate ngayDat;
 	private LocalTime gioDat;
 	private float thanhTien;
+	
+	
+	
+
 
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
 			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalDate ngayDat, LocalTime gioDat) {
@@ -47,6 +51,8 @@ public class HoaDonPhong {
 		this.gioDat = gioDat;
 		this.thanhTien = thanhTien;
 	}
+	
+
 
 	public HoaDonPhong(String maHoaDon, Phong phong, NhanVien maNhanVien, KhachHang maKhachHang,
 			LoaiHoaDon maLoaiHoaDon, LocalDate ngayLapHoaDon, LocalTime gioBatDauThue) {
