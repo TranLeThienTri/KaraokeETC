@@ -13,8 +13,11 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,13 +42,18 @@ import connectDB.ConnectDB;
 import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import dao.DanhSachPhong;
+import dao.DanhSachTinhTrang;
 import dao.Dao_PhatSinhMa;
+import dao.ThuePhong;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.LoaiDichVu;
+import entitys.LoaiHoaDon;
 import entitys.NhanVien;
 import entitys.Phong;
+import entitys.TinhTrangPhong;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -82,12 +90,19 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	public DanhSachKhachHang dsKH;
 	Date ngayDat;
 	String dateString;
+	boolean flag = false;
+	static NhanVien nv;
+	ThuePhong dsTP;
+	LocalDate localDate;
+	LocalDate ngayHT;
+	LocalTime localTime;
 
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
 	}
 
-	public Frm_QuanLyDatPhong() {
+	public Frm_QuanLyDatPhong(NhanVien nv) {
+		this.nv = nv;
 		setTitle("QUẢN LÝ ĐẶT PHÒNG");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -166,6 +181,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		txtKhachHang = new JTextField();
 		txtKhachHang.setFont(new Font("Dialog", Font.PLAIN, 16));
 		txtKhachHang.setBounds(230, 85, 300, 25);
+		txtKhachHang.disable();
 		pnTTDDP.add(txtKhachHang);
 
 		comboLKH = new JComboBox();
@@ -192,6 +208,9 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		ngayDatPhong.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		ngayDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/calendar.png")));
 
+		
+		
+		
 		ngayDatPhong.setBounds(230, 155, 300, 30);
 
 		LocalDateTime localDateTime = LocalDateTime.now();
@@ -204,7 +223,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		cbGio = new JComboBox();
 		cbGio.setFont(new Font("Tahoma", Font.BOLD, 18));
-		cbGio.setModel(new DefaultComboBoxModel(new String[] { "9", "10", "11", "12", "13", "14", "15", "16", "17",
+		cbGio.setModel(new DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17",
 				"18", "19", "20", "21", "22", "23", "24" }));
 		cbGio.setBounds(230, 199, 50, 30);
 		pnTTDDP.add(cbGio);
@@ -252,8 +271,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		rDangDat = new JRadioButton("Đang đặt");
 		rDangDat.setOpaque(false);
+		// bỏ viền
+		rDangDat.setFocusPainted(false);
 		rDangDat.setFont(new Font("Tahoma", Font.BOLD, 15));
-		rDangDat.setSelected(true);
+//		rDangDat.setSelected(true);
 		rDangDat.setBounds(164, 50, 111, 21);
 		pnLoaiPhong.add(rDangDat);
 
@@ -261,6 +282,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		radioTrong.setContentAreaFilled(false);
 		radioTrong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		radioTrong.setBounds(295, 50, 103, 21);
+		radioTrong.setFocusPainted(false);
 		pnLoaiPhong.add(radioTrong);
 
 		bg = new ButtonGroup();
@@ -278,7 +300,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP.add(lbDSPhong);
 
-		
 		String col[] = { "Mã phòng", "Loại phòng", "Sức chứa", "Giá phòng", "Tình trạng" };
 		model1 = new DefaultTableModel(col, 0) {
 			@Override
@@ -289,7 +310,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		tableDSPhong = new JTable(model1);
 		tableDSPhong.setBackground(Color.WHITE);
-
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		JTableHeader tbHeader = tableDSPhong.getTableHeader();
@@ -401,18 +421,15 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		ConnectDB.getInstance().connect();
 		dsDP = new DanhSachDatPhong();
 		dsKH = new DanhSachKhachHang();
-
+		dsTP = new ThuePhong();
 		ngayDat = ngayDatPhong.getDate();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateString = dateFormat.format(ngayDat);
-
+		clearTable();
 		upTable1(dsDP.getAllRoomByDate(dateString));
+		// đang chạy oke
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
-	}
-
-	public static void main(String[] args) {
-		new Frm_QuanLyDatPhong().setVisible(true);
 	}
 
 	@Override
@@ -420,21 +437,37 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		Object o = e.getSource();
 		if (o == btnDatPhong) {
 			boolean isBooked = datPhong();
+			if (isBooked) {
+				clearTable();
+				upTable1(dsDP.getAllRoomByDate(dateString));
+				upTable2(dsDP.getAllRoomStatusByDate());
+			}
 		} else if (o == btnNhanPhong) {
-
+			boolean isNhanPhong = nhanPhong();
+			if(isNhanPhong) {
+				clearTable();
+				upTable1(dsDP.getAllRoomByDate(dateString));
+				upTable2(dsDP.getAllRoomStatusByDate());
+			}
 		} else if (o == btnLamMoi) {
 			xoaTrang();
 		} else if (o == btnPhongThuong) {
-			ArrayList<Phong> listN = dsDP.getAllRoomByType("NOR");
+			btnPhongThuong.setBackground(getBackground());
+			ArrayList<Phong> listN = dsDP.getAllRoomByType(dateString, "NOR");
 			upTable1(listN);
 		} else if (o == btnTatCa) {
 			ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
 			upTable1(list);
 		} else if (o == btnPhongVip) {
-			ArrayList<Phong> listT = dsDP.getAllRoomByType("VIP");
+			ArrayList<Phong> listT = dsDP.getAllRoomByType(dateString, "VIP");
 			upTable1(listT);
 		} else {
-
+			boolean huyDatPhong = huyDatPhong();
+			if (huyDatPhong) {
+				clearTable();
+				upTable1(dsDP.getAllRoomByDate(dateString));
+				upTable2(dsDP.getAllRoomStatusByDate());
+			}
 		}
 	}
 
@@ -445,6 +478,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (isSelected1 == -1 && isSelected2 == -1) {
 			btnDatPhong.setEnabled(false);
 			btnNhanPhong.setEnabled(false);
+			btnHuyDatPhong.setEnabled(false);
 			tableDSPhong.clearSelection();
 			tableDSPhong1.clearSelection();
 		}
@@ -452,12 +486,14 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (isSelected1 != -1) {
 			btnDatPhong.setEnabled(true);
 			btnNhanPhong.setEnabled(false);
+			btnHuyDatPhong.setEnabled(false);
 			tableDSPhong1.clearSelection();
 		}
 
 		if (isSelected2 != -1) {
 			btnDatPhong.setEnabled(false);
 			btnNhanPhong.setEnabled(true);
+			btnHuyDatPhong.setEnabled(true);
 			tableDSPhong.clearSelection();
 		}
 	}
@@ -482,8 +518,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			obj[0] = hd.getMaHoaDon().trim();
 			obj[1] = hd.getPhong().getMaPhong().trim();
 			obj[2] = hd.getMaKhachHang().getHoTenKhachHang().trim();
-			obj[3] = hd.getMaKhachHang().getSoDienThoai().trim();
-
+			obj[3] = hd.getMaKhachHang().getSoDienThoai();
 			obj[4] = hd.getNgayDat().toString();
 			obj[5] = hd.getGioDat().toString();
 			obj[6] = hd.getMaNhanVien().getHoTenNhanVien().trim();
@@ -491,56 +526,64 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		}
 	}
 
-	public void ktraKHDAT() {
-		String sdt = txtSDT.getText();
-		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
-			txtKhachHang.setText(kh.getHoTenKhachHang());
-			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
-				comboLKH.setSelectedIndex(0);
-			else
-				comboLKH.setSelectedIndex(1);
-		} else {
-			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
-					"Thông báo", JOptionPane.YES_NO_OPTION);
-			if (opt == JOptionPane.YES_OPTION) {
-				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang();
-				frm_ThemKH.setVisible(true);
-			}
-		}
-	}
-
 	public void xoaTrang() {
 		txtKhachHang.setText("");
-		ngayDatPhong.setDate(ngayHienTai);
 		txtSDT.setText("");
 		comboLKH.setSelectedIndex(0);
 		cbGio.setSelectedIndex(0);
 		cbPhut.setSelectedIndex(0);
-		tableDSPhong.clearSelection();
-		tableDSPhong1.clearSelection();
+		rDangDat.setSelected(false);
+		radioTrong.setSelected(false);
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(dateString);
+		clearTable();
+		upTable1(list);
+		upTable2(dsDP.getAllRoomStatusByDate());
 	}
 
 	private boolean datPhong() {
 		String sdt = txtSDT.getText().trim();
-		String tenKhachString = txtKhachHang.getText().trim();
+		String gio = (String) cbGio.getSelectedItem();
+		String phut = (String) cbPhut.getSelectedItem();
+		String tgian = gio + ":" + phut + ":" + "00".trim();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		localTime = LocalTime.parse(tgian, formatter);
+		ngayHT = ngayHienTai.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		int row = tableDSPhong.getSelectedRow();
 
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		if (kh != null) {
 			ngayDat = ngayDatPhong.getDate();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String dateString = dateFormat.format(ngayDat);
+			Instant instant = ngayDat.toInstant();
+			localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+			// Có thể lấy mã để tìm phòng theo mã. Sau đó set loại hoá đơn,
+			// sinh mã hoá đơn tự động, lấy nhân viên và khách hàng.
+			String ma = tableDSPhong.getValueAt(row, 0).toString();
+			DanhSachPhong dsP = new DanhSachPhong();
 
-			Object[] obj = new Object[8];
+			// này là phòng trong db cho nên nó luôn trả về EMPT, tại vì trong db set cứng
+			// nó là EMPT
+			Phong p = dsP.getPhongTheoMa(ma);
 
-//	    	String ma = tableDSPhong1.getValueAt(row, 0).toString();
+			// call hoá đơn phòng theo mã
+//			HoaDonPhong hd = dsDP.getHoaDonById(ma);
 
-//	    	String ten = txtHoTen.getText();
-//			String sdt = txtSDT.getText();
-//			String dt = txtDiaChi.getText();
-//			String cccd = txtCCCD.getText();
-//			String gt = (String) comboGT.getSelectedItem();
-//	        
+			// làm sao làm, phải lấy được cái tình trạng ở trong cái lấy phòng theo ngày chứ
+			// k phải chọt xuống db
+			// lấy cái tên tình trạng ở cột cuối đem đi so sánh.
+			String tinhTrang = tableDSPhong.getValueAt(row, 4).toString();
+
+			LoaiHoaDon lhd = new LoaiHoaDon("HDD");
+			HoaDonPhong hdp = new HoaDonPhong(new Dao_PhatSinhMa().getMaHDCuoi(), p, nv, kh, lhd, ngayHT, localDate,
+					localTime);
+
+			if (checkDieuKienDatPhong(tinhTrang)) {
+				dsDP.themHoaDonDat(hdp);
+				JOptionPane.showMessageDialog(this, "Đặt phòng thành công!");
+			}
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(this, "Không đặt được phòng, vui lòng kiểm tra lại");
 		}
 
 		return false;
@@ -553,6 +596,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (o == lbIconSearch) {
 			ktraKHDAT();
 		}
+
 	}
 
 	@Override
@@ -570,19 +614,37 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == btnTatCa) {
+			btnTatCa.setBackground(new Color(90, 125, 144));
+		}
+		if (o == btnPhongVip) {
+			btnPhongVip.setBackground(new Color(90, 125, 144));
+		}
+		if (o == btnPhongThuong) {
+			btnPhongThuong.setBackground(new Color(90, 125, 144));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == btnTatCa) {
+			btnTatCa.setBackground(new Color(255, 255, 255));
+		}
+		if (o == btnPhongVip) {
+			btnPhongVip.setBackground(new Color(255, 255, 255));
+		}
+		if (o == btnPhongThuong) {
+			btnPhongThuong.setBackground(new Color(255, 255, 255));
+		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
 		Object o = evt.getSource();
-		 if (o == ngayDatPhong) {
+		if (o == ngayDatPhong) {
 			ngayDat = ngayDatPhong.getDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateString = dateFormat.format(ngayDat);
@@ -592,5 +654,133 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			upTable1(list);
 		}
 	}
+
+	public void ktraKHDAT() {
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
+		if (kh != null) {
+			txtKhachHang.setText(kh.getHoTenKhachHang());
+			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
+				comboLKH.setSelectedIndex(0);
+			else
+				comboLKH.setSelectedIndex(1);
+		} else {
+			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
+					"Thông báo", JOptionPane.YES_NO_OPTION);
+			if (opt == JOptionPane.YES_OPTION) {
+				String sdtKH = txtSDT.getText();
+				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang(sdtKH);
+				frm_ThemKH.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "Xác nhận không thêm khách hàng!");
+				return;
+			}
+		}
+	}
+
+	public void clearTableDSP() {
+		while (tableDSPhong.getRowCount() > 0) {
+			model1.removeRow(0);
+		}
+	}
+
+	public void clearTableDSPD() {
+		while (tableDSPhong1.getRowCount() > 0) {
+			model.removeRow(0);
+		}
+	}
+
+	public void clearTable() {
+		clearTableDSP();
+		clearTableDSPD();
+	}
+
+	public boolean checkDieuKienDatPhong(String p) {
+		LocalTime currentTime = LocalTime.now();
+		LocalDate ngay = ngayDat.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		if (!(ngay.compareTo(ngayHT) < 0 && !((localTime.compareTo(currentTime) < 0)))) {
+
+			// lấy tình trạng phòng đang trống
+			// câll lên danh sách hoá đơn, nếu có hoá đơn vào ngày hoom đó thì không cho đặt
+			// dsDP.getAllRoomByDate(dateString)
+
+			if (p.equalsIgnoreCase("Phòng đã đặt")) {
+				JOptionPane.showMessageDialog(this, "Phòng đã được đặt, vui lòng chọn phòng khác!!!");
+				return false;
+			}
+
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(this, "Ngày Đặt phải là ngày hôm nay hoặc sau ngày hiện tại!");
+			return false;
+		}
+	}
+
+	public boolean huyDatPhong() {
+		int row = tableDSPhong1.getSelectedRow();
+
+		String maHoaDon = tableDSPhong1.getValueAt(row, 0).toString();
+		if (dsDP.huyDatPhong(maHoaDon)) {
+			int isDelete = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn huỷ", "Thông Báo",
+					JOptionPane.YES_NO_OPTION);
+			if (isDelete == JOptionPane.YES_OPTION) {
+				JOptionPane.showMessageDialog(this, "Huỷ đặt phòng thành công!!");
+				return true;
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Huỷ đặt phòng không thành công, vui lòng kiểm tra lại!");
+		}
+
+		return false;
+
+	}
+
+	// Kiểm tra điều kiện thử để có thể nhận phòng được hay không, check giờ nhận.
+	public boolean nhanPhong() {
+		int row = tableDSPhong1.getSelectedRow();
+		int gioDat = Integer.valueOf(tableDSPhong1.getValueAt(row, 5).toString().split(":")[0]);
+		int phutDat = Integer.valueOf(tableDSPhong1.getValueAt(row, 5).toString().split(":")[1]);
+		String maHoaDon = tableDSPhong1.getValueAt(row, 0).toString();
+
+		if (kiemTraDieuKienNhanPhong(gioDat, phutDat)) {
+			HoaDonPhong hd = dsDP.getHoaDonById(maHoaDon);
+			Phong p = hd.getPhong();
+			NhanVien nv = hd.getMaNhanVien();
+			KhachHang kh = hd.getMaKhachHang();
+			LoaiHoaDon lhd = new LoaiHoaDon("HDT");
+			
+//			!dsTP.setTTPhongTheoMa(map, "RENT")
+			if (dsDP.huyDatPhong(maHoaDon)) {
+				HoaDonPhong newHD = new HoaDonPhong(maHoaDon, p, nv, kh, lhd, ngayHT, localTime);
+				if (!dsTP.themHDThue(newHD) && !dsTP.setTTPhongTheoMa(p.getMaPhong(), "RENT")) {
+					JOptionPane.showMessageDialog(this, "Nhận phòng thành công!");
+					return true;
+				}
+
+			}
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(this, "Nhận phòng không thành công, vui lòng đến đúng giờ hoặc truóc 5p!");
+		}
+
+		return false;
+	}
+
+	public boolean kiemTraDieuKienNhanPhong(int gioDat, int phutDat) {
+		// ngày đặt và ngày hiện tại phải bằng nhau.
+		// giờ nhận phải truóc giừ hiện tại 5p
+		LocalTime currentTime = LocalTime.now();
+		int gio = currentTime.getHour();
+
+		int phut = currentTime.getMinute();
+
+		// chỉ cho phép lấy phòng trước 5p
+		if (ngayHienTai.compareTo(ngayDat) == 0 && gio == gioDat && phutDat - phut <= 5) {
+			return true;
+		}
+		return true;
+	}
+
+	// kiểm tra điều kiện huỷ đặt phòng.
 
 }
