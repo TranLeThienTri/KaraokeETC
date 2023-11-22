@@ -34,11 +34,13 @@ import com.toedter.calendar.JDateChooser;
 import dao.DanhSachDichVu;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
-import dao.ThuePhong;
+import dao.DanhSachPhuThu;
+import dao.DanhSachThuePhong;
 import entitys.ChiTietHoaDon;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.Phong;
+import entitys.PhuThu;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -67,9 +69,10 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	private SimpleDateFormat sf;
 	DanhSachHoaDon dsHD;
 	HoaDonPhong hd;
+	DanhSachPhuThu dsPT;
 	ChiTietHoaDon ct;
 	DanhSachPhong p;
-	ThuePhong tp;
+	DanhSachThuePhong tp;
 	String mahd,makh,map,tinhtrang;
 	Float tien;
 	LocalTime giotra;
@@ -81,7 +84,6 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	public Frm_ThanhToan(HoaDonPhong hd) {
 		setTitle("THANH TOÁN HÓA ĐƠN");
 		setSize(1000, 820);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		this.hd = hd;
@@ -300,10 +302,10 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		lbTongTienDV.setBounds(60, 545, 200, 25);
 		pnThanhToan.add(lbTongTienDV);
 
-		lbPhuThu = new JLabel("Phụ thu: ");
+		lbPhuThu = new JLabel("Phụ thu(Cuối tuần): ");
 		lbPhuThu.setForeground(Color.WHITE);
 		lbPhuThu.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbPhuThu.setBounds(60, 565, 200, 25);
+		lbPhuThu.setBounds(60, 565, 250, 25);
 		pnThanhToan.add(lbPhuThu);
 
 		lbTongTienGio = new JLabel("Tổng tiền giờ: ");
@@ -396,7 +398,8 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		dt = DateTimeFormatter.ofPattern("HH:mm");
 		p = new DanhSachPhong();
 		dsHD = new DanhSachHoaDon();
-		tp = new ThuePhong();
+		dsPT = new DanhSachPhuThu();
+		tp = new DanhSachThuePhong();
 		btnHuy.addActionListener(this);
 		btnXacNhan.addActionListener(this);
 		upTT();
@@ -434,6 +437,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		int i = 1;
 		float tongtiendv = 0;
 		for (ChiTietHoaDon p : list) {
+			if(p.getDichVu() != null){
 			DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
 			Object[] obj = new Object[7];
 			obj[0] = i++;
@@ -446,6 +450,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 			tongtiendv += tong;
 			obj[5] = df.format(tong);
 			model.addRow(obj);
+			}
 		}
 		lbTongTienDV_1.setText(df.format(tongtiendv));
 		int gioVao = hd.getGioBatDauThue().getHour();
@@ -460,15 +465,19 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		lblTonggio.setText(df.format(tienphong));
 		float giamgia = 0;
 		if (hd.getMaKhachHang().getDiemTichLuy() >= 10) {
-			giamgia = 10 / 100;
+			giamgia = (float) 0.1;
 			lblGiamGia.setText("10%");
 		} else
 			lblGiamGia.setText("0%");
-		float vat = 10 / 100;
-		float phuthu = 0;
-		lblPhuThu.setText("0 VND");
+		float vat = (float) 0.1;
+		String ldpt = dsPT.getPTTheoMaHD(mahd);
+		System.out.println(ldpt);
+		PhuThu pt = dsPT.getPTTheoMa(ldpt);
+		float phuthu = (float) pt.getSoTien();
+		System.out.println(phuthu);
+		lblPhuThu.setText(df.format(phuthu));
 		lblVAT.setText("10%");
-		float tonghd = tongtiendv - phuthu + tienphong;
+		float tonghd = tongtiendv + phuthu + tienphong;
 		lblTongtien.setText(df.format(tonghd));
 		float tienvat = tonghd * vat;
 		float tiengiam = tonghd * giamgia;

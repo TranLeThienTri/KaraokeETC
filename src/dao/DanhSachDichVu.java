@@ -173,4 +173,55 @@ public class DanhSachDichVu {
 		}
 		return tong;
 	}
+	public String getMaDVTheoTen(String ma) {
+		String madv = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getMaDVTheoTen(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				madv = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return madv;
+	}
+	public int getSLTonTheoMaDV(String ma) {
+		int tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSLTonTheoMaDV(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
+	public boolean updateSLTon(String ma,int sl) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateSLTonTheoMaDV(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			myCall.setInt(2, sl);
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
 }
+

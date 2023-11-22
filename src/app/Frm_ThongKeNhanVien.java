@@ -76,7 +76,6 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	public Panel getFrmThongKeNhanVien() {
 		return this.panel_tong;
 	}
-
 	public static void main(String[] args) {
 		new Frm_ThongKeNhanVien().setVisible(true);
 

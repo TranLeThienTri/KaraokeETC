@@ -43,9 +43,9 @@ import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
 import dao.DanhSachPhong;
+import dao.DanhSachThuePhong;
 import dao.DanhSachTinhTrang;
 import dao.Dao_PhatSinhMa;
-import dao.ThuePhong;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
@@ -92,7 +92,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	String dateString;
 	boolean flag = false;
 	static NhanVien nv;
-	ThuePhong dsTP;
+	DanhSachThuePhong dsTP;
 	LocalDate localDate;
 	LocalDate ngayHT;
 	LocalTime localTime;
@@ -418,7 +418,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		ConnectDB.getInstance().connect();
 		dsDP = new DanhSachDatPhong();
 		dsKH = new DanhSachKhachHang();
-		dsTP = new ThuePhong();
+		dsTP = new DanhSachThuePhong();
 		ngayDat = ngayDatPhong.getDate();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateString = dateFormat.format(ngayDat);
@@ -520,6 +520,29 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			obj[5] = hd.getGioDat().toString();
 			obj[6] = hd.getMaNhanVien().getHoTenNhanVien().trim();
 			model.addRow(obj);
+		}
+	}
+
+	public void ktraKHDAT() {
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("\\d{10}")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và ko có kí tự");
+			txtSDT.setText("");
+			txtSDT.requestFocus();
+		} else if (kh != null) {
+			txtKhachHang.setText(kh.getHoTenKhachHang());
+			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
+				comboLKH.setSelectedIndex(0);
+			else
+				comboLKH.setSelectedIndex(1);
+		} else {
+			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \nthêm khách hàng mới!!!");
+			Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang(sdt);
+			frm_ThemKH.setVisible(true);
 		}
 	}
 
@@ -656,32 +679,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	/**
 	 * Kiểm tra khách hàng mới nhập vào đã có trong database hay chưa.
 	 */
-	public void ktraKHDAT() {
-		String sdt = txtSDT.getText().trim();
-		boolean flag = kiemTraDuLieuNhapVao(sdt);
-		if (!flag) {
-			return;
-		}
-		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
-			txtKhachHang.setText(kh.getHoTenKhachHang());
-			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
-				comboLKH.setSelectedIndex(0);
-			else
-				comboLKH.setSelectedIndex(1);
-		} else {
-			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
-					"Thông báo", JOptionPane.YES_NO_OPTION);
-			if (opt == JOptionPane.YES_OPTION) {
-				String sdtKH = txtSDT.getText();
-				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang(sdtKH);
-				frm_ThemKH.setVisible(true);
-			} else {
-				JOptionPane.showMessageDialog(this, "Xác nhận không thêm khách hàng!");
-				return;
-			}
-		}
-	}
 
 	public void clearTableDSP() {
 		while (tableDSPhong.getRowCount() > 0) {
@@ -830,7 +827,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	 * Nếu có phòng được đặt nhưng khong nhận sẽ tự động huỷ
 	 */
 	public void huyDatPhongQuaHan() {
-		
+
 	}
 
 }
