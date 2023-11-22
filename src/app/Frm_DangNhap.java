@@ -233,7 +233,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stu0385788328b
 
 	}
 
@@ -279,5 +279,6 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		new Frm_DangNhap().setVisible(true);
 	}
 
+	
 	
 }

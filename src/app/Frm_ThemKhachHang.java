@@ -52,8 +52,9 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 	private JComboBox comboGT;
 	DanhSachKhachHang dsKH;
 	String sdt;
-
+	KhachHang kh;
 	public Frm_ThemKhachHang(String sdt) {
+		this.sdt = sdt;
 		setTitle("THÊM KHÁCH HÀNG");
 		setSize(1000, 500);
 		setResizable(true);
@@ -117,7 +118,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		txtCCCD.setBounds(171, 99, 250, 30);
 		pnTTDDP.add(txtCCCD);
 
-		lbSDT_1  = new JLabel("Số điện thoại:");
+		lbSDT_1 = new JLabel("Số điện thoại:");
 		lbSDT_1.setForeground(Color.WHITE);
 		lbSDT_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbSDT_1.setBounds(519, 47, 113, 25);
@@ -170,13 +171,13 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnHuy) {
-			this.setVisible(false);
+			this.dispose();
 		} else if (o == btnXacNhan) {
-			if(luuThongTinKhachHang()) {
+			if (luuThongTinKhachHang()) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
-				this.setVisible(false);
-			}else {
-				JOptionPane.showMessageDialog(this, "Không thể thêm khách hàng!");	
+				this.dispose();
+			} else {
+				JOptionPane.showMessageDialog(this, "Không thể thêm khách hàng!");
 			}
 		} else {
 			xoaTrang();
@@ -199,9 +200,8 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		Dao_PhatSinhMa psm = new Dao_PhatSinhMa();
 		String ma = psm.getMaKHCuoi();
 		Object[] obj = new Object[7];
-
-		LoaiKhachHang lkh = new LoaiKhachHang("NOR", "Khách hàng thường");
-		KhachHang kh = new KhachHang(ma, tenKH, sCCD, sdtKH, 0, gtt, lkh);
+		LoaiKhachHang lkh = new LoaiKhachHang("NOR");
+		kh = new KhachHang(ma, tenKH, sCCD, sdtKH, 0, gtt, lkh);
 		if (!dsKH.themKhachHang(kh)) {
 			obj[0] = ma;
 			obj[1] = tenKH;
