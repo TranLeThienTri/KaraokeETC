@@ -494,19 +494,23 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	public void ktraKHDAT() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("\\d{10}")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và ko có kí tự");
+			txtSDT.setText("");
+			txtSDT.requestFocus();
+		}else if (kh != null) {
 			txtKhachHang.setText(kh.getHoTenKhachHang());
 			if (kh.getLoaiKhachHang().getMaLoaiKhachHang().equalsIgnoreCase("VIP"))
 				comboLKH.setSelectedIndex(0);
 			else
 				comboLKH.setSelectedIndex(1);
 		} else {
-			int opt = JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trong hệ thống,\nThêm khách hàng!",
-					"Thông báo", JOptionPane.YES_NO_OPTION);
-			if (opt == JOptionPane.YES_OPTION) {
-				Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang();
-				frm_ThemKH.setVisible(true);
-			}
+			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \nthêm khách hàng mới!!!");
+			Frm_ThemKhachHang frm_ThemKH = new Frm_ThemKhachHang(sdt);
+			frm_ThemKH.setVisible(true);
 		}
 	}
 

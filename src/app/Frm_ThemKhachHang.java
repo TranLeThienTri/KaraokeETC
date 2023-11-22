@@ -51,13 +51,14 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 	private JTextField txtCCCD;
 	private JComboBox comboGT;
 	DanhSachKhachHang dsKH;
+	String sdt;
 
-	public Frm_ThemKhachHang() {
+	public Frm_ThemKhachHang(String sdt) {
 		setTitle("THÊM KHÁCH HÀNG");
 		setSize(1000, 500);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
+		this.sdt = sdt;
 		gui();
 	}
 
@@ -95,7 +96,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		lbTenKH.setBounds(21, 47, 126, 25);
 		pnTTDDP.add(lbTenKH);
 
-		txtSDT = new JTextField();
+		txtSDT = new JTextField(sdt);
 		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtSDT.setBounds(654, 47, 250, 30);
 		pnTTDDP.add(txtSDT);
