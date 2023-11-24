@@ -29,7 +29,7 @@ import com.toedter.calendar.JDateChooser;
 
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
-import dao.ThuePhong;
+import dao.DanhSachThuePhong;
 import entitys.HoaDonPhong;
 import entitys.Phong;
 
@@ -59,7 +59,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	HoaDonPhong hd;
 	DanhSachPhong p;
 	DanhSachHoaDon dsHD;
-	ThuePhong tp;
+	DanhSachThuePhong tp;
 
 	public Panel getFrmChuyenPhong() {
 		return this.pnChuyenPhong;
@@ -68,7 +68,6 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	public Frm_ChuyenPhong(HoaDonPhong hd) {
 		setTitle("CHUYỂN PHÒNG");
 		setSize(1000, 820);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		this.hd = hd;
@@ -259,7 +258,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		btnChuyen.addActionListener(this);
 		df = new DecimalFormat("###,### VNĐ");
 		p = new DanhSachPhong();
-		tp = new ThuePhong();
+		tp = new DanhSachThuePhong();
 		upTT();
 		upTable();
 	}

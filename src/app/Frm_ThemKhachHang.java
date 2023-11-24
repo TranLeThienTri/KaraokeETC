@@ -53,14 +53,13 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 	DanhSachKhachHang dsKH;
 	String sdt;
 	KhachHang kh;
-
 	public Frm_ThemKhachHang(String sdt) {
 		this.sdt = sdt;
 		setTitle("THÊM KHÁCH HÀNG");
 		setSize(1000, 500);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
+		this.sdt = sdt;
 		gui();
 	}
 

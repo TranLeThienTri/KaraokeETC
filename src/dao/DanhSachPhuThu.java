@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connectDB.ConnectDB;
+import entitys.HoaDonPhong;
 import entitys.PhuThu;
 
 
@@ -30,5 +31,36 @@ public class DanhSachPhuThu {
 			e.printStackTrace();
 		}
 		return pt;
+	}
+	public String getPTTheoMaHD(String ma) {
+		String maPT = "";
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getPTTheoMaHD(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				maPT = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maPT;
+	}
+	public boolean themPTTheoMa(String ma) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call themPTTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
 	}
 }
