@@ -31,9 +31,9 @@ import mail.Config;
 import javax.swing.UIManager;
 
 public class Frm_GuiMail extends JFrame implements ActionListener {
-	private JButton btnDangNhap;
+	private JButton btnSend;
 	private JPanel pnSendMail;
-	private JTextField txtTaiKhoan;
+	private JTextField txtMail;
 	private JLabel ngayLabel;
 	Date ngayHienTai;
 	ImageIcon originalIcon, resizedIcon;
@@ -57,7 +57,7 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 
 
 	private void formSendMail() {
-		btnDangNhap();
+		btnSend();
 
 		JLabel lbMatKhau_1 = new JLabel("");
 		lbMatKhau_1.setIcon(new ImageIcon(Frm_GuiMail.class.getResource("/imgs/icon_lock.png")));
@@ -88,13 +88,13 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		lbEmail.setBackground(new Color(240, 240, 240));
 		lbEmail.setFont(new Font("Tahoma", Font.BOLD, 22));
 
-		txtTaiKhoan = new JTextField();
-		txtTaiKhoan.setBounds(48, 239, 316, 47);
-		pnSendMail.add(txtTaiKhoan);
-		txtTaiKhoan.setIgnoreRepaint(true);
-		txtTaiKhoan.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		txtTaiKhoan.setBackground(SystemColor.window);
-		txtTaiKhoan.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtMail = new JTextField();
+		txtMail.setBounds(48, 239, 316, 47);
+		pnSendMail.add(txtMail);
+		txtMail.setIgnoreRepaint(true);
+		txtMail.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		txtMail.setBackground(SystemColor.window);
+		txtMail.setFont(new Font("Dialog", Font.PLAIN, 20));
 
 	}
 
@@ -105,21 +105,21 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 
 	}
 
-	private void btnDangNhap() {
+	private void btnSend() {
 		JLabel lbSendMail = new JLabel("SEND MAIL");
 		lbSendMail.setBackground(new Color(192, 192, 192));
 		lbSendMail.setForeground(new Color(255, 255, 255));
 		lbSendMail.setFont(new Font("Tahoma", Font.BOLD, 30));
 		lbSendMail.setBounds(218, 21, 183, 45);
 		pnSendMail.add(lbSendMail);
-		btnDangNhap = new FixButton("Đăng Nhập");
-		btnDangNhap.setText("Gửi");
-		btnDangNhap.setFocusPainted(false);
-		btnDangNhap.setHideActionText(true);
-		btnDangNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnDangNhap.setFont(new Font("Tahoma", Font.BOLD, 22));
-		btnDangNhap.setBounds(422, 242, 148, 46);
-		pnSendMail.add(btnDangNhap);
+		btnSend = new FixButton("Đăng Nhập");
+		btnSend.setText("Gửi");
+		btnSend.setFocusPainted(false);
+		btnSend.setHideActionText(true);
+		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSend.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btnSend.setBounds(422, 242, 148, 46);
+		pnSendMail.add(btnSend);
 	}
 
 	// set background
@@ -169,31 +169,45 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		// bgr
 		setBgr();
 		formSendMail();
-		btnDangNhap.addActionListener(this);
+		btnSend.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if (o == btnDangNhap) {
+		if (o == btnSend) {
 			sendMail();
 		}
 	}
 
 	public void sendMail() {
-		String mail = txtTaiKhoan.getText().trim();
-		Config sendMail = new Config(mail);
-		sendMail.main(null);// send mail
-		String rd = sendMail.getRd();
-
-		xoaTrang();
-		Frm_NhapOTP frmOtp = new Frm_NhapOTP(tk,rd);
-		frmOtp.setVisible(true);
-		this.setVisible(false);
+		if(ktraDuLieu()) {
+			String mail = txtMail.getText().trim();
+			Config sendMail = new Config(mail);
+			sendMail.main(null);// send mail
+			String rd = sendMail.getRd();
+			JOptionPane.showMessageDialog(this, "Đang gửi mail xác thực, vui lòng đợi trong giây lát ^^!");
+			xoaTrang();
+			Frm_NhapOTP frmOtp = new Frm_NhapOTP(tk,rd);
+			frmOtp.setVisible(true);
+			this.setVisible(false);			
+		}
 	}
+	
+	// kiểm tra regex
+		public boolean ktraDuLieu() {
+			String email = txtMail.getText();
+			if (email.equals("") || !email.matches(
+					"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}")) {
+				JOptionPane.showMessageDialog(this, "Email không được để trống và phải đúng định dạng,\nVD: xxx@gmail.com");
+				txtMail.requestFocus();
+				return false;
+			}
+			return true;
+		}
 
 	public void xoaTrang() {
-		txtTaiKhoan.setText("");
+		txtMail.setText("");
 	}
 }
