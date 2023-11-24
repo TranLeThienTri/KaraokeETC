@@ -179,21 +179,6 @@ public class DanhSachDatPhong {
 		return b;
 	}
 
-//	public boolean setTTPhongTheoMa(String ma, String tinhtrang) {
-//		boolean b = false;
-//		try {
-//			ConnectDB.getInstance();
-//			Connection con = ConnectDB.getConnection();
-//			String sql = "{call setTinhTrangPhongTheoMa(?,?)}";
-//			CallableStatement myCall = con.prepareCall(sql);
-//			myCall.setString(1, ma);
-//			myCall.setString(2, tinhtrang);
-//			b = myCall.execute();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return b;
-//	}
 
 	public HoaDonPhong getHoaDonById(String ma) {
 
@@ -249,4 +234,6 @@ public class DanhSachDatPhong {
 		}
 		return flag;
 	}
+	
+	
 }
