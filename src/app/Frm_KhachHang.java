@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Panel;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,21 +28,23 @@ import dao.DanhSachKhachHang;
 import dao.Dao_PhatSinhMa;
 import entitys.KhachHang;
 import entitys.LoaiKhachHang;
+import entitys.Phong;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Frm_KhachHang extends JFrame implements ActionListener, MouseListener {
-	private JLabel lbTTKH, lblHoTen, lblSDT, lblCCCD, lblGioiTinh, lblLoaiKhachHgang, lblDTL, lbDSPhong, lbBG, lbTB;
+	private JLabel lbTTKH, lblHoTen, lblSDT, lblCCCD, lblGioiTinh, lblLoaiKhachHgang, lblDTL, lbDSPhong, lbBG, lbTB,
+			lbIconSearch;
 	private JTextField txtTenKH, txtLoaiKH, txtSDT, txtCCCD, txtDTL;
 	private DefaultTableModel model;
 	private JTableHeader tbHeader;
 	private JTable table;
-
 	private JScrollPane scrollPane;
 	private FixButton btnLamMoi, btnSua, btnThem;
 	private JComboBox comboGT, comboLKH;
@@ -60,13 +63,11 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
-
 		gui();
 	}
 
 	public void gui() throws SQLException {
 		getContentPane().setLayout(null);
-
 		pnQLKH = new Panel();
 		pnQLKH.setBounds(0, 0, 1400, 670);
 		getContentPane().add(pnQLKH);
@@ -74,10 +75,8 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		//
 
 		panel = new JPanel();
-
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel.setBackground(new Color(207, 169, 0));
-
 		panel.setBounds(102, 51, 1200, 271);
 		pnQLKH.add(panel);
 		panel.setLayout(null);
@@ -89,35 +88,30 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		lbTTKH.setForeground(new Color(255, 255, 255));
 
 		lblHoTen = new JLabel("Họ và tên: ");
-
 		lblHoTen.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblHoTen.setForeground(new Color(255, 255, 255));
 		lblHoTen.setBounds(79, 21, 91, 27);
 		panel.add(lblHoTen);
 
 		lblSDT = new JLabel("Số điện thoại:");
-
 		lblSDT.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblSDT.setForeground(new Color(255, 255, 255));
 		lblSDT.setBounds(679, 20, 123, 28);
 		panel.add(lblSDT);
 
 		lblCCCD = new JLabel("CCCD:");
-
 		lblCCCD.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblCCCD.setForeground(new Color(255, 255, 255));
 		lblCCCD.setBounds(79, 81, 72, 36);
 		panel.add(lblCCCD);
 
 		lblGioiTinh = new JLabel("Giới tính:");
-
 		lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblGioiTinh.setForeground(new Color(255, 255, 255));
 		lblGioiTinh.setBounds(679, 81, 95, 36);
 		panel.add(lblGioiTinh);
 
 		lblLoaiKhachHgang = new JLabel("Loại KH:");
-
 		lblLoaiKhachHgang.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblLoaiKhachHgang.setForeground(new Color(255, 255, 255));
 		lblLoaiKhachHgang.setBounds(79, 143, 81, 36);
@@ -131,9 +125,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 
 		txtTenKH = new JTextField();
 		txtTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
-
 		txtTenKH.setBounds(180, 19, 300, 30);
-
 		panel.add(txtTenKH);
 		txtTenKH.setColumns(10);
 
@@ -195,19 +187,23 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		comboGT.setBounds(812, 82, 300, 31);
 		panel.add(comboGT);
 
+		lbIconSearch = new JLabel("New label");
+		lbIconSearch.setIcon(new ImageIcon(Frm_KhachHang.class.getResource("/imgs/icon_search.png")));
+		lbIconSearch.setBounds(1117, 20, 30, 30);
+		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel.add(lbIconSearch);
+
 		// Danh sách khách hàng table
 		pnDSP = new JPanel();
-
 		pnDSP.setBounds(100, 350, 1200, 270);
 		pnDSP.setLayout(null);
-
 		lbDSPhong = new JLabel("Danh sách khách hàng");
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
 
 		String col[] = { "Mã KH", "Họ tên", "Loại KH", "Giới tính", "SĐT", "CCCD", "Điểm tích luỹ" };
-		model = new DefaultTableModel(col, 0){
+		model = new DefaultTableModel(col, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // Không cho phép chỉnh sửa ô
@@ -243,7 +239,6 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 
 		lbBG = new JLabel();
 		lbBG.setBounds(0, 0, 1400, 700);
-
 		lbBG.setIcon(new ImageIcon(Frm_KhachHang.class.getResource("/imgs/bg_chot1.png")));
 		pnQLKH.add(lbBG);
 
@@ -251,6 +246,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		table.addMouseListener(this);
+		lbIconSearch.addMouseListener(this);
 
 		ConnectDB.getInstance().connect();
 
@@ -269,47 +265,40 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-
 		if (o.equals(btnThem)) {
 			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
 				btnThem.setText("Xác nhận");
-				btnSua.setText("Hủy");
-
+				btnSua.setText("Huỷ");
 			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				if (themKH()) {
 					btnSua.setText("Sửa");
 					btnThem.setText("Thêm");
 				}
-			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
-				btnSua.setText("Sửa");
-				if (themKH() == true) {
+			} else if (btnThem.getText().equals("Xác nhận ")) {
+				if (suaKH()) {
+					btnThem.setText("Thêm");
+					btnSua.setText("Sửa");
 				}
-				btnThem.setText("Thêm");
 			}
-		}
-		if (o.equals(btnSua))
-
-		{
-			if (btnSua.getText().equals("Hủy")) {
+		} else if (o.equals(btnSua)) {
+			if (btnSua.getText().equals("Huỷ")) {
+				btnThem.setText("Thêm");
 				btnSua.setText("Sửa");
-				btnThem.setText("Thêm");
 			} else if (btnSua.getText().equals("Sửa")) {
-				suaKH();
-
+				btnThem.setText("Xác nhận ");
+				btnSua.setText("Huỷ");
 			}
-		} else if (btnThem.getText().equals("Xác nhận ")) {
-			suaKH();
-			xoaTrang();
-			btnThem.setText("Thêm");
-			btnSua.setText("Sửa");
 		}
 
 		else if (o.equals(btnLamMoi))
 
 		{
+			clearTable();
 			xoaTrang();
+			upTable();
 
 		}
+
 	}
 
 	public void xoaTrang() {
@@ -320,6 +309,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		txtDTL.setText("");
 		lbTB.setText("");
 		table.clearSelection();
+		comboGT.setSelectedIndex(0);
 	}
 
 	public void upTable() {
@@ -380,7 +370,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 			JOptionPane.showMessageDialog(this, "Chọn khách hàng cần sửa");
 		} else {
 			Object[] obj = new Object[7];
-			if (ktraDuLieu()) {
+			if (ktraDuLieuSua()) {
 				String ma = table.getValueAt(row, 0).toString();
 				String ten = txtTenKH.getText().toString();
 				String dt = txtSDT.getText().toString();
@@ -402,21 +392,19 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 
 				KhachHang kh = new KhachHang(ma, ten, cccd, dt, 0, gioitinh, lkh);
 				if (!dsKh.suaKhachHang(kh)) {
-					int optThanhToan = JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn SỬA không?",
-							"Thông báo", JOptionPane.YES_NO_OPTION);
+					JOptionPane.showMessageDialog(this, "Sửa thành công");
+					table.setValueAt(obj[1], row, 1);
+					table.setValueAt(obj[3], row, 3);
+					table.setValueAt(obj[4], row, 4);
+					table.setValueAt(obj[5], row, 5);
+					xoaTrang();
+					return true;
 
-					if (optThanhToan == JOptionPane.YES_OPTION) {
-						table.setValueAt(obj[1], row, 1);
-						table.setValueAt(obj[3], row, 3);
-						table.setValueAt(obj[4], row, 4);
-						table.setValueAt(obj[5], row, 5);
-						xoaTrang();
-						return true;
-					}
 				}
 			}
 		}
 		return false;
+
 	}
 	// click table
 
@@ -437,9 +425,66 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		lbTB.setText(message);
 	}
 
+	public void ktraKH() {
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKh.getKhachHangTheoSDT(sdt);
+		if (kh != null) {
+			txtTenKH.setText(kh.getHoTenKhachHang());
+			txtCCCD.setText(kh.getSoCCCD());
+			txtLoaiKH.setText(kh.getLoaiKhachHang().getTenLoaiKhachHang());
+			txtDTL.setText(Integer.toString(kh.getDiemTichLuy()));
+			Boolean gt = kh.getGioiTinh();
+			int i = 2;
+			if (gt == true) {
+				i = 0;
+			} else {
+				i = 1;
+			}
+			comboGT.setSelectedIndex(i);
+			locKHTheoSDT();
+		} else {
+			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \n Thêm khách hàng mới!!!");
+			txtTenKH.requestFocus();
+		}
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("^(0[0-9]{9})$")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+		}
+	}
+
+	public void clearTable() {
+		while (table.getRowCount() > 0) {
+			model.removeRow(0);
+		}
+	}
+
+	// Lọc khách hàng theo SĐT
+	public void locKHTheoSDT() {
+		clearTable();
+		String sdt = txtSDT.getText();
+		KhachHang kh = dsKh.getKhachHangTheoSDT(sdt);
+		Object[] obj = new Object[7];
+		obj[0] = kh.getMaKhachHang();
+		obj[1] = kh.getHoTenKhachHang();
+		obj[2] = kh.getLoaiKhachHang().getTenLoaiKhachHang();
+		String gioitinh;
+		if (kh.getGioiTinh()) {
+			gioitinh = "Nam";
+		} else
+			gioitinh = "Nữ";
+		obj[3] = gioitinh;
+		obj[4] = sdt;
+		obj[5] = kh.getSoCCCD();
+		obj[6] = kh.getDiemTichLuy();
+		model.addRow(obj);
+
+	}
+
 	// kiểm tra regex
 	public boolean ktraDuLieu() {
-
 		String ten = txtTenKH.getText();
 		if (ten.equals("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
@@ -477,9 +522,53 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 		return true;
 	}
 
+	// kiểm tra regex
+	public boolean ktraDuLieuSua() {
+		int row = table.getSelectedRow();
+		String ten = txtTenKH.getText();
+		if (ten.equals("") || !ten.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
+			txtTenKH.requestFocus();
+			return false;
+		}
+		String dt = txtSDT.getText();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (dt.equals(table.getValueAt(i, 4).toString()) && !dt.equals(table.getValueAt(row, 4))) {
+				JOptionPane.showMessageDialog(this, "SĐT đã tồn tại");
+				return false;
+			}
+		}
+		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+			return false;
+		}
+
+		String cccd = txtCCCD.getText();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (cccd.equals(table.getValueAt(i, 5).toString()) && !cccd.equals(table.getValueAt(row, 5))) {
+				JOptionPane.showMessageDialog(this, "CCCD đã tồn tại");
+				return false;
+
+			}
+		}
+		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
+			txtCCCD.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		setTextTB();
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			ktraKH();
+		} else
+			setTextTB();
+
 	}
 
 	@Override

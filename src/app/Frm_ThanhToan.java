@@ -2,23 +2,39 @@ package app;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.ServiceUI;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttribute;
+import javax.print.attribute.standard.PrintQuality;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,6 +44,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mindfusion.common.Duration;
 import com.toedter.calendar.JDateChooser;
 
@@ -56,7 +81,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	JPanel pnDSDichVu;
 	JLabel lbDSDichVu, lbBGQLDV, lbHoaDon, lbDiaChi, lbSDT, lbSoLuongTon, lbMaPhong;
 	JTextField txtSDT;
-	Panel pnThanhToan;
+	JPanel pnThanhToan;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	private JLabel lbTenNV, lblNguynVn, lbSDT_1, lblHd, lblMp, lblNguynVnA, lbHDTT, lbTenKH, lbDiemTL, lbGioBatDau,
@@ -72,18 +97,21 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	DanhSachPhuThu dsPT;
 	ChiTietHoaDon ct;
 	DanhSachPhong p;
+
 	DanhSachThuePhong tp;
 	String mahd,makh,map,tinhtrang;
 	Float tien;
 	LocalTime giotra;
+	private JLabel lbSDTQuan;
 
-	public Panel getFrmThanhToan() {
+	public JPanel getFrmThanhToan() {
 		return this.pnThanhToan;
 	}
 
 	public Frm_ThanhToan(HoaDonPhong hd) {
 		setTitle("THANH TOÁN HÓA ĐƠN");
-		setSize(1000, 820);
+		setSize(700, 820);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		this.hd = hd;
@@ -93,58 +121,58 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	public void gui() {
 		getContentPane().setLayout(null);
 
-		pnThanhToan = new Panel();
-		pnThanhToan.setBounds(0, 0, 1000, 820);
+		pnThanhToan = new JPanel();
+		pnThanhToan.setBounds(0, 0, 700, 820);
 		getContentPane().add(pnThanhToan);
 		pnThanhToan.setLayout(null);
 
 		lbHoaDon = new JLabel("KARAOKE ETC");
-		lbHoaDon.setFont(new Font("Tahoma", Font.BOLD, 50));
-		lbHoaDon.setForeground(new Color(255, 255, 255));
-		lbHoaDon.setBounds(321, 10, 357, 50);
+		lbHoaDon.setFont(new Font("Tahoma", Font.BOLD, 40));
+		lbHoaDon.setForeground(Color.BLACK);
+		lbHoaDon.setBounds(215, 10, 357, 50);
 		pnThanhToan.add(lbHoaDon);
 
 		lbDiaChi = new JLabel("Địa chỉ:");
-		lbDiaChi.setForeground(Color.WHITE);
-		lbDiaChi.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbDiaChi.setBounds(60, 65, 73, 25);
+		lbDiaChi.setForeground(Color.BLACK);
+		lbDiaChi.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbDiaChi.setBounds(22, 65, 73, 25);
 		pnThanhToan.add(lbDiaChi);
 
 		lbSDT = new JLabel("SĐT:");
-		lbSDT.setForeground(Color.WHITE);
-		lbSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbSDT.setBounds(60, 85, 58, 25);
+		lbSDT.setForeground(Color.BLACK);
+		lbSDT.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbSDT.setBounds(22, 85, 58, 25);
 		pnThanhToan.add(lbSDT);
 
 		lbSoLuongTon = new JLabel("Mã hóa đơn: ");
-		lbSoLuongTon.setForeground(new Color(255, 255, 255));
-		lbSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbSoLuongTon.setBounds(60, 105, 105, 25);
+		lbSoLuongTon.setForeground(Color.BLACK);
+		lbSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbSoLuongTon.setBounds(22, 105, 105, 25);
 		pnThanhToan.add(lbSoLuongTon);
 
 		lbMaPhong = new JLabel("Mã phòng:");
-		lbMaPhong.setForeground(new Color(255, 255, 255));
-		lbMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbMaPhong.setBounds(60, 125, 98, 25);
+		lbMaPhong.setForeground(Color.BLACK);
+		lbMaPhong.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbMaPhong.setBounds(22, 125, 98, 25);
 		pnThanhToan.add(lbMaPhong);
 
 		btnXacNhan = new FixButton("Làm mới");
 		btnXacNhan.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
 		btnXacNhan.setText("Xác nhận");
-		btnXacNhan.setBounds(820, 735, 140, 40);
+		btnXacNhan.setBounds(514, 731, 140, 40);
 		pnThanhToan.add(btnXacNhan);
 		btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnHuy = new FixButton("Hủy đặt phòng");
 		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
 		btnHuy.setText("Hủy");
-		btnHuy.setBounds(650, 735, 140, 40);
+		btnHuy.setBounds(344, 731, 140, 40);
 		pnThanhToan.add(btnHuy);
 		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
-		pnDSDichVu.setBounds(60, 326, 870, 209);
+		pnDSDichVu.setBounds(22, 340, 630, 200);
 		pnThanhToan.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
@@ -160,7 +188,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		// Set màu cho table
 		// Set màu cho cột tiêu đề
 		JTableHeader tbHeader = tableDSDichVu.getTableHeader();
-		tbHeader.setBackground(new java.awt.Color(0, 0, 0));
+		tbHeader.setBackground(Color.BLACK);
 		tbHeader.setForeground(Color.WHITE);
 		tbHeader.setFont(new Font("Tahoma", Font.BOLD, 14));
 
@@ -176,223 +204,228 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
-		scrollPane.setBounds(0, 25, 870, 207);
+		scrollPane.setBounds(0, 25, 630, 170);
 		scrollPane.getHorizontalScrollBar();
 		pnDSDichVu.add(scrollPane);
-
 		scrollPane.setViewportView(tableDSDichVu);
 
 		lbTenNV = new JLabel("Nhân viên: ");
-		lbTenNV.setForeground(Color.WHITE);
-		lbTenNV.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTenNV.setBounds(60, 145, 87, 25);
+		lbTenNV.setForeground(Color.BLACK);
+		lbTenNV.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTenNV.setBounds(22, 145, 87, 25);
 		pnThanhToan.add(lbTenNV);
 
 		lblNguynVn = new JLabel("12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP.HCM");
-		lblNguynVn.setForeground(Color.WHITE);
-		lblNguynVn.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNguynVn.setBounds(175, 65, 596, 25);
+		lblNguynVn.setForeground(Color.BLACK);
+		lblNguynVn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNguynVn.setBounds(137, 65, 596, 25);
 		pnThanhToan.add(lblNguynVn);
 
 		lbSDT_1 = new JLabel("0382173105");
-		lbSDT_1.setForeground(Color.WHITE);
-		lbSDT_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbSDT_1.setBounds(175, 85, 243, 25);
+		lbSDT_1.setForeground(Color.BLACK);
+		lbSDT_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbSDT_1.setBounds(535, 222, 243, 25);
 		pnThanhToan.add(lbSDT_1);
 
 		lblHd = new JLabel("");
-		lblHd.setForeground(Color.ORANGE);
+		lblHd.setForeground(Color.BLACK);
 		lblHd.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblHd.setBounds(175, 105, 292, 25);
+		lblHd.setBounds(137, 105, 292, 25);
 		pnThanhToan.add(lblHd);
 
 		lblMp = new JLabel("");
-		lblMp.setForeground(Color.ORANGE);
+		lblMp.setForeground(Color.BLACK);
 		lblMp.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMp.setBounds(175, 125, 292, 25);
+		lblMp.setBounds(137, 125, 292, 25);
 		pnThanhToan.add(lblMp);
 
 		lblNguynVnA = new JLabel("");
-		lblNguynVnA.setForeground(Color.WHITE);
-		lblNguynVnA.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNguynVnA.setBounds(175, 145, 292, 25);
+		lblNguynVnA.setForeground(Color.BLACK);
+		lblNguynVnA.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNguynVnA.setBounds(137, 145, 292, 25);
 		pnThanhToan.add(lblNguynVnA);
 
 		lbHDTT = new JLabel("HÓA ĐƠN TÍNH TIỀN");
-		lbHDTT.setForeground(Color.WHITE);
+		lbHDTT.setForeground(Color.BLACK);
 		lbHDTT.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lbHDTT.setBounds(369, 170, 263, 30);
+		lbHDTT.setBounds(215, 180, 263, 30);
 		pnThanhToan.add(lbHDTT);
 
 		lbTenKH = new JLabel("Tên khách hàng: ");
-		lbTenKH.setForeground(new Color(255, 255, 255));
-		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTenKH.setBounds(60, 205, 140, 25);
+		lbTenKH.setForeground(Color.BLACK);
+		lbTenKH.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTenKH.setBounds(22, 205, 140, 25);
 		pnThanhToan.add(lbTenKH);
 
 		lbDiemTL = new JLabel("Điểm tích lũy: ");
-		lbDiemTL.setForeground(Color.WHITE);
-		lbDiemTL.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbDiemTL.setBounds(60, 225, 122, 25);
+		lbDiemTL.setForeground(Color.BLACK);
+		lbDiemTL.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbDiemTL.setBounds(22, 240, 122, 25);
 		pnThanhToan.add(lbDiemTL);
 		lbGioBatDau = new JLabel("Giờ bắt đầu: ");
-		lbGioBatDau.setForeground(Color.WHITE);
-		lbGioBatDau.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGioBatDau.setBounds(60, 245, 105, 25);
+		lbGioBatDau.setForeground(Color.BLACK);
+		lbGioBatDau.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbGioBatDau.setBounds(22, 260, 105, 25);
 		pnThanhToan.add(lbGioBatDau);
 
 		lbGioKetThuc = new JLabel("Giờ kết thúc: ");
-		lbGioKetThuc.setForeground(Color.WHITE);
-		lbGioKetThuc.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGioKetThuc.setBounds(60, 265, 105, 25);
+		lbGioKetThuc.setForeground(Color.BLACK);
+		lbGioKetThuc.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbGioKetThuc.setBounds(22, 280, 105, 25);
 		pnThanhToan.add(lbGioKetThuc);
 
 		lbThoiGian = new JLabel("Tổng thời gian:");
 		lbThoiGian.setBackground(Color.WHITE);
-		lbThoiGian.setForeground(new Color(255, 255, 255));
-		lbThoiGian.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbThoiGian.setBounds(60, 285, 200, 25);
+		lbThoiGian.setForeground(Color.BLACK);
+		lbThoiGian.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbThoiGian.setBounds(22, 300, 200, 25);
 		pnThanhToan.add(lbThoiGian);
 		lbTongGT = new JLabel("Ngày:");
 		lbTongGT.setBackground(Color.WHITE);
-		lbTongGT.setForeground(new Color(255, 255, 255));
-		lbTongGT.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongGT.setBounds(60, 305, 112, 25);
+		lbTongGT.setForeground(Color.BLACK);
+		lbTongGT.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTongGT.setBounds(22, 315, 112, 25);
 		pnThanhToan.add(lbTongGT);
 
 		lbTenKH_1 = new JLabel("");
-		lbTenKH_1.setForeground(Color.ORANGE);
-		lbTenKH_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTenKH_1.setBounds(780, 205, 200, 25);
+		lbTenKH_1.setForeground(Color.BLACK);
+		lbTenKH_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTenKH_1.setBounds(535, 205, 200, 25);
 		pnThanhToan.add(lbTenKH_1);
 
 		lbDiemTL_1 = new JLabel("");
-		lbDiemTL_1.setForeground(Color.WHITE);
-		lbDiemTL_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbDiemTL_1.setBounds(780, 225, 200, 25);
+		lbDiemTL_1.setForeground(Color.BLACK);
+		lbDiemTL_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbDiemTL_1.setBounds(536, 240, 200, 25);
 		pnThanhToan.add(lbDiemTL_1);
 
 		lbGioBatDau_1 = new JLabel("");
-		lbGioBatDau_1.setForeground(Color.WHITE);
-		lbGioBatDau_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGioBatDau_1.setBounds(780, 245, 200, 25);
+		lbGioBatDau_1.setForeground(Color.BLACK);
+		lbGioBatDau_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbGioBatDau_1.setBounds(536, 260, 200, 25);
 		pnThanhToan.add(lbGioBatDau_1);
 
 		lbGioKetThuc_1 = new JLabel("");
-		lbGioKetThuc_1.setForeground(Color.WHITE);
-		lbGioKetThuc_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGioKetThuc_1.setBounds(780, 265, 200, 25);
+		lbGioKetThuc_1.setForeground(Color.BLACK);
+		lbGioKetThuc_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbGioKetThuc_1.setBounds(536, 280, 200, 25);
 		pnThanhToan.add(lbGioKetThuc_1);
 
 		lbThoiGianThue = new JLabel("");
 		lbThoiGianThue.setBackground(Color.WHITE);
-		lbThoiGianThue.setForeground(Color.ORANGE);
-		lbThoiGianThue.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbThoiGianThue.setBounds(780, 285, 200, 25);
+		lbThoiGianThue.setForeground(Color.BLACK);
+		lbThoiGianThue.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lbThoiGianThue.setBounds(536, 300, 200, 25);
 		pnThanhToan.add(lbThoiGianThue);
 		lbTongGT_1 = new JLabel("");
 		lbTongGT_1.setBackground(Color.WHITE);
-		lbTongGT_1.setForeground(Color.ORANGE);
-		lbTongGT_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongGT_1.setBounds(780, 305, 200, 25);
+		lbTongGT_1.setForeground(Color.BLACK);
+		lbTongGT_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lbTongGT_1.setBounds(536, 315, 200, 25);
 		pnThanhToan.add(lbTongGT_1);
 		lbTongTienDV = new JLabel("Tổng tiền dịch vụ: ");
-		lbTongTienDV.setForeground(Color.WHITE);
-		lbTongTienDV.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongTienDV.setBounds(60, 545, 200, 25);
+		lbTongTienDV.setForeground(Color.BLACK);
+		lbTongTienDV.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTongTienDV.setBounds(22, 545, 200, 25);
 		pnThanhToan.add(lbTongTienDV);
 
 		lbPhuThu = new JLabel("Phụ thu(Cuối tuần): ");
-		lbPhuThu.setForeground(Color.WHITE);
-		lbPhuThu.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbPhuThu.setBounds(60, 565, 250, 25);
+		lbPhuThu.setForeground(Color.BLACK);
+		lbPhuThu.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbPhuThu.setBounds(22, 565, 200, 25);
 		pnThanhToan.add(lbPhuThu);
 
 		lbTongTienGio = new JLabel("Tổng tiền giờ: ");
-		lbTongTienGio.setForeground(Color.WHITE);
-		lbTongTienGio.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongTienGio.setBounds(60, 585, 200, 25);
+		lbTongTienGio.setForeground(Color.BLACK);
+		lbTongTienGio.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTongTienGio.setBounds(22, 585, 200, 25);
 		pnThanhToan.add(lbTongTienGio);
 
 		lbGiamGia = new JLabel("Giảm giá: ");
-		lbGiamGia.setForeground(Color.WHITE);
-		lbGiamGia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGiamGia.setBounds(60, 625, 200, 25);
+		lbGiamGia.setForeground(Color.BLACK);
+		lbGiamGia.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbGiamGia.setBounds(22, 625, 200, 25);
 		pnThanhToan.add(lbGiamGia);
 
 		lbPhiVAT = new JLabel("Phí VAT: ");
-		lbPhiVAT.setForeground(Color.WHITE);
-		lbPhiVAT.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbPhiVAT.setBounds(60, 645, 200, 25);
+		lbPhiVAT.setForeground(Color.BLACK);
+		lbPhiVAT.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbPhiVAT.setBounds(22, 645, 200, 25);
 		pnThanhToan.add(lbPhiVAT);
 
 		lbTongHD = new JLabel("Tổng hóa đơn: ");
-		lbTongHD.setForeground(Color.WHITE);
-		lbTongHD.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongHD.setBounds(60, 605, 200, 25);
+		lbTongHD.setForeground(Color.BLACK);
+		lbTongHD.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTongHD.setBounds(22, 605, 200, 25);
 		pnThanhToan.add(lbTongHD);
 
 		lbTongThanhToan = new JLabel("Tổng thanh toán: ");
 		lbTongThanhToan.setBackground(Color.WHITE);
-		lbTongThanhToan.setForeground(Color.ORANGE);
-		lbTongThanhToan.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongThanhToan.setBounds(60, 665, 200, 25);
+		lbTongThanhToan.setForeground(Color.BLACK);
+		lbTongThanhToan.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lbTongThanhToan.setBounds(22, 665, 200, 25);
 		pnThanhToan.add(lbTongThanhToan);
 
 		lbTongTienDV_1 = new JLabel("");
-		lbTongTienDV_1.setForeground(Color.WHITE);
-		lbTongTienDV_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTongTienDV_1.setBounds(780, 545, 200, 25);
+		lbTongTienDV_1.setForeground(Color.BLACK);
+		lbTongTienDV_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbTongTienDV_1.setBounds(536, 550, 200, 25);
 		pnThanhToan.add(lbTongTienDV_1);
 
 		lblPhuThu = new JLabel("");
-		lblPhuThu.setForeground(Color.WHITE);
-		lblPhuThu.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblPhuThu.setBounds(780, 565, 200, 25);
+		lblPhuThu.setForeground(Color.BLACK);
+		lblPhuThu.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPhuThu.setBounds(536, 570, 200, 25);
 		pnThanhToan.add(lblPhuThu);
 
 		lblTonggio = new JLabel("");
-		lblTonggio.setForeground(Color.WHITE);
-		lblTonggio.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTonggio.setBounds(780, 585, 200, 25);
+		lblTonggio.setForeground(Color.BLACK);
+		lblTonggio.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblTonggio.setBounds(536, 590, 200, 25);
 		pnThanhToan.add(lblTonggio);
 
 		lblVAT = new JLabel("");
-		lblVAT.setForeground(Color.WHITE);
-		lblVAT.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblVAT.setBounds(780, 645, 200, 25);
+		lblVAT.setForeground(Color.BLACK);
+		lblVAT.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblVAT.setBounds(536, 645, 200, 25);
 		pnThanhToan.add(lblVAT);
 
 		lblGiamGia = new JLabel("");
-		lblGiamGia.setForeground(Color.WHITE);
-		lblGiamGia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblGiamGia.setBounds(780, 625, 200, 25);
+		lblGiamGia.setBackground(Color.BLACK);
+		lblGiamGia.setForeground(Color.BLACK);
+		lblGiamGia.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblGiamGia.setBounds(536, 625, 200, 25);
 		pnThanhToan.add(lblGiamGia);
 
 		lblTongtien = new JLabel("");
-		lblTongtien.setForeground(Color.WHITE);
-		lblTongtien.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTongtien.setBounds(780, 605, 200, 25);
+		lblTongtien.setForeground(Color.BLACK);
+		lblTongtien.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblTongtien.setBounds(536, 605, 200, 25);
 		pnThanhToan.add(lblTongtien);
 
 		lblTongthanhtoan = new JLabel("");
-		lblTongthanhtoan.setForeground(Color.ORANGE);
-		lblTongthanhtoan.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTongthanhtoan.setBounds(780, 665, 200, 25);
+		lblTongthanhtoan.setForeground(Color.BLACK);
+		lblTongthanhtoan.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTongthanhtoan.setBounds(536, 665, 200, 25);
 		pnThanhToan.add(lblTongthanhtoan);
 
 		lbCamOn = new JLabel("XIN CẢM ƠN QUÝ KHÁCH VÀ HẸN GẶP LẠI ");
-		lbCamOn.setForeground(Color.WHITE);
-		lbCamOn.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lbCamOn.setBounds(317, 701, 365, 25);
+		lbCamOn.setForeground(Color.BLACK);
+		lbCamOn.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lbCamOn.setBounds(180, 690, 365, 25);
 		pnThanhToan.add(lbCamOn);
 
-		// add background ở cuối
-		lbBGQLDV = new JLabel("");
-		lbBGQLDV.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_trong.png")));
-		lbBGQLDV.setBounds(10, 10, 1000, 820);
-		pnThanhToan.add(lbBGQLDV);
+		JLabel lbSDTKH = new JLabel("SĐT khách hàng:");
+		lbSDTKH.setForeground(Color.BLACK);
+		lbSDTKH.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbSDTKH.setBounds(22, 222, 140, 25);
+		pnThanhToan.add(lbSDTKH);
+
+		lbSDTQuan = new JLabel("0989999999");
+		lbSDTQuan.setForeground(Color.BLACK);
+		lbSDTQuan.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lbSDTQuan.setBounds(137, 85, 140, 25);
+		pnThanhToan.add(lbSDTQuan);
 		df = new DecimalFormat("###,### VNĐ");
 		sf = new SimpleDateFormat("dd/MM/yyyy");
 		dt = DateTimeFormatter.ofPattern("HH:mm");
@@ -411,10 +444,16 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		if (o == btnHuy) {
 			dispose();
 		}
-		if(o == btnXacNhan)
-			if(setTTHD(mahd, tien, giotra, makh, map, "EMPT")) {
+		if (o == btnXacNhan)
+			if (setTTHD(mahd, tien, giotra, makh, map, "EMPT")) {
 				JOptionPane.showMessageDialog(this, "thành công");
 				dispose();
+				try {
+					xuatHoaDonFilePDF();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 	}
 
@@ -485,9 +524,54 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		lblTongthanhtoan.setText(df.format(tien));
 	}
 
-	public boolean setTTHD(String mahd, float tien, LocalTime giotra, String makh,String map,String tinhtrang) {
+	public boolean setTTHD(String mahd, float tien, LocalTime giotra, String makh, String map, String tinhtrang) {
 		if (!tp.tinhTien(mahd, tien, giotra) && !tp.congDTL(makh) && !tp.setTTPhongTheoMa(map, tinhtrang))
 			return true;
 		return false;
+	}
+
+	public void xuatHoaDonFilePDF() throws Exception {
+		int chon = JOptionPane.showConfirmDialog(this, "Bạn có muốn xuất hóa đơn này ?", "Thông báo",
+				JOptionPane.YES_NO_OPTION);
+		if (chon == JOptionPane.YES_OPTION) {
+//		 Thiết lập chọn đường dẫn
+			String path = "src\\printInvoice\\";
+			// Set size file pdf muốn xuất
+			Document doc = new Document(PageSize.ARCH_B);
+			try {
+				PdfWriter.getInstance(doc, new FileOutputStream(path + hd.getMaHoaDon() + ".pdf"));
+				doc.open();
+				// Chuyển đổi từ Jpanel sang Image
+				BufferedImage image = chuyenDoiHinhTuJpanel(pnThanhToan);
+				com.itextpdf.text.Image pdfImage = com.itextpdf.text.Image.getInstance(image, null);
+				doc.add(pdfImage);
+
+				JOptionPane.showMessageDialog(null, "Đã xuất hóa đơn PDF thành công");
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				JOptionPane.showMessageDialog(null, "Lỗi !!!");
+			}
+			doc.close();
+			// Mở tệp PDF bằng ứng dụng mặc định của hệ thống
+			File pdfFile = new File(path + hd.getMaHoaDon() + ".pdf");
+			try {
+				Desktop.getDesktop().open(pdfFile);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+	}
+
+	public BufferedImage chuyenDoiHinhTuJpanel(JPanel panel) {
+		int width = pnThanhToan.getWidth();
+		int height = 720;
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		panel.paint(g);
+		g.dispose();
+		return image;
 	}
 }

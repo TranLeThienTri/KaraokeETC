@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 import entitys.ChucVu;
 import entitys.KhachHang;
+import entitys.LoaiKhachHang;
 import entitys.NhanVien;
 
 
@@ -23,6 +24,7 @@ public class DanhSachNhanVien {
 	
 	public ArrayList<NhanVien> getAllDanhSachNV() {
 		try {
+			dsNV = new ArrayList<>();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSNV}";
@@ -128,4 +130,35 @@ public class DanhSachNhanVien {
 		}
 		return b;
 	}
+	
+	public NhanVien getNhanVienTheoSDT(String s) {
+		NhanVien nv = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call kiemTraNVTheoSDT(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, s);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maNV = rs.getString(1);
+				String tenNV = rs.getString(2);
+				String maChucVu = rs.getString(3);
+				Boolean phai = rs.getBoolean(4);
+				LocalDate ngaySinh = LocalDate.parse(rs.getString(5));
+				String diaChi = rs.getString(6);
+				String sdt = rs.getString(7);
+				String cccd = rs.getString(8);
+				Boolean tinhTrang = rs.getBoolean(9);			
+				ChucVu cv = new ChucVu();
+				DanhSachChucVu listRole = new DanhSachChucVu();
+				cv = listRole.getRoleById(maChucVu);
+				nv = new NhanVien(maNV, tenNV, cccd, diaChi, sdt, phai, cv, ngaySinh, tinhTrang);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nv;
+	}
+	
 }
