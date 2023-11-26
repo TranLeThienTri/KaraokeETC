@@ -22,6 +22,7 @@ public class DanhSachDichVu {
 
 	public ArrayList<DichVu> getDSDichVu() {
 		try {
+			list = new ArrayList();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSDichVu}";

@@ -168,14 +168,15 @@ public class DanhSachHoaDon {
 				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
 				String makh = rs.getString(7);
 				String tenkh = getTenKHTheoMa(makh);
-				KhachHang kh = new KhachHang(makh,tenkh);
+				KhachHang kh = new KhachHang(makh, tenkh);
 				String manv = rs.getString(8);
 				String tennv = getTenNVTheoMa(manv);
-				NhanVien nv = new NhanVien(manv,tennv);
+				NhanVien nv = new NhanVien(manv, tennv);
 				String map = rs.getString(10);
 				Phong phong = new Phong(map);
 				float tongtien = rs.getFloat(11);
-				HoaDonPhong hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue, giotra, ngaylap, giotra, tongtien);
+				HoaDonPhong hd = new HoaDonPhong(maHD, phong, nv, kh, lhd, ngaylap, giothue, giotra, ngaylap, giotra,
+						tongtien);
 				list.add(hd);
 			}
 		} catch (SQLException e) {
@@ -183,8 +184,9 @@ public class DanhSachHoaDon {
 		}
 		return list;
 	}
-	public String getTenNVTheoMa (String ma) {
-		String ten = null ;
+
+	public String getTenNVTheoMa(String ma) {
+		String ten = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
@@ -200,8 +202,9 @@ public class DanhSachHoaDon {
 		}
 		return ten;
 	}
-	public String getTenKHTheoMa (String ma) {
-		String ten = null ;
+
+	public String getTenKHTheoMa(String ma) {
+		String ten = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
@@ -217,8 +220,9 @@ public class DanhSachHoaDon {
 		}
 		return ten;
 	}
-	public String getSDTKHTheoMa (String ma) {
-		String ten = null ;
+
+	public String getSDTKHTheoMa(String ma) {
+		String ten = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
@@ -234,6 +238,7 @@ public class DanhSachHoaDon {
 		}
 		return ten;
 	}
+
 	public float tongTienHDTheoNgay(Date ngaybd, Date ngaykt) {
 		float tong = 0;
 		try {
@@ -252,6 +257,7 @@ public class DanhSachHoaDon {
 		}
 		return tong;
 	}
+
 	public ArrayList<DichVu> getDSDVTheoNgay(Date ngaybd, Date ngaykt) {
 		ArrayList<DichVu> list = new ArrayList<DichVu>();
 		try {
@@ -274,16 +280,17 @@ public class DanhSachHoaDon {
 		}
 		return list;
 	}
+
 	public ArrayList<DichVu> getDSDVTheoDSMaDV(ArrayList<DichVu> dsMa) {
 		ArrayList<DichVu> list = new ArrayList<DichVu>();
 		DanhSachDichVu dao = new DanhSachDichVu();
 		for (DichVu dv : dsMa) {
 			DichVu dichvu = dao.getDVTheoMa(dv.getMaDichVu());
-			System.out.println(dv.getMaDichVu());
-				list.add(dichvu);
+			list.add(dichvu);
 		}
 		return list;
 	}
+
 	public int tongSoTheoNgay(Date ngaybd, Date ngaykt) {
 		int tong = 0;
 		try {
@@ -322,6 +329,7 @@ public class DanhSachHoaDon {
 		}
 		return tong;
 	}
+
 	public ArrayList<HoaDonPhong> getDSHD() {
 		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
 		try {
@@ -339,10 +347,10 @@ public class DanhSachHoaDon {
 				String makh = rs.getString(7);
 				String tenkh = getTenKHTheoMa(makh);
 				String sodt = getSDTKHTheoMa(makh);
-				KhachHang kh = new KhachHang(makh,tenkh,sodt);
+				KhachHang kh = new KhachHang(makh, tenkh, sodt);
 				String manv = rs.getString(8);
 				String tennv = getTenNVTheoMa(manv);
-				NhanVien nv = new NhanVien(manv,tennv);
+				NhanVien nv = new NhanVien(manv, tennv);
 				String map = rs.getString(10);
 				Phong phong = new Phong(map);
 				float tongtien = rs.getFloat(11);
@@ -354,5 +362,64 @@ public class DanhSachHoaDon {
 		}
 		return list;
 	}
+
+	public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
+		DichVu dv = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSoLanDVDat(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngaybd);
+			myCall.setDate(2, ngaykt);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String madv = rs.getString(1);
+				String tendv = rs.getString(3);
+				 dv = new DichVu(madv, tendv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dv;
+	}
+
+	public int getLanDatDVNNTheoMa(Date ngayBatDau, Date ngayKetThuc) {
+		int tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSoLanDVDat(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngayBatDau);
+			myCall.setDate(2, ngayKetThuc);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong = rs.getInt(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
+	public float TongTienDV(Date ngayBatDau, Date ngayKetThuc) {
+		float tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getTongDoanhThuDichVu(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngayBatDau);
+			myCall.setDate(2, ngayKetThuc);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong += rs.getFloat(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
 	
+
 }

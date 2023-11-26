@@ -23,6 +23,7 @@ public class DanhSachKhachHang {
 
 	public ArrayList<KhachHang> getDSKhachHang() {
 		try {
+			list = new ArrayList<>();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSKhachHang}";

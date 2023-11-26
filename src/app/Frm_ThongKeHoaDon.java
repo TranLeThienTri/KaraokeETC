@@ -32,9 +32,11 @@ import connectDB.ConnectDB;
 import dao.DanhSachHoaDon;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import dao.DanhSachPhong;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.NhanVien;
+import entitys.Phong;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 
@@ -74,7 +76,11 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 	private JTableHeader tbHeader;
 	private JButton btnThongKe, btnLamMoi;
 	private DateTimeFormatter dt;
+	private FixButton btnInHD;
 	DanhSachHoaDon dsHD;
+	Frm_ThanhToan frmTT;
+	HoaDonPhong hd;
+	DanhSachPhong p;
 
 	public Panel getFrmThongKeHoaDon() {
 		return this.panel_tong;
@@ -118,9 +124,10 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		lbltg.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lbltg.setBounds(653, 61, 310, 41);
 		panel_tong.add(lbltg);
-		FixButton btnInHD = new FixButton("IN");
+		btnInHD = new FixButton("Xuất hóa đơn");
+		btnInHD.setIcon(new ImageIcon(Frm_ThongKeHoaDon.class.getResource("/imgs/icon_xuahoadon.png")));
 		btnInHD.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnInHD.setBounds(650, 588, 99, 32);
+		btnInHD.setBounds(650, 585, 200, 40);
 		panel_tong.add(btnInHD);
 
 		lbltkhd = new JLabel("THỐNG KÊ HÓA ĐƠN");
@@ -135,7 +142,8 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		lbltgtk.setBounds(450, 69, 228, 25);
 		panel_tong.add(lbltgtk);
 		panel_ngay = new JPanel();
-		panel_ngay.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 5), "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel_ngay.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 5), "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, Color.BLACK));
 		panel_ngay.setBackground(new Color(207, 169, 0));
 		panel_ngay.setBounds(10, 112, 427, 228);
 		panel_tong.add(panel_ngay);
@@ -201,7 +209,13 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		panel_ngay.add(btnLamMoi);
 
 		panel_thongke1 = new JPanel();
-		panel_thongke1.setBorder(new TitledBorder(new TitledBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 5), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_thongke1
+				.setBorder(new TitledBorder(
+						new TitledBorder(
+								new TitledBorder(new LineBorder(new Color(0, 0, 0), 5), "", TitledBorder.LEADING,
+										TitledBorder.TOP, null, new Color(0, 0, 0)),
+								"", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)),
+						"", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_thongke1.setBackground(new Color(189, 0, 88));
 		panel_thongke1.setBounds(447, 112, 471, 228);
 		panel_tong.add(panel_thongke1);
@@ -227,7 +241,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 
 		panel_thongke2 = new JPanel();
 		panel_thongke2.setBorder(new LineBorder(new Color(0, 0, 0), 5));
-		panel_thongke2.setBackground(new Color(222,155,0));
+		panel_thongke2.setBackground(new Color(222, 155, 0));
 		panel_thongke2.setBounds(928, 112, 448, 228);
 		panel_tong.add(panel_thongke2);
 		panel_thongke2.setLayout(null);
@@ -245,7 +259,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
 		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk2.setBounds(181, 138, 172, 41);
+		lbltongtk2.setBounds(150, 135, 250, 41);
 		panel_thongke2.add(lbltongtk2);
 		String col[] = { "Mã HD", "Ngày lập HD", "Giờ bắt đầu thuê", "Giờ trả phòng", "Tên khách hàng", "Tên NV",
 				"Mã phòng", "Tổng tiền" };
@@ -281,6 +295,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		// add su kien button
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
+		btnInHD.addActionListener(this);
 		table.addMouseListener(this);
 		// kết nối data
 		ConnectDB.getInstance().connect();
@@ -326,7 +341,6 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
 		@SuppressWarnings("deprecation")
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
-		System.out.println(ngayBatDau);
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
@@ -388,6 +402,32 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		lblthongke2.setText("");
 	}
 
+// Xuất hóa đơn PDF
+	public void XuatHoaDonPDF() throws Exception {
+		int i = table.getSelectedRow();
+		if (i == -1) {
+			JOptionPane.showMessageDialog(this, "Không có hóa đơn nào để xuất !");
+		} else {
+			String maHDIN = table.getValueAt(i, 0).toString();
+			java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
+			java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
+			@SuppressWarnings("deprecation")
+			Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
+			@SuppressWarnings("deprecation")
+			Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+			ArrayList<HoaDonPhong> listHD = dsHD.getDSHDTheoNgay(ngayBatDau, ngayKetThuc);
+			for (HoaDonPhong hd : listHD) {
+				for (i = 0; i < table.getRowCount(); i++) {
+					if (maHDIN.equals((hd.getMaHoaDon()))) {
+						frmTT = new Frm_ThanhToan(hd);
+					}
+				}
+			}
+			frmTT.xuatHoaDonFilePDF();
+		}
+
+	}
+
 	/**
 	 * sự kiện click chuột vào table
 	 */
@@ -433,6 +473,15 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 			loadThongKeHoaDon();
 		} else if (o == btnLamMoi) {
 			resetAll();
+		} else if (o == btnInHD) {
+			try {
+				XuatHoaDonPDF();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		}
 	}
+
 }

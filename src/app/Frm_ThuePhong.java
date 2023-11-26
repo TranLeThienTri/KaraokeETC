@@ -739,6 +739,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		tableDSPhong.clearSelection();
 		tableDSPhong2.clearSelection();
 		tableDSDichVu.clearSelection();
+		bg.clearSelection();
 
 	}
 
