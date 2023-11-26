@@ -5,9 +5,7 @@ import java.util.Objects;
 public class TinhTrangPhong {
 	private String maTinhTrangPhong, tenTinhTrangPhong;
 
-	public TinhTrangPhong() {
-	}
-	
+
 	public TinhTrangPhong(String maTinhTrangPhong) {
 		this.maTinhTrangPhong = maTinhTrangPhong;
 	}
