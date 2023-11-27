@@ -57,6 +57,7 @@ import entitys.Phong;
 import entitys.TinhTrangPhong;
 
 import javax.swing.JComboBox;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
 public class Frm_NhanVien extends JFrame implements MouseListener, ActionListener {
@@ -64,8 +65,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	private JTextField txtHoTen, txtDiaChi, txtChucVu, txtSDT, txtGioiTinh, txtNgaySinh, txtCCCD, txtMess;
 
 	private JLabel lbTB, lbTTDV, lblHoTen, lblSDT, lblDiaChi, lblCCCD, lblChucVu, lblNgaySinh, lblGioiTinh,
-			lblTrangThai, lbDSPhong;
-
+			lblTrangThai, lbDSPhong, lbBG;
 	private DefaultTableModel model;
 	private FixButton btnLamMoi, btnSua, btnThem;
 	private JTable table;
@@ -75,8 +75,12 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	JDateChooser ngaySinh;
 	private Date ngayHienTai;
 	private int ngay, thang, nam;
+	LocalDate curent;
+	LocalDateTime localDateTime;
+	String selectedDate;
 	DanhSachNhanVien dsNV;
 	JPanel pnDSP, panel;
+	private JLabel lbIconSearch;
 
 	public Frm_NhanVien() {
 		setTitle("QUẢN LÝ NHÂN VIÊN");
@@ -103,7 +107,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel.setBackground(new Color(207, 169, 0));
-panel.setBounds(102, 60, 1200, 286);
+		panel.setBounds(102, 60, 1200, 286);
 		pnQLNV.add(panel);
 		panel.setLayout(null);
 
@@ -163,37 +167,35 @@ panel.setBounds(102, 60, 1200, 286);
 		panel.add(lblTrangThai);
 
 		txtHoTen = new JTextField();
-		txtHoTen.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtHoTen.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtHoTen.setBounds(180, 19, 300, 30);
 		panel.add(txtHoTen);
 		txtHoTen.setColumns(10);
 
 		txtSDT = new JTextField();
-		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(812, 19, 300, 30);
 		panel.add(txtSDT);
 		txtSDT.setColumns(10);
 
 		txtDiaChi = new JTextField();
-		txtDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtDiaChi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtDiaChi.setBounds(180, 69, 932, 30);
 		panel.add(txtDiaChi);
 		txtDiaChi.setColumns(10);
 
 		txtCCCD = new JTextField();
-		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtCCCD.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtCCCD.setColumns(10);
 		txtCCCD.setBounds(180, 115, 300, 30);
 		panel.add(txtCCCD);
 
 		comboChucVu = new JComboBox();
-		comboChucVu.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		comboChucVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboChucVu.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Viên" }));
-comboChucVu.setSelectedIndex(0);
+		comboChucVu.setSelectedIndex(0);
 		comboChucVu.setBounds(180, 166, 300, 30);
 		panel.add(comboChucVu);
-
-	
 
 		ngaySinh = new JDateChooser();
 		ngaySinh.getCalendarButton().addActionListener(new ActionListener() {
@@ -201,13 +203,13 @@ comboChucVu.setSelectedIndex(0);
 			}
 		});
 		ngaySinh.setDateFormatString("dd/MM/yyyy");
-		ngaySinh.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		ngaySinh.setFont(new Font("Tahoma", Font.BOLD, 15));
 		ngaySinh.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		ngaySinh.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/calendar.png")));
 
 		ngaySinh.setBounds(180, 229, 300, 30);
 
-		LocalDateTime localDateTime = LocalDateTime.now();
+		localDateTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		ngay = localDateTime.getDayOfMonth();
 		thang = localDateTime.getMonthValue();
@@ -246,13 +248,13 @@ comboChucVu.setSelectedIndex(0);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		comboGT = new JComboBox();
-		comboGT.setFont(new Font("Tahoma", Font.BOLD, 17));
+		comboGT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboGT.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
 		comboGT.setBounds(812, 119, 300, 31);
 		panel.add(comboGT);
 
 		comboTrangThai = new JComboBox();
-		comboTrangThai.setFont(new Font("Tahoma", Font.BOLD, 17));
+		comboTrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm việc", "Đã thôi việc" }));
 		comboTrangThai.setBounds(812, 165, 300, 31);
 		panel.add(comboTrangThai);
@@ -266,7 +268,7 @@ comboChucVu.setSelectedIndex(0);
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 200, 25);
 		pnDSP.add(lbDSPhong);
-String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
+		String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày sinh", "Địa chỉ", "SĐT", "CCCD",
 				"Trạng thái" };
 		model = new DefaultTableModel(col, 0) {
 			@Override
@@ -293,62 +295,67 @@ String col[] = { "Mã NV", "Họ tên", "Chức vụ", "Giới tính", "Ngày si
 
 		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 20, 1200, 260);
+		scrollPane.setBounds(0, 20, 1200, 250);
 		pnDSP.add(scrollPane);
 		pnQLNV.add(pnDSP);
 
-		JLabel lbBG = new JLabel();
+		lbIconSearch = new JLabel("New label");
+		lbIconSearch.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/icon_search.png")));
+		lbIconSearch.setBounds(1122, 18, 30, 30);
+		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel.add(lbIconSearch);
+
+		lbBG = new JLabel();
 		lbBG.setBounds(0, 0, 1400, 700);
 		lbBG.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/bg_chot1.png")));
 		pnQLNV.add(lbBG);
 
-	btnLamMoi.addActionListener(this);
-	btnSua.addActionListener(this);
-	btnThem.addActionListener(this);
-	
-	table.addMouseListener(this);
-	
-	ConnectDB.getInstance().connect();
-			dsNV = new DanhSachNhanVien();
-			upTable();	
-			
-			comboTrangThai.setEnabled(false);
-			
-}
+		btnLamMoi.addActionListener(this);
+		btnSua.addActionListener(this);
+		btnThem.addActionListener(this);
+		lbIconSearch.addMouseListener(this);
+
+		table.addMouseListener(this);
+
+		ConnectDB.getInstance().connect();
+		dsNV = new DanhSachNhanVien();
+		upTable();
+
+		comboTrangThai.setEnabled(false);
+
+	}
 
 //xoá trắng
-public void xoaTrang() {
-	lbTB.setText("");
-	txtHoTen.setText("");
-	txtDiaChi.setText("");
-	txtCCCD.setText("");
-	comboChucVu.setSelectedIndex(0);
-	ngaySinh.setDate(ngayHienTai);
-	txtSDT.setText("");
-	comboGT.setSelectedIndex(0);
-	comboTrangThai.setSelectedIndex(0);
-	table.clearSelection();
-}
-
-
-public void upTable() {
-	ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
-	for (NhanVien nv : listE) {
-		Object[] obj = new Object[9];
-		obj[0] = nv.getMaNhanVien().trim();
-		obj[1] = nv.getHoTenNhanVien().trim();
-		obj[2] = nv.getchucVu().getTenChucVu();
-		obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
-		obj[4] = nv.getNgaySinh().toString();
-		obj[5] = nv.getDiaChi().trim();
-		obj[6] = nv.getSdt().trim();
-		obj[7] = nv.getSoCCCD().toString();
-		obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
-		model.addRow(obj);
+	public void xoaTrang() {
+		lbTB.setText("");
+		txtHoTen.setText("");
+		txtDiaChi.setText("");
+		txtCCCD.setText("");
+		comboChucVu.setSelectedIndex(0);
+		ngaySinh.setDate(ngayHienTai);
+		txtSDT.setText("");
+		comboGT.setSelectedIndex(0);
+		comboTrangThai.setSelectedIndex(0);
+		table.clearSelection();
 	}
-	xoaTrang();
-}
 
+	public void upTable() {
+		ArrayList<NhanVien> listE = dsNV.getAllDanhSachNV();
+		for (NhanVien nv : listE) {
+			Object[] obj = new Object[9];
+			obj[0] = nv.getMaNhanVien().trim();
+			obj[1] = nv.getHoTenNhanVien().trim();
+			obj[2] = nv.getchucVu().getTenChucVu();
+			obj[3] = nv.isGioiTinh() ? "Nam" : "Nữ";
+			obj[4] = nv.getNgaySinh().toString();
+			obj[5] = nv.getDiaChi().trim();
+			obj[6] = nv.getSdt().trim();
+			obj[7] = nv.getSoCCCD().toString();
+			obj[8] = nv.isTinhTrang() ? "Đang làm việc" : "Đã thôi việc";
+			model.addRow(obj);
+		}
+		xoaTrang();
+	}
 
 	public void setTextTB() {
 		int row = table.getSelectedRow();
@@ -364,8 +371,9 @@ public void upTable() {
 		else
 			comboGT.setSelectedIndex(1);
 
-		String selectedDate = table.getValueAt(row, 4).toString();
-LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		selectedDate = table.getValueAt(row, 4).toString();
+		curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
 		ngay = curent.getDayOfMonth();
 		thang = curent.getMonthValue();
 		nam = curent.getYear();
@@ -388,7 +396,12 @@ LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yy
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		setTextTB();
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			ktraNV();
+		} else {
+			setTextTB();
+		}
 	}
 
 	@Override
@@ -443,6 +456,8 @@ LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yy
 				btnSua.setText("Huỷ");
 			}
 		} else if (o.equals(btnLamMoi)) {
+			clearTable();
+			upTable();
 			xoaTrang();
 		}
 
@@ -467,22 +482,22 @@ LocalDate curent = LocalDate.parse(selectedDate, DateTimeFormatter.ofPattern("yy
 			String tt = (String) comboTrangThai.getSelectedItem();
 			boolean trangThai;
 			if (tt.equals("Đang làm việc")) {
-				trangThai = true;
-			} else
 				trangThai = false;
+			} else
+				trangThai = true;
 
 			Date date = ngaySinh.getDate();
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
 
 			String tenChucVu = String.valueOf(comboChucVu.getSelectedItem());
-String maChucVu = null;
+			String maChucVu = null;
 			if (tenChucVu.equals("Quản lý")) {
 				maChucVu = "QL";
 			} else
 				maChucVu = "NV";
 			LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			ChucVu cv = new ChucVu(maChucVu);
-			NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
+			NhanVien nv = new NhanVien(ma, ten, cccd, dc, sdt, gioitinh, cv, ngaysinh, trangThai);
 			if (!dsNV.themNhanVien(nv)) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
 				obj[0] = ma;
@@ -508,7 +523,7 @@ String maChucVu = null;
 			JOptionPane.showMessageDialog(this, "Chọn nhân viên cần sửa");
 		} else {
 			Object[] obj = new Object[9];
-			if (ktraDuLieu()) {
+			if (ktraDuLieuSua()) {
 
 				String ma = table.getValueAt(row, 0).toString();
 				String ten = txtHoTen.getText();
@@ -539,7 +554,7 @@ String maChucVu = null;
 					maChucVu = "NV";
 				LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				ChucVu cv = new ChucVu(maChucVu);
-				NhanVien nv = new NhanVien(ma, ten, dc, cccd, sdt, gioitinh, cv, ngaysinh, trangThai);
+				NhanVien nv = new NhanVien(ma, ten, cccd, dc, sdt, gioitinh, cv, ngaysinh, trangThai);
 				obj[0] = ma;
 				obj[1] = ten;
 				obj[2] = cv.getTenChucVu();
@@ -574,16 +589,17 @@ String maChucVu = null;
 	}
 
 	public boolean ktraDuLieu() {
-String ten = txtHoTen.getText();
+		String ten = txtHoTen.getText();
 		if (ten.equals("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
 			txtHoTen.requestFocus();
 			return false;
 		}
+
 		String dt = txtSDT.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (dt.equals(table.getValueAt(i, 4).toString())) {
+			if (dt.equals(table.getValueAt(i, 6).toString())) {
 				showMessage("(*)Số điện thoại đã tồn tại");
 				txtSDT.requestFocus();
 				return false;
@@ -594,23 +610,181 @@ String ten = txtHoTen.getText();
 			txtSDT.requestFocus();
 			return false;
 		}
-
-		String cccd = txtCCCD.getText();
-		if (cccd.equals("")) {
-			showMessage("(*) CCCD không được để trống ");
-			txtCCCD.requestFocus();
-			return false;
-		} else if (!cccd.matches("\\d{12}")) {
-			showMessage("(*) CCCD không được dùng kí tự và chỉ được 12 số ");
-			txtCCCD.requestFocus();
-			return false;
-		}
 		String dc = txtDiaChi.getText();
-		if (dc.equals("") || !dc.matches("[A-Z][a-zA-Z \\d]*")) {
-			showMessage("Địa chỉ không được để trống và viết hoa chữ cái đầu");
+		if (dc.equals("") || !dc.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Địa chỉ không được để trống và viết hoa chữ cái đầu");
 			txtDiaChi.requestFocus();
 			return false;
 		}
+
+		String cccd = txtCCCD.getText();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (cccd.equals(table.getValueAt(i, 7).toString())) {
+				showMessage("(*)Số CCCD đã tồn tại");
+				txtCCCD.requestFocus();
+				return false;
+			}
+		}
+		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
+			txtCCCD.requestFocus();
+			return false;
+		}
+		Date date = ngaySinh.getDate();
+		Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
+		LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int namsinh = ngaysinh.getYear();
+		int namhientai = localDateTime.getYear();
+		int tuoi = namhientai - namsinh;
+		if (tuoi < 18 || tuoi > 60) {
+			showMessage("(*) Tuổi phải lớn hơn 18 và nhỏ hơn 60");
+			return false;
+		}
+
 		return true;
 	}
+
+	public boolean ktraDuLieuSua() {
+		int row = table.getSelectedRow();
+		Date date = ngaySinh.getDate();
+		Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
+		LocalDate ngaysinh = ngaySinhh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int namsinh = ngaysinh.getYear();
+		int namhientai = localDateTime.getYear();
+		int tuoi = namhientai - namsinh;
+		if (tuoi < 18 || tuoi > 60) {
+			showMessage("(*) Tuổi phải lớn hơn 18 và nhỏ hơn 60");
+			return false;
+		}
+
+		String ten = txtHoTen.getText();
+		if (ten.equals("") || !ten.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
+			txtHoTen.requestFocus();
+			return false;
+		}
+		String dc = txtDiaChi.getText();
+		if (dc.equals("") || !dc.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			showMessage("(*) Địa chỉ không được để trống và viết hoa chữ cái đầu");
+			txtDiaChi.requestFocus();
+			return false;
+		}
+		String dt = txtSDT.getText();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (dt.equals(table.getValueAt(i, 6).toString()) && !dt.equals(table.getValueAt(row, 6))) {
+				JOptionPane.showMessageDialog(this, "SĐT đã tồn tại");
+				return false;
+			}
+		}
+		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+			return false;
+		}
+
+		String cccd = txtCCCD.getText();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (cccd.equals(table.getValueAt(i, 7).toString()) && !cccd.equals(table.getValueAt(row, 7))) {
+				JOptionPane.showMessageDialog(this, "CCCD đã tồn tại");
+				return false;
+
+			}
+		}
+		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
+			txtCCCD.requestFocus();
+			return false;
+		}
+
+		return true;
+	}
+
+	public void clearTable() {
+		while (table.getRowCount() > 0) {
+			model.removeRow(0);
+		}
+	}
+
+	// Lọc khách hàng theo SĐT
+	public void locNVTheoSDT() {
+		clearTable();
+		String sdt = txtSDT.getText();
+		NhanVien nv = dsNV.getNhanVienTheoSDT(sdt);
+		Object[] obj = new Object[9];
+		obj[0] = nv.getMaNhanVien();
+		obj[1] = nv.getHoTenNhanVien();
+		obj[2] = nv.getchucVu().getTenChucVu();
+		String gioitinh;
+		if (nv.isGioiTinh()) {
+			gioitinh = "Nam";
+		} else
+			gioitinh = "Nữ";
+		obj[3] = gioitinh;
+		obj[4] = nv.getNgaySinh();
+		obj[5] = nv.getDiaChi();
+		obj[6] = nv.getSdt();
+		obj[7] = nv.getSoCCCD();
+		String tinhTrang;
+		if (nv.isTinhTrang()) {
+			tinhTrang = "Đang làm việc";
+		} else {
+			tinhTrang = "Đã thôi việc";
+		}
+		obj[8] = tinhTrang;
+		model.addRow(obj);
+
+	}
+
+	public void ktraNV() {
+		String sdt = txtSDT.getText();
+		NhanVien nv = dsNV.getNhanVienTheoSDT(sdt);
+		if (nv != null) {
+			txtHoTen.setText(nv.getHoTenNhanVien());
+			txtDiaChi.setText(nv.getDiaChi());
+			txtCCCD.setText(nv.getSoCCCD());
+			Boolean gt = nv.isGioiTinh();
+			int i = 2;
+			if (gt == true) {
+				i = 0;
+			} else {
+				i = 1;
+			}
+			comboGT.setSelectedIndex(i);
+			String cv = nv.getchucVu().getTenChucVu();
+			int j;
+			if (cv.equals("Quản Lý")) {
+				j = 0;
+			} else {
+				j = 1;
+			}
+			comboChucVu.setSelectedIndex(j);
+			Boolean ttlv = nv.isTinhTrang();
+			int k;
+			if (ttlv == true) {
+				k = 0;
+			} else {
+				k = 1;
+			}
+			comboTrangThai.setSelectedIndex(k);
+
+			LocalDate ngaysinhnv = nv.getNgaySinh();
+			Date datengaysinh = Date.from(ngaysinhnv.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			ngaySinh.setDate(datengaysinh);
+			locNVTheoSDT();
+		} else {
+			JOptionPane.showMessageDialog(this, "Nhân viên chưa có trong hệ thống \n Thêm nhân viên mới!!!");
+			txtHoTen.requestFocus();
+		}
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("^(0[0-9]{9})$")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+		}
+	}
+
 }

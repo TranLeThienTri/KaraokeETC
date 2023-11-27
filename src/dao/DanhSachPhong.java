@@ -188,11 +188,13 @@ public class DanhSachPhong {
 		}
 		return b;
 	}
+
 	public Phong getPhongTheoMa(String ma) {
 		Phong p = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
+
 			String sql = "{call getPhongTheoMa(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, ma);
@@ -213,13 +215,15 @@ public class DanhSachPhong {
 				}
 				float dienTich = rs.getFloat(6);
 				String tenLoaiPhong = "";
-				if(malPhong.equals("NOR"))
+				if (malPhong.equals("NOR"))
 					tenLoaiPhong = "Phòng thường";
-				else tenLoaiPhong = "Phòng VIP";
-				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong,tenLoaiPhong);
-				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang,tenTinhTrangPhong);
+				else
+					tenLoaiPhong = "Phòng VIP";
+				LoaiPhong maLoaiPhong = new LoaiPhong(malPhong, tenLoaiPhong);
+				TinhTrangPhong maTinhTrangP = new TinhTrangPhong(matinhTrang, tenTinhTrangPhong);
 				p = new Phong(maPhong, maLoaiPhong, sucChua, giaPhong, maTinhTrangP, dienTich);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

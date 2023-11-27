@@ -55,32 +55,32 @@ public class DanhSachChiTietHoaDon {
 		return b;
 	}
 	
-	public ArrayList<ChiTietHoaDon> getCTHD() {
-		ArrayList<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
-		DanhSachDichVu daov = new DanhSachDichVu();
-		DanhSachPhuThu daopt = new DanhSachPhuThu();
-		ThuePhong daoTP = new ThuePhong();
-		try {
-			ConnectDB.getInstance();
-			Connection con = ConnectDB.getConnection();
-			String sql = "{call getCTHD}";
-			CallableStatement myCall = con.prepareCall(sql);
-			ResultSet rs = myCall.executeQuery();
-			while (rs.next()) {
-				String mahd = rs.getString(1);
-				String madv = rs.getString(2);
-				int sl = rs.getInt(3);
-				String mapt = rs.getString(4);
-				HoaDonPhong p = daoTP.getHDTheoMa(mahd);
-				DichVu dv = daov.getDVTheoMa(madv);
-				PhuThu pt = daopt.getPTTheoMa(mapt);
-				ChiTietHoaDon ct = new ChiTietHoaDon(p, dv, sl, pt);
-				list.add(ct);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+//	public ArrayList<ChiTietHoaDon> getCTHD() {
+//		ArrayList<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
+//		DanhSachDichVu daov = new DanhSachDichVu();
+//		DanhSachPhuThu daopt = new DanhSachPhuThu();
+//		ThuePhong daoTP = new ThuePhong();
+//		try {
+//			ConnectDB.getInstance();
+//			Connection con = ConnectDB.getConnection();
+//			String sql = "{call getCTHD}";
+//			CallableStatement myCall = con.prepareCall(sql);
+//			ResultSet rs = myCall.executeQuery();
+//			while (rs.next()) {
+//				String mahd = rs.getString(1);
+//				String madv = rs.getString(2);
+//				int sl = rs.getInt(3);
+//				String mapt = rs.getString(4);
+//				HoaDonPhong p = daoTP.getHDTheoMa(mahd);
+//				DichVu dv = daov.getDVTheoMa(madv);
+//				PhuThu pt = daopt.getPTTheoMa(mapt);
+//				ChiTietHoaDon ct = new ChiTietHoaDon(p, dv, sl, pt);
+//				list.add(ct);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return list;
+//	}
 
 }

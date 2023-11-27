@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	private DecimalFormat dfs;
 	NhanVien nv;
 	DanhSachPhong dsPhong;
-	
 
 	public Panel getFrmQuanLyPhong() {
 		return this.pnQLDP;
@@ -252,7 +252,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnLoaiPhong.add(btnPhongThuong);
 //talbe
 		String col1[] = { "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
-		model1 = new DefaultTableModel(col1, 0){
+		model1 = new DefaultTableModel(col1, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // Không cho phép chỉnh sửa ô
@@ -298,11 +298,10 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnPhongVip.addActionListener(this);
 		btnPhongThuong.addActionListener(this);
 		tableDSPhong1.addMouseListener(this);
-		
+
 		df = new DecimalFormat("###,### VNĐ");
-		dfs = new DecimalFormat("##,## M2");
-		
-		
+		dfs = new DecimalFormat("## M2");
+
 	}
 
 //	public static void main(String[] args) {
@@ -350,10 +349,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		} else if (o.equals(btnPhongVip)) {
 			locTheoLoaiPhongVIP();
 		} else if (o.equals(btnPhongThuong)) {
-			
+
 			locTheoLoaiPhongThuong();
-		}
-		else if (o.equals(btnTatCa)) {
+		} else if (o.equals(btnTatCa)) {
 			clearTable();
 			upTable();
 		}
@@ -383,8 +381,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 				obj[1] = tenTinhTang;
 				obj[2] = sucChua;
 				obj[3] = tenLoaiPhong;
-				obj[4] = Gia;
-				obj[5] = dienTich;
+				obj[4] = df.format(Gia);
+				obj[5] = dfs.format(dienTich);
 				model1.addRow(obj);
 				xoaTrang();
 				return true;
@@ -447,7 +445,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		int i = 0;
 		ArrayList<Phong> list = dsPhong.getDSPhong();
 		df = new DecimalFormat("###,### VNĐ");
-		dfs = new DecimalFormat("##,## M2");
+		dfs = new DecimalFormat("## M2");
 		for (Phong p : list) {
 			Object[] obj = new Object[7];
 			obj[0] = p.getMaPhong().trim();
@@ -480,11 +478,13 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		}
 	}
 
-	public void setTextTB() {
+	public void setTextTB() throws ParseException {
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("## M2");
 		int row = tableDSPhong1.getSelectedRow();
-		txtGia.setText(tableDSPhong1.getValueAt(row, 4).toString());
+		txtGia.setText(df.parse(tableDSPhong1.getValueAt(row, 4).toString()) + "");
 		txtMaPhong.setText(tableDSPhong1.getValueAt(row, 0).toString());
-		txtDienTich.setText(tableDSPhong1.getValueAt(row, 5).toString());
+		txtDienTich.setText(dfs.parse(tableDSPhong1.getValueAt(row, 5).toString()) + "");
 
 		int i = 2;
 		if (tableDSPhong1.getValueAt(row, 1).toString().equals("Phòng trống")) {
@@ -594,7 +594,12 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		setTextTB();
+		try {
+			setTextTB();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	@Override

@@ -23,6 +23,7 @@ public class DanhSachKhachHang {
 
 	public ArrayList<KhachHang> getDSKhachHang() {
 		try {
+			list = new ArrayList<>();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSKhachHang}";
@@ -82,12 +83,12 @@ public class DanhSachKhachHang {
 			while (rs.next()) {
 				String makh = rs.getString(1);
 				String tenKH = rs.getString(2);
-				String sdt = rs.getString(5);
 				String cccd = rs.getString(3);
 				Boolean gioiTinh = rs.getBoolean(4);
+				String sdt = rs.getString(5);
 				int dtl = rs.getInt(6);
 				LoaiKhachHang lkh = new LoaiKhachHang(rs.getString(7));
-				kh = new KhachHang(makh, tenKH, cccd, cccd, dtl, false, lkh);
+				kh = new KhachHang(makh, tenKH, cccd, sdt, dtl, false, lkh);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
