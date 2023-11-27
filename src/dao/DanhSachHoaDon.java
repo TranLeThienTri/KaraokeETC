@@ -287,7 +287,6 @@ public class DanhSachHoaDon {
 		DanhSachDichVu dao = new DanhSachDichVu();
 		for (DichVu dv : dsMa) {
 			DichVu dichvu = dao.getDVTheoMa(dv.getMaDichVu());
-			System.out.println(dv.getMaDichVu());
 			list.add(dichvu);
 		}
 		return list;
@@ -344,9 +343,7 @@ public class DanhSachHoaDon {
 
 				String maHD = rs.getString(1);
 				LocalDate ngaylap = LocalDate.parse(rs.getString(2));
-
 				LocalTime giothue = LocalTime.parse(rs.getString(3));
-
 				String maloaihd = rs.getString(9);
 				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
 				String makh = rs.getString(7);
@@ -366,6 +363,27 @@ public class DanhSachHoaDon {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
+		DichVu dv = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSoLanDVDat(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngaybd);
+			myCall.setDate(2, ngaykt);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String madv = rs.getString(1);
+				String tendv = rs.getString(3);
+				dv = new DichVu(madv, tendv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dv;
 	}
 
 	public ArrayList<HoaDonPhong> getDSHDThue() {
@@ -402,6 +420,25 @@ public class DanhSachHoaDon {
 		return list;
 	}
 
+	public int getLanDatDVNNTheoMa(Date ngayBatDau, Date ngayKetThuc) {
+		int tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSoLanDVDat(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngayBatDau);
+			myCall.setDate(2, ngayKetThuc);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong = rs.getInt(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
+
 	public ArrayList<HoaDonPhong> getDSHDTheoMaKH(String ma) {
 		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
 		try {
@@ -435,7 +472,7 @@ public class DanhSachHoaDon {
 		}
 		return list;
 	}
-	
+
 	// lấy danh sách hoá đơn đặt
 	public ArrayList<HoaDonPhong> getDSHDDTheoMaKH(String ma) {
 		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
@@ -466,9 +503,6 @@ public class DanhSachHoaDon {
 				NhanVien nv = dsnv.getNhanVienTheoMa(maNhanVien);
 				KhachHang kh = dskh.getKHTheoMa(maKhachhang);
 
-				// Chuyển đổi chuỗi thành đối tượng LocalDate
-//				LocalDate date = LocalDate.parse(ngayLapHoaDon);
-
 				HoaDonPhong hd = new HoaDonPhong(maHD, p, nv, kh, new LoaiHoaDon("HDD"), null,
 						LocalDate.parse(ngayDat, DateTimeFormatter.ofPattern("yyyy-MM-dd")), localTime);
 				list.add(hd);
@@ -479,5 +513,22 @@ public class DanhSachHoaDon {
 		return list;
 	}
 
-
+	public float TongTienDV(Date ngayBatDau, Date ngayKetThuc) {
+		float tong = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getTongDoanhThuDichVu(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngayBatDau);
+			myCall.setDate(2, ngayKetThuc);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				tong += rs.getFloat(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tong;
+	}
 }

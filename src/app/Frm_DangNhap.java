@@ -49,17 +49,17 @@ import java.awt.Cursor;
 import java.awt.ComponentOrientation;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.MatteBorder;
 
 public class Frm_DangNhap extends JFrame implements MouseListener, ActionListener {
 	private JButton btnDangNhap;
-	private JPanel formDangNhap, pnTaiKhoan;
+	private JPanel formDangNhap, pnTaiKhoan, pnMatKhau, panelHeader;
 	private JTextField txtTaiKhoan;
 	private JPasswordField pwdNv;
-	private JLabel ngayLabel;
-	private JLabel lblNewLabel;
+	private JLabel lbLogin, lbTenTaiKhoan_1, lbQuenMatKhau, lbIconUser, lbIconLock, lbMatKhau, lbBgTrai, lbBGR;
 	private Frm_Chinh frmChinh;
-	private JLabel lbQuenMatKhau;
-	public  TaiKhoan tk;
+	public TaiKhoan tk;
 	private DanhSachTaiKhoan dsTk;
 	private DanhSachNhanVien dsNV;
 
@@ -67,9 +67,8 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		ConnectDB.getInstance().connect();
 		frmChinh = new Frm_Chinh();
 		getContentPane().setBackground(SystemColor.controlHighlight);
-		setTitle("Đăng Nhập");
-		setSize(800, 500);
-
+		setTitle("Đăng nhập");
+		setSize(1200, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
@@ -80,14 +79,13 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 
 	private void formDangNhap() {
 		btnDangNhap();
-
-		JPanel pnTaiKhoan = new JPanel();
+		pnTaiKhoan = new JPanel();
 		pnTaiKhoan.setBackground(new Color(255, 255, 255, 0));
 		pnTaiKhoan.setLayout(null);
 		pnTaiKhoan.setBounds(35, 78, 549, 51);
 		formDangNhap.add(pnTaiKhoan);
 
-		JLabel lbTenTaiKhoan_1 = new JLabel("Tài Khoản:");
+		lbTenTaiKhoan_1 = new JLabel("Tài Khoản:");
 		lbTenTaiKhoan_1.setForeground(new Color(255, 255, 255));
 		lbTenTaiKhoan_1.setBounds(0, 7, 140, 36);
 		pnTaiKhoan.add(lbTenTaiKhoan_1);
@@ -97,18 +95,19 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		txtTaiKhoan.setText("NV001");
 		txtTaiKhoan.setIgnoreRepaint(true);
 		txtTaiKhoan.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		txtTaiKhoan.setBackground(SystemColor.window);
+		txtTaiKhoan.setBackground(Color.WHITE);
 		txtTaiKhoan.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtTaiKhoan.setBounds(152, 7, 373, 36);
+		txtTaiKhoan.setBorder(new MatteBorder(0, 0, 5, 0, (Color) Color.WHITE));
 		pnTaiKhoan.add(txtTaiKhoan);
 
-		JPanel pnMatKhau = new JPanel();
+		pnMatKhau = new JPanel();
 		pnMatKhau.setBackground(new Color(255, 255, 255, 0));
 		pnMatKhau.setLayout(null);
 		pnMatKhau.setBounds(35, 151, 549, 51);
 		formDangNhap.add(pnMatKhau);
 
-		JLabel lbMatKhau = new JLabel("Mật Khẩu:");
+		lbMatKhau = new JLabel("Mật Khẩu:");
 		lbMatKhau.setForeground(new Color(255, 255, 255));
 		lbMatKhau.setBackground(new Color(240, 240, 240));
 		lbMatKhau.setBounds(2, 7, 140, 36);
@@ -117,37 +116,48 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 
 		pwdNv = new JPasswordField();
 		pwdNv.setText("nv001");
-		pwdNv.setBackground(SystemColor.window);
+		pwdNv.setBackground(Color.WHITE);
 		pwdNv.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		pwdNv.setBounds(152, 7, 373, 36);
 		pnMatKhau.add(pwdNv);
 
-		lblNewLabel = new JLabel("FORM LOGIN");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblNewLabel.setBounds(202, 23, 215, 45);
-		formDangNhap.add(lblNewLabel);
+		lbLogin = new JLabel("LOGIN");
+		lbLogin.setForeground(new Color(255, 255, 255));
+		lbLogin.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lbLogin.setBounds(290, 21, 215, 45);
+		formDangNhap.add(lbLogin);
 
 		lbQuenMatKhau = new JLabel("Quên mật khẩu?");
+		lbQuenMatKhau.setForeground(new Color(255, 255, 255));
 		lbQuenMatKhau.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lbQuenMatKhau.setBounds(428, 212, 139, 25);
 		formDangNhap.add(lbQuenMatKhau);
+
+		lbIconUser = new JLabel("");
+		lbIconUser.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/icon_user.png")));
+		lbIconUser.setBounds(570, 88, 32, 32);
+		formDangNhap.add(lbIconUser);
+
+		lbIconLock = new JLabel("");
+		lbIconLock.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/icon_block.png")));
+		lbIconLock.setBounds(570, 160, 32, 32);
+		formDangNhap.add(lbIconLock);
 		lbQuenMatKhau.addMouseListener(this);
 
 	}
 
 	private void btnDangNhap() {
-		btnDangNhap = new FixButton("Đăng Nhập");
+		btnDangNhap = new FixButton2("Đăng nhập");
 		btnDangNhap.setFocusPainted(false);
 		btnDangNhap.setHideActionText(true);
 		btnDangNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDangNhap.setFont(new Font("Tahoma", Font.BOLD, 22));
-		btnDangNhap.setBounds(224, 257, 171, 51);
+		btnDangNhap.setBounds(250, 257, 171, 51);
 		formDangNhap.add(btnDangNhap);
 	}
 
 	private void opacity() {
-		JPanel panelHeader = new JPanel();
+		panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(117, 154, 169, 100)); // 100 là alpha
 		panelHeader.setBounds(0, 0, 800, 85);
 
@@ -157,17 +167,18 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	private void setBgr() {
 		lbNgayHienTai();
 		opacity();
-
 		getContentPane().setLayout(null);
 		JPanel pnBGR = new JPanel();
-		pnBGR.setBounds(0, 0, 786, 463);
+		pnBGR.setBounds(0, 0, 1200, 500);
 		getContentPane().add(pnBGR);
 
 		pnBGR.setLayout(null);
 		formDangNhap = new JPanel();
-		formDangNhap.setBounds(83, 83, 620, 331);
+		formDangNhap.setForeground(new Color(255, 140, 0));
+		formDangNhap.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(240, 248, 255)));
+		formDangNhap.setBounds(505, 74, 620, 331);
 		pnBGR.add(formDangNhap);
-		formDangNhap.setBackground(new Color(192, 192, 192, 100));
+		formDangNhap.setBackground(new Color(17, 85, 136));
 		formDangNhap.setLayout(null);
 
 		ImageIcon originalIcon = new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_chot1.png"));
@@ -177,22 +188,23 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		ImageIcon resizedIcon = new ImageIcon(resizedImage);
 		pnBGR.setLayout(null);
 		// add ảnh
-		JLabel lbBGR = new JLabel(resizedIcon);
-		lbBGR.setBounds(0, 0, 800, 500);
+		lbBGR = new JLabel();
+		lbBGR.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_phai1.png")));
+		lbBGR.setBackground(new Color(0, 100, 230));
+		lbBGR.setBounds(430, 0, 760, 500);
 		pnBGR.add(lbBGR);
+
+		lbBgTrai = new JLabel("");
+		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
+		lbBgTrai.setBounds(0, 0, 440, 500);
+		pnBGR.add(lbBgTrai);
 	}
 
 	// Hiển thị ngày hiện tại
 	public void lbNgayHienTai() {
-		ngayLabel = new JLabel();
-		ngayLabel.setForeground(SystemColor.text);
-		ngayLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		Date ngayHienTai = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String ngayHienTaiChuoi = sdf.format(ngayHienTai);
-		ngayLabel.setText(ngayHienTaiChuoi);
-		ngayLabel.setBounds(310, 0, 166, 81);
-		getContentPane().add(ngayLabel);
 	}
 
 	public void showGui() {
@@ -204,8 +216,6 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 
 		btnDangNhap.addActionListener(this);
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -275,10 +285,8 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		frmSendMail.setVisible(true);
 		this.setVisible(false);
 	}
+
 	public static void main(String[] args) {
 		new Frm_DangNhap().setVisible(true);
 	}
-
-	
-	
 }
