@@ -220,7 +220,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTK.setIcon(new ImageIcon(Frm_Chinh.class.getResource("/imgs/thongke.png")));
 		menuBar.add(mnTK);
 
-		mnTKNV = new JMenuItem("Thống kê nhân viên");
+		mnTKNV = new JMenuItem("Thống kê phòng");
 		mnTKNV.setFont(new Font("Tahoma", Font.BOLD, 11));
 		mnTK.add(mnTKNV);
 
@@ -388,10 +388,10 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 	}
 
-	public void loadFrm_ThongKeNhanVien() {
+	public void loadFrm_ThongKePhong() {
 		pnCenter.removeAll();
-		Frm_ThongKeNhanVien frTKNV = new Frm_ThongKeNhanVien();
-		pnCenter.add(frTKNV.getFrmThongKeNhanVien());
+		Frm_ThongKePhong frTKNV = new Frm_ThongKePhong();
+		pnCenter.add(frTKNV.getFrmPhong());
 
 	}
 	public void loadFrm_TrangChu() {
@@ -467,7 +467,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrm_ThongKeKhachHang();
 		else if (o == mnTKNV)
 			
-			loadFrm_ThongKeNhanVien();
+			loadFrm_ThongKePhong();
 		else if (o == btnDangxuat) {
 			dangXuat();
 		}
@@ -614,7 +614,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 //	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	        	mnTKNV.doClick();
-	            loadFrm_ThongKeNhanVien();
+	        	loadFrm_ThongKePhong() ;
 	        }
 	    });
 	}

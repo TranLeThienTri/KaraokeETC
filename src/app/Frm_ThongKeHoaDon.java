@@ -163,7 +163,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 
 		dateChooserThongKeNgayBatDau = new JDateChooser();
 		dateChooserThongKeNgayBatDau.getCalendarButton()
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 		dateChooserThongKeNgayBatDau.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -173,7 +173,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		dateChooserThongKeNgayBatDau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayBatDau.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayBatDau
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayBatDau.setBounds(149, 22, 226, 38);
 		dateChooserThongKeNgayBatDau.setDate(dNow);
@@ -190,7 +190,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		dateChooserThongKeNgayKetThuc.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayKetThuc.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayKetThuc
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayKetThuc.setBounds(149, 80, 226, 38);
 		dateChooserThongKeNgayKetThuc.setDate(dNow);
@@ -285,7 +285,7 @@ public class Frm_ThongKeHoaDon extends JFrame implements ActionListener, MouseLi
 		lblbackground = new JLabel("");
 		lblbackground.setBounds(0, 0, 1400, 700);
 		panel_tong.add(lblbackground);
-		lblbackground.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/bg_chot1.png")));
+		lblbackground.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/bg_chot1.png")));
 		// khai bao định dạng
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("### p");

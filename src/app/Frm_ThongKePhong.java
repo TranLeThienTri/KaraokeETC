@@ -53,7 +53,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 
-public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, MouseListener {
+public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseListener {
 	private LocalDate now;
 	private int ngay;
 	private int thang;
@@ -78,18 +78,18 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	DanhSachNhanVien dsNV;
 	DanhSachHoaDon dsHD;
 
-	public Panel getFrmThongKeNhanVien() {
+	public Panel getFrmPhong() {
 		return this.panel_tong;
 	}
 	public static void main(String[] args) {
-		new Frm_ThongKeNhanVien().setVisible(true);
+		new Frm_ThongKePhong().setVisible(true);
 
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public Frm_ThongKeNhanVien() {
+	public Frm_ThongKePhong() {
 		setTitle("THỐNG KÊ PHÒNG");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -152,7 +152,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 
 		dateChooserThongKeNgayBatDau = new JDateChooser();
 		dateChooserThongKeNgayBatDau.getCalendarButton()
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 		dateChooserThongKeNgayBatDau.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -162,7 +162,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		dateChooserThongKeNgayBatDau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayBatDau.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayBatDau
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayBatDau.setBounds(149, 22, 226, 38);
 		dateChooserThongKeNgayBatDau.setDate(dNow);
@@ -179,7 +179,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		dateChooserThongKeNgayKetThuc.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayKetThuc.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayKetThuc
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayKetThuc.setBounds(149, 80, 226, 38);
 		dateChooserThongKeNgayKetThuc.setDate(dNow);
@@ -188,13 +188,13 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		btnThongKe = new FixButton("Thống kê");
 		btnThongKe.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThongKe.setBounds(84, 128, 253, 42);
-		btnThongKe.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/thongke.png")));
+		btnThongKe.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/thongke.png")));
 		panel_ngay.add(btnThongKe);
 
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(84, 176, 253, 42);
-		btnLamMoi.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/btn_lammoi.png")));
+		btnLamMoi.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/btn_lammoi.png")));
 		panel_ngay.add(btnLamMoi);
 
 		panel_thongke1 = new JPanel();
@@ -208,7 +208,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke1.setForeground(new Color(189, 0, 88));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
-		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tknv.png")));
+		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tknv.png")));
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
@@ -231,7 +231,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
-		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/icon_tkkh1.png")));
+		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tkkh1.png")));
 
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
@@ -266,7 +266,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lblbackground = new JLabel("");
 		lblbackground.setBounds(0, 0, 1400, 700);
 		panel_tong.add(lblbackground);
-		lblbackground.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/bg_chot1.png")));
+		lblbackground.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/bg_chot1.png")));
 		// khai bao định dạng
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("### p");
@@ -314,7 +314,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	/**
 	 * Thống kê số phòng theo ngày
 	 */
-	public void loadThongKeNhanVien() {
+	public void loadThongKePhong() {
 
 		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
@@ -491,7 +491,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 			clearTable();
 			clearTK2();
 			loadThongKeSoGio();
-			loadThongKeNhanVien();
+			loadThongKePhong();
 			KhungTheoMaTheoNgay();
 		} else if (o == btnLamMoi) {
 			resetAll();
