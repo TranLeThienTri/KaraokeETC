@@ -17,6 +17,8 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,8 +33,10 @@ import connectDB.ConnectDB;
 import dao.DanhSachHoaDon;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.NhanVien;
+import entitys.Phong;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 
@@ -64,6 +68,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	private DecimalFormat df;
 	private DecimalFormat dfs;
 	private DecimalFormat dfh;
+	private DateTimeFormatter dt;
 	private SimpleDateFormat sf;
 	private JScrollPane scrollPane;
 	private JPanel panel_tknv, panel_ngay, panel_thongke1, panel_thongke2;
@@ -86,7 +91,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	 * Create the application.
 	 */
 	public Frm_ThongKeNhanVien() {
-		setTitle("THỐNG KÊ NHÂN VIÊN");
+		setTitle("THỐNG KÊ PHÒNG");
 		setSize(1400, 670);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -116,7 +121,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbltg.setBounds(650, 62, 310, 41);
 		panel_tong.add(lbltg);
 
-		lbltknv = new JLabel("THỐNG KÊ NHÂN VIÊN");
+		lbltknv = new JLabel("THỐNG KÊ PHÒNG");
 		lbltknv.setForeground(new Color(255, 255, 255));
 		lbltknv.setBounds(52, 10, 223, 20);
 		panel_tknv.add(lbltknv);
@@ -237,10 +242,9 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
 		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk2.setBounds(184, 154, 79, 41);
+		lbltongtk2.setBounds(150, 154, 180, 41);
 		panel_thongke2.add(lbltongtk2);
-		String col[] = { "M\u00E3 NV", "H\u1ECD v\u00E0 t\u00EAn", "N\u0103m sinh", "CCCD", "Gi\u1EDBi t\u00EDnh",
-				"\u0110\u1ECBa ch\u1EC9", "SDT", "Ch\u1EE9c v\u1EE5" };
+		String col[] = {  "Mã phòng", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích"  };
 		model = new DefaultTableModel(col, 0);
 		table = new JTable(model);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -269,6 +273,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		dfs = new DecimalFormat("### p");
 		dfh = new DecimalFormat("### h");
 		sf = new SimpleDateFormat("dd/MM/yyy");
+		dt = DateTimeFormatter.ofPattern("HH:mm");
 		// add su kien button
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
@@ -283,23 +288,16 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	/**
 	 * Đưa dữ liệu từ danh sách lên bảng
 	 */
-	public void upTable(ArrayList<NhanVien> list) {
+
+	public void upTable(ArrayList<Phong> list) {
 		int i = 0;
-		for (NhanVien nv  : list) {
-			Object[] obj = new Object[8];
-			obj[0] = nv.getMaNhanVien().trim();
-			obj[1] = nv.getHoTenNhanVien().trim();
-			obj[2] = nv.getNgaySinh();
-			obj[3] = nv.getSoCCCD().trim();
-			String gt;
-			if (!nv.isGioiTinh())
-				gt = "Nữ";
-			else
-				gt = "Nam";
-			obj[4] = gt;
-			obj[5] = nv.getDiaChi().trim();
-			obj[6] = nv.getSdt().trim();
-			obj[7] = nv.getchucVu().getTenChucVu();
+		for (Phong p : list) {
+			Object[] obj = new Object[5];
+			obj[0] = p.getMaPhong();
+			obj[1] = p.getSucChua();
+			obj[2] = p.getMaLoaiPhong().getTenLoaiPhong();
+			obj[3] = df.format(p.getGiaPhong());
+			obj[4] = p.getDienTich();
 			if (table.getRowCount() == 0)
 				model.addRow(obj);
 			else {
@@ -315,7 +313,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	}
 
 	/**
-	 * Thống kê số nhân viên theo ngày
+	 * Thống kê số phòng theo ngày
 	 */
 	public void loadThongKeNhanVien() {
 
@@ -326,9 +324,9 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
-			ArrayList<NhanVien> listHD = dsHD.getDSNVTheoNgay(ngayBatDau, ngayKetThuc);
-			int tong = dsHD.tongSoNVTheoNgay(ngayBatDau, ngayKetThuc);
-			lblthongke1.setText("Tổng số nhân viên:");
+			ArrayList<Phong> listHD = dsHD.getDSPhongNgay(ngayBatDau, ngayKetThuc);
+			int tong = dsHD.tongSoPhongTheoNgay(ngayBatDau, ngayKetThuc);
+			lblthongke1.setText("Tổng số phòng:");
 			lbltongtk1.setText(String.valueOf(tong));
 			upTable(listHD);
 		} else
@@ -340,17 +338,60 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	 * @param ma là mã nhân viên
 	 * @return tổng số hóa đơn theo mã nhân viên trong ngày được chọn thống kê
 	 */
-	public int soHDTheoMaTheoNgay(String ma) {
-		int tong = 0;
+	public void KhungTheoMaTheoNgay() {
 		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
-		DanhSachKhachHang dao = new DanhSachKhachHang();
 		@SuppressWarnings("deprecation")
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
-		tong = dsHD.getSoHDTheoMaTheoNgay(ma, ngayBatDau, ngayKetThuc);
-		return tong;
+		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
+			ArrayList<HoaDonPhong> listHD = dsHD.getDSHDTheoNgay(ngayBatDau, ngayKetThuc);
+			LocalTime timeAt9 = LocalTime.of(9, 0);
+			LocalTime timeAt12 = LocalTime.of(12, 0);
+			LocalTime timeAt15 = LocalTime.of(15, 0);
+			LocalTime timeAt18 = LocalTime.of(18, 0);
+			LocalTime timeAt21 = LocalTime.of(21, 0);
+			LocalTime timeAt24= LocalTime.of(0, 0);
+			int ca1 =0;
+			int ca2 =0;
+			int ca3 =0;
+			int ca4 =0;
+			int ca5 =0;
+
+			for (HoaDonPhong hd : listHD) {
+				if(hd.getGioBatDauThue().isAfter(timeAt9)&& hd.getGioBatDauThue().isBefore(timeAt12)) {
+					ca1++;
+				}else if(hd.getGioBatDauThue().isAfter(timeAt12)&& hd.getGioBatDauThue().isBefore(timeAt15)) {
+					ca2++;
+				}else if(hd.getGioBatDauThue().isAfter(timeAt15)&& hd.getGioBatDauThue().isBefore(timeAt18)) {
+					ca3++;
+				}else if(hd.getGioBatDauThue().isAfter(timeAt18)&& hd.getGioBatDauThue().isBefore(timeAt21)) {
+					ca4++;
+				}else if(hd.getGioBatDauThue().isAfter(timeAt21)&& hd.getGioBatDauThue().isBefore(timeAt24)) {
+					ca5++;
+				}
+			}
+			
+			if(ca1>=ca2 &&ca1>=ca3 &&ca1>=ca4 && ca1>=ca5) {
+				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
+				lbltongtk2.setText(String.valueOf(timeAt9) +" ==> "+ String.valueOf(timeAt12));
+			}else if(ca2>=ca1 &&ca2>=ca3 &&ca2>=ca4 && ca2>=ca5) {
+				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
+				lbltongtk2.setText(String.valueOf(timeAt12) +" ==> "+ String.valueOf(timeAt15));
+			}else if(ca3>=ca1 &&ca3>=ca2 &&ca3>=ca4 && ca3>=ca5) {
+				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
+				lbltongtk2.setText(String.valueOf(timeAt15) +" ==> "+ String.valueOf(timeAt18));
+			}else if(ca4>=ca1 &&ca4>=ca3 &&ca4>=ca3 && ca4>=ca5) {
+				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
+				lbltongtk2.setText(String.valueOf(timeAt18) +" ==> "+ String.valueOf(timeAt21));
+			}else if(ca5>=ca1 &&ca5>=ca3 &&ca5>=ca4 && ca5>=ca4) {
+				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
+				lbltongtk2.setText(String.valueOf(timeAt21) +" ==> "+ String.valueOf(timeAt24));
+			}
+			
+		} else
+			JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");
 	}
 
 	/**
@@ -358,11 +399,8 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 	 * 
 	 */
 	public void setTextTB() {
-		int row = table.getSelectedRow();
-		String ma = (String) table.getValueAt(row, 0);
-		int tong = soHDTheoMaTheoNgay(ma);
-		lblthongke2.setText("Tổng số hóa đơn của nhân viên:");
-		lbltongtk2.setText(String.valueOf(tong));
+		 KhungTheoMaTheoNgay();
+
 	}
 
 	/**
@@ -455,6 +493,7 @@ public class Frm_ThongKeNhanVien extends JFrame implements ActionListener, Mouse
 			clearTK2();
 			loadThongKeSoGio();
 			loadThongKeNhanVien();
+			KhungTheoMaTheoNgay();
 		} else if (o == btnLamMoi) {
 			resetAll();
 		}

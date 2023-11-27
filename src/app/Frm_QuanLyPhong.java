@@ -380,7 +380,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			if (!dsPhong.themPhong(p)) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
 				obj[0] = ma;
-				obj[1] = tt.getTenTinhTrangPhong();
+				obj[1] = tenTinhTang;
 				obj[2] = sucChua;
 				obj[3] = tenLoaiPhong;
 				obj[4] = Gia;

@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.SimpleTimeZone;
 
 import javax.swing.BorderFactory;
@@ -48,9 +49,13 @@ import org.apache.poi.examples.hsmf.Msg2txt;
 
 import connectDB.ConnectDB;
 import dao.ThuePhong;
+import dao.DanhSachChiTietHoaDon;
+import dao.DanhSachDichVu;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
 import dao.Dao_PhatSinhMa;
+import entitys.ChiTietHoaDon;
+import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.LoaiHoaDon;
@@ -68,7 +73,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	private Panel pnQLDP;
 	private int ngay, thang, nam;
 
-	private JTable tableDSPhong, tableDSPhong1, tableDSPhong2, tableDSDichVu;
+	private JTable tableDSPhong, tableDSPhong2, tableDSDichVu;
 	private DefaultTableModel model, model1, model2;
 	private JLabel lbIconSearch, lbSDT, lbTenKH, lbTTDDP;
 	private JTextField txtSDT, txtKhachHang;
@@ -83,6 +88,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	DanhSachPhong dsPhong;
 	HoaDonPhong hdP;
 	DanhSachHoaDon dsHD;
+	DanhSachChiTietHoaDon dsCTHD;
 	NhanVien nv;
 
 	Panel getFrmQuanLyThuePhong() {
@@ -251,15 +257,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP1.add(lbDSPhong);
-		String col2[] = { "M\u00E3 ph\u00F2ng", "Lo\u1EA1i d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5",
-				"S\u1ED1 l\u01B0\u1EE3ng", "Giá bán" };
+		String col2[] = { "Mã phòng", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Giá bán", "Thành tiền" };
 
-		model1 = new DefaultTableModel(col2, 0) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Không cho phép chỉnh sửa ô
-			}
-		};
+		model2 = new DefaultTableModel(col2, 0);
 		tableDSDichVu = new JTable(model2);
 
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -307,8 +307,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
-		 btnThuePhong.setIcon(new
-		 ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
+		btnThuePhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
 		btnThuePhong.setBounds(505, 15, 200, 35);
@@ -392,8 +391,10 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnPhongThuong.addActionListener(this);
 		btnPhongVip.addActionListener(this);
 		btnTatCa.addActionListener(this);
+		
 		dsPhong = new DanhSachPhong();
 		dsTP = new ThuePhong();
+		dsCTHD = new DanhSachChiTietHoaDon();
 		dsHD = new DanhSachHoaDon();
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("### p");
@@ -403,10 +404,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
+
 	}
 
 	public void upTable1() {
-		int i = 0;
+		int i = 3;
 		ArrayList<Phong> list = new ArrayList();
 		list = dsPhong.getDSPhong();
 		for (Phong p : list) {
@@ -529,8 +531,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	}
 
 	public void clearTable3() {
-		while (tableDSDichVu.getRowCount() > 0) {
-			model2.removeRow(0);
+		int rowCount = model2.getRowCount();
+		for (int i = rowCount - 1; i >= 0; i--) {
+			model2.removeRow(i);
 		}
 	}
 
@@ -594,23 +597,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			locTheoLoaiPhongThuong();
 		}
 
-		if(o == btnThemDV) {
-			ktDichVu();
+		if (o == btnThemDV) {
+			if (ktraPhong()) {
+				HoaDonPhong hd = getHDPDuocChon();
+				new Frm_ThemDichVu(hd).setVisible(true);
+			}
 		}
 	}
-	
-	public void ktDichVu() {
-		int row = tableDSPhong.getSelectedRow();
-		if (row == -1) {
-			JOptionPane.showMessageDialog(this, "Chọn phòng đang thuê để thêm dịch vu");
-		} else {
-			new Frm_ThemDichVu().setVisible(true);
-		}
-	}
-	
-
-		
-	
 
 	public HoaDonPhong getHDPDuocChon() {
 		int row = tableDSPhong2.getSelectedRow();
@@ -628,12 +621,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				
+
 				obj[2] = p.getSucChua();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[3] = df.format(p.getGiaPhong());
 				if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT"))
-				model.addRow(obj);
+					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
@@ -649,7 +642,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 					model.addRow(obj);
 			}
 		}
-		
 
 	}
 
@@ -663,12 +655,13 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-				
+
 				obj[2] = p.getSucChua();
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
+				if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")
+						&& (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
 					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -682,8 +675,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
-						model.addRow(obj);
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
+					model.addRow(obj);
 			}
 		}
 	}
@@ -701,8 +695,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				obj[2] = p.getSucChua();
 				obj[3] = df.format(p.getGiaPhong());
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-	
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
+
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")))
 					model.addRow(obj);
 			}
 		} else if (radioTrong.isSelected()) {
@@ -716,19 +711,47 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
-				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR") && p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT") ))
-						model.addRow(obj);
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")
+						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
+					model.addRow(obj);
 			}
 		}
 	}
 
+//uptable dichvu
+	public void upTableDV() {
+		int i = 0;
+		Object[] obj = new Object[6];
+		DanhSachDichVu dsdv = new DanhSachDichVu();
+		int row = tableDSPhong2.getSelectedRow();
+		String ma = (String) tableDSPhong2.getValueAt(row, 0);
+		HoaDonPhong hd = dsTP.getHDTheoMa(ma);
+		System.out.println(ma);
+			ArrayList<ChiTietHoaDon> listt = dsTP.getCTHDTheoMa(ma);
+			float tongtiendv = 0;
+			for (ChiTietHoaDon p : listt) {
+				DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
+				obj[0] = p.getMaHoaDonPhong().getPhong().getMaPhong();
+				obj[1] = p.getDichVu().getloaiDichVu().getTenLoaiDichVu();
+				obj[2] = p.getDichVu().getTenDichVu();
+				obj[3] = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+				obj[4] = df.format(dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+				float tong = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu())* dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu());
+				tongtiendv += tong;
+				obj[5] = df.format(tong);
+				model2.addRow(obj);
+			}
+		
+	}
+
 	public void clickTable1() {
 		int row = tableDSPhong.getSelectedRow();
-		System.out.println(row);
 		int i = 0;
 		while (tableDSPhong2.getRowCount() > 0) {
 			if (tableDSPhong2.getValueAt(i, 1).equals(tableDSPhong.getValueAt(row, 0))) {
 				tableDSPhong2.setRowSelectionInterval(i, i);
+					upTableDV();
+				// tableDSDichVu.setRowSelectionInterval(i, i);
 				break;
 			}
 			i++;
@@ -736,7 +759,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	}
 
 	// Lọc phòng theo loại
-	
+
 	public void clickTable() {
 	}
 
@@ -744,6 +767,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
+		upTableDV();
 		txtSDT.setText("");
 		txtKhachHang.setText("");
 		tableDSPhong.clearSelection();
@@ -757,6 +781,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		if (o == lbIconSearch)
 			ktraKH();
 		if (o == tableDSPhong) {
+			clearTable3();
 			clickTable1();
 		}
 	}

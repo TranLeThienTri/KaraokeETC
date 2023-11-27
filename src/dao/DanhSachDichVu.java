@@ -139,6 +139,21 @@ public class DanhSachDichVu {
 		}
 		return b;
 	}
+	public boolean suaSLTDichVu(DichVu dv) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateSLTDV(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setInt(1, dv.getSoLuongTon());
+			myCall.setString(2, dv.getTenDichVu());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
 	public int getSLTheoMaDV(String ma) {
 		int tong = 0;
 		try {

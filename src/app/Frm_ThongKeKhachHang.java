@@ -248,7 +248,7 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
 		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk2.setBounds(209, 143, 79, 41);
+		lbltongtk2.setBounds(150, 143, 172, 41);
 		panel_thongke2.add(lbltongtk2);
 
 		String col[] = { "Mã KH", "Họ tên", "Loại KH", "Giới tính", "SĐT", "CCCD", "Điểm tích luỹ" };
@@ -350,8 +350,8 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 	 * @param ma là mã khách hàng
 	 * @return tổng số hóa đơn theo mã khách hàng trong ngày được chọn thống kê
 	 */
-	public int soHDTheoMaTheoNgay(String ma) {
-		int tong = 0;
+	public float soTienTheoMaTheoNgay(String ma) {
+		float tong = 0;
 		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
 		DanhSachKhachHang dao = new DanhSachKhachHang();
@@ -359,7 +359,7 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
-		tong = dsHD.getSoHDTheoMaTheoNgay(ma, ngayBatDau, ngayKetThuc);
+		tong = dsHD.tongTienKHTheoNgay(ma, ngayBatDau, ngayKetThuc);
 		return tong;
 	}
 
@@ -370,9 +370,9 @@ public class Frm_ThongKeKhachHang extends JFrame implements ActionListener, Mous
 	public void setTextTB() {
 		int row = table.getSelectedRow();
 		String ma = (String) table.getValueAt(row, 0);
-		int tong = soHDTheoMaTheoNgay(ma);
-		lblthongke2.setText("Tổng số hóa đơn của khách hàng:");
-		lbltongtk2.setText(String.valueOf(tong));
+		float tong = soTienTheoMaTheoNgay(ma);
+		lblthongke2.setText("Tổng số tiền của khách hàng:");
+		lbltongtk2.setText(df.format(tong));
 	}
 
 	/**

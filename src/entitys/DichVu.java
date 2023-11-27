@@ -20,6 +20,13 @@ public class DichVu {
 		super();
 		this.maDichVu = ma;
 	}
+	
+
+	public DichVu(String tenDichVu, int soLuongTon) {
+		super();
+		this.tenDichVu = tenDichVu;
+		this.soLuongTon = soLuongTon;
+	}
 	public DichVu() {
 	
 	}

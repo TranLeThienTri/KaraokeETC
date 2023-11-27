@@ -2,14 +2,17 @@ package dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entitys.ChiTietHoaDon;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
 import entitys.KhachHang;
 import entitys.NhanVien;
+import entitys.PhuThu;
 
 public class DanhSachChiTietHoaDon {
 	public boolean themDVTheoMaPhong(KhachHang kh) {
@@ -35,26 +38,49 @@ public class DanhSachChiTietHoaDon {
 		return b;
 	}
 	
-	public ArrayList<DichVu> getDSDVTheoDSMaDV(ArrayList<DichVu> dsMadv) {
-		ArrayList<DichVu> list = new ArrayList<DichVu>();
-		DanhSachDichVu dao = new DanhSachDichVu();
-		for (DichVu dv : dsMadv) {
-			DichVu dichVu = dao.getDVTheoMa(dv.getMaDichVu());
-			if (!list.contains(dichVu))
-				list.add(dichVu);
+	public boolean themDVCTHD(ChiTietHoaDon CTHD) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call themDichVuPhong(?,?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, CTHD.getMaHoaDonPhong().getMaHoaDon());
+			myCall.setString(2, CTHD.getDichVu().getMaDichVu());
+			myCall.setInt(3, CTHD.getSoLuong());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	public ArrayList<ChiTietHoaDon> getCTHD() {
+		ArrayList<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
+		DanhSachDichVu daov = new DanhSachDichVu();
+		DanhSachPhuThu daopt = new DanhSachPhuThu();
+		ThuePhong daoTP = new ThuePhong();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getCTHD}";
+			CallableStatement myCall = con.prepareCall(sql);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String mahd = rs.getString(1);
+				String madv = rs.getString(2);
+				int sl = rs.getInt(3);
+				String mapt = rs.getString(4);
+				HoaDonPhong p = daoTP.getHDTheoMa(mahd);
+				DichVu dv = daov.getDVTheoMa(madv);
+				PhuThu pt = daopt.getPTTheoMa(mapt);
+				ChiTietHoaDon ct = new ChiTietHoaDon(p, dv, sl, pt);
+				list.add(ct);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
 	}
-	
-//	public ArrayList<HoaDonPhong> getDSHDTheoDSHoaDonPhong(ArrayList<HoaDonPhong> dsMaHoaDon) {
-//		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
-//		DanhSachHoaDon dao = new DanhSachHoaDon();
-//		for (HoaDonPhong hdp : dsMaHoaDon) {
-//			HoaDonPhong hoaDonPhong = dao.getds(dv.getMaDichVu());
-//			if (!list.contains(dichVu))
-//				list.add(dichVu);
-//		}
-//		return list;
-//	}
 
 }
