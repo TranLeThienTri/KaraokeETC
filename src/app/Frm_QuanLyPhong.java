@@ -53,7 +53,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.JFormattedTextField;
-
+//
 public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnLoaiPhong, pnDSP, pnTTDDP;
 	private JLabel lbLoaiPhongTK, lbDSPhong, lbBGQLDP, lbTTDDP, lbLoaiPhong, lblDinTch, lblMPhng, lblGiPhng, lbSDT,
@@ -98,7 +98,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		pnTTDDP.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
+
 		pnTTDDP.setBounds(100, 23, 1200, 280);
+
 
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -115,7 +117,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		lbTenKH.setBounds(55, 93, 140, 25);
 		pnTTDDP.add(lbTenKH);
 
-		lbTTDDP = new JLabel("Thông tin đơn đặt phòng");
+		lbTTDDP = new JLabel("Thông tin phòng");
 		lbTTDDP.setBounds(10, 10, 190, 20);
 		pnTTDDP.add(lbTTDDP);
 		lbTTDDP.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -147,6 +149,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		lbTB = new JLabel();
 		lbTB.setHorizontalAlignment(SwingConstants.LEFT);
+
 		lbTB.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lbTB.setBounds(55, 185, 500, 36);
 		lbTB.setForeground(Color.RED);
@@ -157,6 +160,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnThem.setBounds(357, 220, 150, 40);
+
 
 		btnThem.setBackground(new java.awt.Color(153, 36, 36));
 		pnTTDDP.add(btnThem);
@@ -171,6 +175,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(btnSua);
 
 		btnLamMoi = new FixButton("Làm mới");
+		
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
 
 		btnLamMoi.setBounds(757, 220, 150, 40);
@@ -181,17 +186,20 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		txtGia = new JTextField();
 		txtGia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtGia.setBounds(795, 37, 323, 30);
+		txtGia.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnTTDDP.add(txtGia);
 
 		txtDienTich = new JTextField();
 		txtDienTich.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtDienTich.setBounds(795, 93, 323, 30);
+		txtDienTich.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnTTDDP.add(txtDienTich);
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtMaPhong.setBounds(795, 151, 323, 28);
-		txtMaPhong.enable(false);
+		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 17));
+		txtMaPhong.setEditable(false);
 		pnTTDDP.add(txtMaPhong);
 
 		comboLoaiPhong = new JComboBox();
@@ -216,7 +224,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnLoaiPhong = new JPanel();
 		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 5));
 		pnLoaiPhong.setBackground(Color.ORANGE);
-		pnLoaiPhong.setBounds(393, 310, 650, 71);
+
+		pnLoaiPhong.setBounds(391, 329, 650, 71);
+
 		pnQLDP.add(pnLoaiPhong);
 		pnLoaiPhong.setLayout(null);
 
@@ -240,7 +250,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnPhongThuong = new FixButton2("Phòng thường");
 		btnPhongThuong.setBounds(447, 20, 150, 30);
 		pnLoaiPhong.add(btnPhongThuong);
-//
+//talbe
 		String col1[] = { "Mã phòng", "Tình trạng ", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích" };
 		model1 = new DefaultTableModel(col1, 0) {
 			@Override
@@ -266,7 +276,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		JScrollPane scrollPane1 = new JScrollPane(tableDSPhong1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane1.setBounds(100, 400, 1200, 230);
+		scrollPane1.setBounds(100, 410, 1200, 230);
 		pnQLDP.add(scrollPane1);
 
 		// add background ở cuối
@@ -368,7 +378,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			if (!dsPhong.themPhong(p)) {
 				JOptionPane.showMessageDialog(this, "Thêm thành công");
 				obj[0] = ma;
-				obj[1] = tt.getTenTinhTrangPhong();
+				obj[1] = tenTinhTang;
 				obj[2] = sucChua;
 				obj[3] = tenLoaiPhong;
 				obj[4] = df.format(Gia);

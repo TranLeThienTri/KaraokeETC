@@ -14,6 +14,11 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+//<<<<<<< HEAD
+//import java.util.Iterator;
+//import java.util.function.DoubleToLongFunction;
+//=======
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -31,6 +36,25 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.SpinnerUI;
 
+//<<<<<<< HEAD
+//import com.toedter.calendar.JDateChooser;
+
+import connectDB.ConnectDB;
+import dao.DanhSachChiTietHoaDon;
+import dao.DanhSachDichVu;
+import dao.DanhSachHoaDon;
+import dao.DanhSachPhong;
+import dao.Dao_PhatSinhMa;
+//import dao.ThuePhong;
+import entitys.ChiTietHoaDon;
+import entitys.DichVu;
+import entitys.HoaDonPhong;
+import entitys.LoaiDichVu;
+import entitys.LoaiPhong;
+import entitys.Phong;
+import entitys.PhuThu;
+import entitys.TinhTrangPhong;
+//=======
 import com.toedter.calendar.JDateChooser;
 
 import connectDB.ConnectDB;
@@ -40,6 +64,7 @@ import dao.DanhSachThuePhong;
 import entitys.ChiTietHoaDon;
 import entitys.DichVu;
 import entitys.HoaDonPhong;
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -51,25 +76,45 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import org.apache.poi.hssf.record.cf.BorderFormatting;
+//import org.apache.poi.hssf.record.cf.BorderFormatting;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.EtchedBorder;
 
 public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListener {
+
 	JPanel pnDSDichVu, pnDV;
 	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL, lbldongia, lblTenPhong,
 			lblTenKH, lblTime;
 	JComboBox comboTDV, comboLDV;
 	JTextField txtSoLuongTon;
 	Panel pnTDV;
+//<<<<<<< HEAD
+//	FixButton btnHuyDV, btnXacNhan, btnLamMoi, btnThemDV;
+//=======
 	FixButton btnHuyDV, btnXacNhan, btnLamMoi, btnThemDV, btnSuaDV;
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	FixButton2 btnQuayLai;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	private DateTimeFormatter dt;
 	private JLabel lbTongTien;
+//<<<<<<< HEAD
+//	private JLabel lbPhong, lbShowMaPhong;
+//	private JLabel lbTenKH, lbShowTenKhh;
+//	private JLabel lbGioVao, lbShowGioVao;
+//	DanhSachDichVu dsDV;
+//	DanhSachHoaDon dsHD;
+//	DanhSachChiTietHoaDon dsCTHD;
+//	HoaDonPhong hd;
+//	ChiTietHoaDon ct;
+//	DanhSachPhong p;
+//	ThuePhong tp;
+//	PhuThu pt;
+	int STT = 0;
+//=======
 	private JLabel lbPhong;
 	private JLabel lbKH;
 	private JLabel lbGioVao;
@@ -77,6 +122,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	DanhSachDichVu dsDV;
 	DanhSachHoaDon dsHD;
 	DanhSachThuePhong tp;
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	private DecimalFormat df;
 
 	public Panel getFrmThemDichVu(HoaDonPhong hd) {
@@ -140,17 +186,23 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		comboTDV = new JComboBox();
 		comboTDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboTDV.setBounds(129, 85, 300, 30);
+		comboTDV.setEditable(true);
 		pnDV.add(comboTDV);
 
-		txtSoLuongTon = new JTextField();
+		txtSoLuongTon = new JTextField("");
 		txtSoLuongTon.setBounds(200, 125, 80, 30);
+		txtSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnDV.add(txtSoLuongTon);
 
+//<<<<<<< HEAD
+//		btnThemDV = new FixButton();
+//=======
 		btnThemDV = new FixButton("Làm mới");
 		btnThemDV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		btnThemDV.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/cart.png")));
 		btnThemDV.setText("Thêm dịch vụ");
 		btnThemDV.setBounds(129, 206, 300, 35);
@@ -166,16 +218,18 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 
 		lbGiamSL = new JLabel("");
 		lbGiamSL.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_giam.png")));
-		lbGiamSL.setForeground(Color.WHITE);
 		lbGiamSL.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbGiamSL.setBounds(161, 120, 40, 40);
+		lbGiamSL.setBounds(158, 125, 30, 27);
+//		Border bottomBorder1 = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
+//		lbGiamSL.setBorder(bottomBorder1);
 		pnDV.add(lbGiamSL);
 
 		lbTangSL = new JLabel("");
 		lbTangSL.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_them.png")));
 		lbTangSL.setForeground(Color.WHITE);
 		lbTangSL.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbTangSL.setBounds(286, 120, 40, 40);
+		lbTangSL.setBounds(286, 125, 30, 27);
+//		lbTangSL.setBorder(bottomBorder1);
 		pnDV.add(lbTangSL);
 
 		lbTongTien = new JLabel("Đơn giá:");
@@ -213,7 +267,8 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-		String col[] = { "STT", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền" };
+
+		String col[] = { "STT", "Mã dịch vụ", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền" };
 		model = new DefaultTableModel(col, 0);
 		tableDSDichVu = new JTable(model);
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -249,7 +304,11 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		btnHuyDV.setBounds(700, 470, 200, 40);
 		pnTDV.add(btnHuyDV);
 
+//<<<<<<< HEAD
+//		btnXacNhan = new FixButton();
+//=======
 		btnXacNhan = new FixButton("");
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		btnXacNhan.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_xacnhan.png")));
 		btnXacNhan.setText("Xác nhận");
 		btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -266,7 +325,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		pnTDV.add(pnTTPhong);
 		pnTTPhong.setLayout(null);
 
-		lbPhong = new JLabel("Phòng: ");
+		lbPhong = new JLabel("Mã Phòng:");
 		lbPhong.setForeground(Color.WHITE);
 		lbPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbPhong.setBounds(10, 10, 66, 20);
@@ -325,11 +384,15 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		dsHD = new DanhSachHoaDon();
 		tp = new DanhSachThuePhong();
 		upTT();
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
 		Object o = e.getSource();
+//<<<<<<< HEAD
+//=======
 		int sl;
 		if (txtSoLuongTon.getText().equals("")) {
 			sl = 0;
@@ -346,7 +409,23 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		if (o == tableDSDichVu) {
 			clickTB();
 		}
+//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 
+//		if (o == lbTangSL) {
+//			if (txtSoLuongTon.getText().equalsIgnoreCase("")) {
+//				JOptionPane.showMessageDialog(this, "Chưa nhập số lượng dịch vụ");
+//			} else {
+//				ktTangSL();
+//			}
+//		} else if (o == lbGiamSL) {
+//			if (txtSoLuongTon.getText().equalsIgnoreCase("")) {
+//				JOptionPane.showMessageDialog(this, "Chưa nhập số lượng dịch vụ");
+//			} else {
+//				ktGiamSL();
+//			}
+//		} else {
+//			setTextTB();
+//		}
 	}
 
 	public boolean ktraSL(String ma) {
@@ -369,6 +448,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		}
 		return true;
 	}
+
 	public boolean ktraSLSua(String ma) {
 		int slt = 0;
 		int row = tableDSDichVu.getSelectedRow();
@@ -501,13 +581,14 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		int slt = dsDV.getSLTonTheoMaDV(madv);
 		int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 3).toString());
 		dsDV.updateSLTon(madv, slt + slg);
-		if(JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn xóa dịch vụ không?",
-				"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn xóa dịch vụ không?", "Thông báo",
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			if (!tp.deleteDV(madv)) {
 				model.removeRow(row);
 			}
 		}
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -523,7 +604,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+//		
 	}
 
 	@Override
@@ -533,6 +614,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	}
 
 	@Override
+
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o == btnQuayLai) {
@@ -544,6 +626,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		if (o == comboLDV) {
 			phanLoaiCombobox();
 		}
+
 		if (o == btnThemDV) {
 			String tdv = (String) comboTDV.getSelectedItem();
 
@@ -569,4 +652,5 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 				huyDV();
 		}
 	}
+
 }

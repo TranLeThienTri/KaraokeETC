@@ -26,6 +26,14 @@ public class DichVu {
 		this.maDichVu = ma;
 	}
 
+
+	public DichVu(String tenDichVu, int soLuongTon) {
+		super();
+		this.tenDichVu = tenDichVu;
+		this.soLuongTon = soLuongTon;
+	}
+
+
 	public DichVu(String ma, String ten) {
 		super();
 		this.maDichVu = ma;
