@@ -435,5 +435,49 @@ public class DanhSachHoaDon {
 		}
 		return list;
 	}
+	
+	// lấy danh sách hoá đơn đặt
+	public ArrayList<HoaDonPhong> getDSHDDTheoMaKH(String ma) {
+		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDSHDDTheoMaKH(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maHD = rs.getString(1);
+				String maPhong = rs.getString(10);
+				String maKhachhang = rs.getString(7);
+				String gioDattt = rs.getString(6);
+				String[] gioDatt = gioDattt.split("\\.");
+				String gioDat = gioDatt[0];
+				String maNhanVien = rs.getString(8);
+				String ngayDat = rs.getString(5);
+//				String ngayLapHoaDon = rs.getString(2);
+				Phong p = new Phong(maPhong);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				// Chuyển đổi chuỗi thành LocalTime
+				LocalTime localTime = LocalTime.parse(gioDat, formatter);
+
+				DanhSachKhachHang dskh = new DanhSachKhachHang();
+				DanhSachNhanVien dsnv = new DanhSachNhanVien();
+				NhanVien nv = dsnv.getNhanVienTheoMa(maNhanVien);
+				KhachHang kh = dskh.getKHTheoMa(maKhachhang);
+
+				// Chuyển đổi chuỗi thành đối tượng LocalDate
+//				LocalDate date = LocalDate.parse(ngayLapHoaDon);
+
+				HoaDonPhong hd = new HoaDonPhong(maHD, p, nv, kh, new LoaiHoaDon("HDD"), null,
+						LocalDate.parse(ngayDat, DateTimeFormatter.ofPattern("yyyy-MM-dd")), localTime);
+				list.add(hd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 
 }
