@@ -365,26 +365,27 @@ public class DanhSachHoaDon {
 		return list;
 	}
 
-public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
-	DichVu dv = null;
-	try {
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		String sql = "{call getSoLanDVDat(?,?)}";
-		CallableStatement myCall = con.prepareCall(sql);
-		myCall.setDate(1, ngaybd);
-		myCall.setDate(2, ngaykt);
-		ResultSet rs = myCall.executeQuery();
-		while (rs.next()) {
-			String madv = rs.getString(1);
-			String tendv = rs.getString(3);
-			 dv = new DichVu(madv, tendv);
+	public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
+		DichVu dv = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getSoLanDVDat(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setDate(1, ngaybd);
+			myCall.setDate(2, ngaykt);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String madv = rs.getString(1);
+				String tendv = rs.getString(3);
+				dv = new DichVu(madv, tendv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-	} catch (SQLException e) {
-		e.printStackTrace();
+		return dv;
 	}
-	return dv;
-}
+
 	public ArrayList<HoaDonPhong> getDSHDThue() {
 		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
 		try {
@@ -471,6 +472,47 @@ public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
 		}
 		return list;
 	}
+
+	// lấy danh sách hoá đơn đặt
+	public ArrayList<HoaDonPhong> getDSHDDTheoMaKH(String ma) {
+		ArrayList<HoaDonPhong> list = new ArrayList<HoaDonPhong>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDSHDDTheoMaKH(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String maHD = rs.getString(1);
+				String maPhong = rs.getString(10);
+				String maKhachhang = rs.getString(7);
+				String gioDattt = rs.getString(6);
+				String[] gioDatt = gioDattt.split("\\.");
+				String gioDat = gioDatt[0];
+				String maNhanVien = rs.getString(8);
+				String ngayDat = rs.getString(5);
+//				String ngayLapHoaDon = rs.getString(2);
+				Phong p = new Phong(maPhong);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				// Chuyển đổi chuỗi thành LocalTime
+				LocalTime localTime = LocalTime.parse(gioDat, formatter);
+
+				DanhSachKhachHang dskh = new DanhSachKhachHang();
+				DanhSachNhanVien dsnv = new DanhSachNhanVien();
+				NhanVien nv = dsnv.getNhanVienTheoMa(maNhanVien);
+				KhachHang kh = dskh.getKHTheoMa(maKhachhang);
+
+				HoaDonPhong hd = new HoaDonPhong(maHD, p, nv, kh, new LoaiHoaDon("HDD"), null,
+						LocalDate.parse(ngayDat, DateTimeFormatter.ofPattern("yyyy-MM-dd")), localTime);
+				list.add(hd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 	public float TongTienDV(Date ngayBatDau, Date ngayKetThuc) {
 		float tong = 0;
 		try {
@@ -489,6 +531,4 @@ public DichVu getDVDuocDatNhieuNhat(Date ngaybd, Date ngaykt) {
 		}
 		return tong;
 	}
-	
-
 }
