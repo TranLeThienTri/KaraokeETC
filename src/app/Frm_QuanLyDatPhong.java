@@ -424,6 +424,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		tableDSPhong.addMouseListener(this);
 		tableDSPhong1.addMouseListener(this);
 		ngayDatPhong.addPropertyChangeListener(this);
+		// connect db
 		ConnectDB.getInstance().connect();
 		dsDP = new DanhSachDatPhong();
 		dsKH = new DanhSachKhachHang();
@@ -434,7 +435,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		dateString = dateFormat.format(ngayDat);
 		clearTable();
 		upTable1(dsDP.getAllRoomByDate(dateString));
-		// đang chạy oke
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
 //		huyDatPhongQuaHan();
@@ -675,9 +675,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 				if (dsHD.getDSHDDTheoMaKH(isKhachHang.getMaKhachHang()).size() > 0) {
 					new Frm_ThongTinKhachDat(isKhachHang.getMaKhachHang()).setVisible(true);
 				}
-
 			} catch (Exception e2) {
-				System.out.println("Không lấy được khách hàng");
+				System.out.println("Chưa kiểm tra khách hàng");
 			}
 		}
 
