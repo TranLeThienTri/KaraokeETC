@@ -63,6 +63,7 @@ import javax.swing.DefaultComboBoxModel;
 public class Frm_NhanVien extends JFrame implements MouseListener, ActionListener {
 
 	private JTextField txtHoTen, txtDiaChi, txtChucVu, txtSDT, txtGioiTinh, txtNgaySinh, txtCCCD, txtMess;
+
 	private JLabel lbTB, lbTTDV, lblHoTen, lblSDT, lblDiaChi, lblCCCD, lblChucVu, lblNgaySinh, lblGioiTinh,
 			lblTrangThai, lbDSPhong, lbBG;
 	private DefaultTableModel model;
@@ -109,6 +110,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel.setBounds(102, 60, 1200, 286);
 		pnQLNV.add(panel);
 		panel.setLayout(null);
+
 
 		lbTTDV = new JLabel("Thông tin nhân viên");
 		lbTTDV.setBounds(102, 30, 250, 20);
@@ -457,7 +459,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			clearTable();
 			upTable();
 			xoaTrang();
-
 		}
 
 	}
