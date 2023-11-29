@@ -655,6 +655,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 			if (checkDieuKienDatPhong(tinhTrang, kh)) {
 				dsDP.themHoaDonDat(hdp);
+				dsTP.setTTPhongTheoMa(ma, "BOOK");
 				JOptionPane.showMessageDialog(this, "Đặt phòng thành công!");
 			}
 			return true;
@@ -946,7 +947,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			String ngay = hd.getNgayDat().toString();
 
 			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-
 			Date ngayDat = null;
 
 			try {
@@ -966,6 +966,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			if ((ngayHienTai.compareTo(ngayDat) > 0)
 					|| (ngayHienTai.compareTo(ngayDat) == 0 && gio >= gioDat && phut >= phutDat)) {
 				dsDP.huyDatPhong(maHoaDon);
+				dsTP.setTTPhongTheoMa(hd.getPhong().getMaPhong(), "EMPT");
 				DanhSachDatPhong dsdp = new DanhSachDatPhong();
 				upTable2(dsDP.getAllRoomStatusByDate());
 			}

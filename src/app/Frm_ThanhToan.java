@@ -111,7 +111,6 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	public Frm_ThanhToan(HoaDonPhong hd) {
 		setTitle("THANH TOÁN HÓA ĐƠN");
 		setSize(700, 820);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		this.hd = hd;
@@ -448,14 +447,14 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 			if (setTTHD(mahd, tien, giotra, makh, map, "EMPT")) {
 				if (tp.getDTLTheoMa(makh) >= 10) {
 					tp.updateKHVIPTheoMa(makh);
-				JOptionPane.showMessageDialog(this, "thành công");
-				dispose();
-			}
-				try {
-					xuatHoaDonFilePDF();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(this, "thành công");
+					dispose();
+					try {
+						xuatHoaDonFilePDF();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

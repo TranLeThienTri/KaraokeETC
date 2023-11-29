@@ -345,7 +345,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			}
 		} else if (o.equals(btnLamMoi)) {
 			xoaTrang();
-
+			clearTable();
+			upTable();
 		} else if (o.equals(btnPhongVip)) {
 			locTheoLoaiPhongVIP();
 		} else if (o.equals(btnPhongThuong)) {
@@ -416,8 +417,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 				obj[1] = tt.getTenTinhTrangPhong();
 				obj[2] = sucChua;
 				obj[3] = tenLoaiPhong;
-				obj[4] = Gia;
-				obj[5] = dienTich;
+				obj[4] = df.format(Gia);
+				obj[5] = dfs.format(dienTich);
 				if (!dsPhong.suaPhong(p)) {
 					JOptionPane.showMessageDialog(this, "Sửa thành công");
 					tableDSPhong1.setValueAt(obj[2], row, 2);
@@ -445,7 +446,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		int i = 0;
 		ArrayList<Phong> list = dsPhong.getDSPhong();
 		df = new DecimalFormat("###,### VNĐ");
-		dfs = new DecimalFormat("## M2");
+		dfs = new DecimalFormat("### M2");
 		for (Phong p : list) {
 			Object[] obj = new Object[7];
 			obj[0] = p.getMaPhong().trim();
@@ -480,7 +481,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 	public void setTextTB() throws ParseException {
 		df = new DecimalFormat("###,### VNĐ");
-		dfs = new DecimalFormat("## M2");
+		dfs = new DecimalFormat("### M2");
 		int row = tableDSPhong1.getSelectedRow();
 		txtGia.setText(df.parse(tableDSPhong1.getValueAt(row, 4).toString()) + "");
 		txtMaPhong.setText(tableDSPhong1.getValueAt(row, 0).toString());

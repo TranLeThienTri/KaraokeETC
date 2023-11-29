@@ -344,6 +344,11 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+		int ca1 =0;
+		int ca2 =0;
+		int ca3 =0;
+		int ca4 =0;
+		int ca5 =0;
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
 			ArrayList<HoaDonPhong> listHD = dsHD.getDSHDTheoNgay(ngayBatDau, ngayKetThuc);
 			LocalTime timeAt9 = LocalTime.of(9, 0);
@@ -351,27 +356,20 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 			LocalTime timeAt15 = LocalTime.of(15, 0);
 			LocalTime timeAt18 = LocalTime.of(18, 0);
 			LocalTime timeAt21 = LocalTime.of(21, 0);
-			LocalTime timeAt24= LocalTime.of(0, 0);
-			int ca1 =0;
-			int ca2 =0;
-			int ca3 =0;
-			int ca4 =0;
-			int ca5 =0;
-
+			LocalTime timeAt24= LocalTime.of(23, 59);
 			for (HoaDonPhong hd : listHD) {
 				if(hd.getGioBatDauThue().isAfter(timeAt9)&& hd.getGioBatDauThue().isBefore(timeAt12)) {
-					ca1++;
+					ca1 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt12)&& hd.getGioBatDauThue().isBefore(timeAt15)) {
-					ca2++;
+					ca2 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt15)&& hd.getGioBatDauThue().isBefore(timeAt18)) {
-					ca3++;
+					ca3 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt18)&& hd.getGioBatDauThue().isBefore(timeAt21)) {
-					ca4++;
+					ca4 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt21)&& hd.getGioBatDauThue().isBefore(timeAt24)) {
-					ca5++;
+					ca5 += 1;
 				}
 			}
-			
 			if(ca1>=ca2 &&ca1>=ca3 &&ca1>=ca4 && ca1>=ca5) {
 				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
 				lbltongtk2.setText(String.valueOf(timeAt9) +" ==> "+ String.valueOf(timeAt12));
@@ -399,7 +397,6 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 	 */
 	public void setTextTB() {
 		 KhungTheoMaTheoNgay();
-
 	}
 
 	/**

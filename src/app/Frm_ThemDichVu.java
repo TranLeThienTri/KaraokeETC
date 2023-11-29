@@ -384,15 +384,14 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		dsHD = new DanhSachHoaDon();
 		tp = new DanhSachThuePhong();
 		upTT();
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
+		phanLoaiCombobox();
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-//<<<<<<< HEAD
-//=======
 		int sl;
 		if (txtSoLuongTon.getText().equals("")) {
 			sl = 0;
@@ -504,14 +503,15 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 			DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
 			Object[] obj = new Object[7];
 			obj[0] = i++;
-			obj[1] = dv.getloaiDichVu().getTenLoaiDichVu();
-			obj[2] = dv.getTenDichVu();
-			obj[3] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
-			obj[4] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+			obj[1] = p.getDichVu().getMaDichVu();
+			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+			obj[3] = dv.getTenDichVu();
+			obj[4] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+			obj[5] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
 			float tong = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu())
 					* dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu());
 			tongtiendv += tong;
-			obj[5] = df.format(tong);
+			obj[6] = df.format(tong);
 			model.addRow(obj);
 		}
 	}
