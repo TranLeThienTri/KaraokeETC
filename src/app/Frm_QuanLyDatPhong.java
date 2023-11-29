@@ -437,7 +437,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		upTable1(dsDP.getAllRoomByDate(dateString));
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
-//		huyDatPhongQuaHan();
+		huyDatPhongQuaHan();
 	}
 
 	@Override
@@ -940,33 +940,35 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	 * Nếu có phòng được đặt nhưng khong nhận sẽ tự động huỷ kiểm tra giờ hiện tại
 	 * và giờ đặt phòng, nếu quá hạn thì sẽ huỷ phòng
 	 */
-//	public void huyDatPhongQuaHan() {
-//		for (HoaDonPhong hd : dsDP.getAllRoomStatusByDate()) {
-//			String maHoaDon = hd.getMaHoaDon().trim();
-//			String ngay = hd.getNgayDat().toString();
-//
-//			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-//			Date ngayDat = null;
-//			try {
-//				ngayDat = fmt.parse(ngay);
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			int gioDat = Integer.parseInt(hd.getGioDat().toString().split(":")[0]);
-//			int phutDat = Integer.parseInt(hd.getGioDat().toString().split(":")[1]);
-//
-//			LocalTime currentTime = LocalTime.now();
-//			int gio = currentTime.getHour();
-//
-//			int phut = currentTime.getMinute();
-//
-//			if ((ngayHienTai.compareTo(ngayDat) > 0)
-//					|| (ngayHienTai.compareTo(ngayDat) == 0 && gio >= gioDat && phutDat >= phut)) {
-//				dsDP.huyDatPhong(maHoaDon);
-//				DanhSachDatPhong dsdp = new DanhSachDatPhong();
-//				upTable2(dsDP.getAllRoomStatusByDate());
-//			}
-//
-//		}
+	public void huyDatPhongQuaHan() {
+		for (HoaDonPhong hd : dsDP.getAllRoomStatusByDate()) {
+			String maHoaDon = hd.getMaHoaDon().trim();
+			String ngay = hd.getNgayDat().toString();
+
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date ngayDat = null;
+
+			try {
+				ngayDat = fmt.parse(ngay);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int gioDat = Integer.parseInt(hd.getGioDat().toString().split(":")[0]);
+			int phutDat = Integer.parseInt(hd.getGioDat().toString().split(":")[1]);
+
+			LocalTime currentTime = LocalTime.now();
+			int gio = currentTime.getHour();
+
+			int phut = currentTime.getMinute();
+
+			if ((ngayHienTai.compareTo(ngayDat) > 0)
+					|| (ngayHienTai.compareTo(ngayDat) == 0 && gio >= gioDat && phut >= phutDat)) {
+				dsDP.huyDatPhong(maHoaDon);
+				DanhSachDatPhong dsdp = new DanhSachDatPhong();
+				upTable2(dsDP.getAllRoomStatusByDate());
+			}
+		}
+	}
 }

@@ -399,13 +399,11 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener, Mous
 
 	public void getIndexRow() {
 		int isSelected1 = tableDSPhong.getSelectedRow();
-		System.out.println(isSelected1);
 		if (isSelected1 == -1) {
 			btnNhanPhong.setEnabled(false);
 			btnHuyDatPhong.setEnabled(false);
 			tableDSPhong.clearSelection();
 		} else {
-			System.out.println(isSelected1);
 			btnHuyDatPhong.setEnabled(true);
 			btnNhanPhong.setEnabled(true);
 		}
