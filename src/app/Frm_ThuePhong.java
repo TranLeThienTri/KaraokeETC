@@ -812,6 +812,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	public void mouseEntered(MouseEvent e) {
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		// Đặt đường gạch chân cho JLabel
+		Object o = e.getSource();
+		if(o == lbIconSearch)
 		lbIconSearch.setBorder(bottomBorder);
 
 	}
@@ -821,6 +823,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		// TODO Auto-generated method stub
 		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK);
 		// Đặt đường gạch chân cho JLabel
+		Object o = e.getSource();
+		if(o == lbIconSearch)
 		lbIconSearch.setBorder(bottomBorder);
 	}
 }
