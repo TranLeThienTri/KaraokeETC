@@ -51,7 +51,7 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		this.tk =tk;
 		this.otp = otp;
 		getContentPane().setBackground(SystemColor.controlHighlight);
-		setTitle("Gửi Mail");
+		setTitle("Nhập OTP");
 		setSize(800, 500);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -59,10 +59,6 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		showGui();
 	}
-
-//	public static void main(String[] args) {
-//		new Frm_NhapOTP(otp).setVisible(true);
-//	}
 
 	private void formSendMail() {
 		btnDangNhap();
@@ -176,7 +172,9 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnSend) {
-			compareOTP();
+			if(ktraDuLieu()) {
+				compareOTP();				
+			}
 		}
 	}
 
@@ -192,6 +190,17 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 			
 	}
 
+	public boolean ktraDuLieu() {
+		String otp = txtOtp.getText();
+		if (otp.equals("") || !otp.matches(
+				"\\d{6}")) {
+			JOptionPane.showMessageDialog(this, "OTP không được Trống và phải là số!!");
+			txtOtp.requestFocus();
+			return false;
+		}
+		return true;
+	}
+	
 	public void xoaTrang() {
 		txtOtp.setText("");
 	}

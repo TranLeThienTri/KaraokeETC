@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 import connectDB.ConnectDB;
 import dao.DanhSachDichVu;
 import dao.DanhSachHoaDon;
+import entitys.ChiTietHoaDon;
 import entitys.DichVu;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
@@ -47,6 +48,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
+import java.util.Comparator;
+import java.util.Collections;
 
 public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseListener {
 	private LocalDate now;
@@ -71,6 +74,9 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 	private JButton btnThongKe, btnLamMoi;
 	DanhSachDichVu dsDV;
 	DanhSachHoaDon dsHD;
+	DichVu dv;
+	ChiTietHoaDon ct;
+	private JLabel lbTenDVDatNN1, lbTenDVDatNN;
 
 	public Panel getFrmThongKeDichVu() {
 		return this.panel_tong;
@@ -147,7 +153,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 
 		dateChooserThongKeNgayBatDau = new JDateChooser();
 		dateChooserThongKeNgayBatDau.getCalendarButton()
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 		dateChooserThongKeNgayBatDau.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -157,7 +163,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		dateChooserThongKeNgayBatDau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayBatDau.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayBatDau
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayBatDau.setBounds(149, 22, 226, 38);
 		dateChooserThongKeNgayBatDau.setDate(dNow);
@@ -174,7 +180,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		dateChooserThongKeNgayKetThuc.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateChooserThongKeNgayKetThuc.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		dateChooserThongKeNgayKetThuc
-				.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/calendar.png")));
+				.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/calendar.png")));
 
 		dateChooserThongKeNgayKetThuc.setBounds(149, 80, 226, 38);
 		dateChooserThongKeNgayKetThuc.setDate(dNow);
@@ -194,7 +200,7 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 
 		panel_thongke1 = new JPanel();
 		panel_thongke1.setBorder(new LineBorder(new Color(0, 0, 0), 5));
-		panel_thongke1.setBackground(new Color(189, 0, 88)); 
+		panel_thongke1.setBackground(new Color(189, 0, 88));
 		panel_thongke1.setBounds(447, 112, 471, 228);
 		panel_tong.add(panel_thongke1);
 		panel_thongke1.setLayout(null);
@@ -207,14 +213,26 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
-		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke1.setBounds(140, 120, 200, 35);
+		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblthongke1.setBounds(29, 152, 250, 35);
 		panel_thongke1.add(lblthongke1);
 		lbltongtk1 = new JLabel("");
 		lbltongtk1.setForeground(new Color(255, 255, 255));
-		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk1.setBounds(219, 145, 70, 43);
+		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lbltongtk1.setBounds(258, 147, 70, 43);
 		panel_thongke1.add(lbltongtk1);
+
+		lbTenDVDatNN = new JLabel("");
+		lbTenDVDatNN.setForeground(Color.WHITE);
+		lbTenDVDatNN.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lbTenDVDatNN.setBounds(19, 99, 250, 35);
+		panel_thongke1.add(lbTenDVDatNN);
+
+		lbTenDVDatNN1 = new JLabel("");
+		lbTenDVDatNN1.setForeground(Color.WHITE);
+		lbTenDVDatNN1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lbTenDVDatNN1.setBounds(264, 95, 300, 43);
+		panel_thongke1.add(lbTenDVDatNN1);
 
 		panel_thongke2 = new JPanel();
 		panel_thongke2.setBorder(new LineBorder(new Color(0, 0, 0), 5));
@@ -231,15 +249,20 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
 		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke2.setBounds(80, 120, 350, 35);
+		lblthongke2.setBounds(90, 120, 350, 35);
 		panel_thongke2.add(lblthongke2);
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
 		lbltongtk2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk2.setBounds(205, 150, 79, 41);
+		lbltongtk2.setBounds(150, 145, 270, 41);
 		panel_thongke2.add(lbltongtk2);
-		String col[] = { "Mã DV", "Tên Dịch Vụ", "Loại Dịch Vụ", "Số Lượng Tồn", "Giá Bán" };
-		model = new DefaultTableModel(col, 0);
+		String col[] = {"Mã DV", "Tên Dịch Vụ", "Loại Dịch Vụ", "Số Lượng Đã Bán", "Giá Bán", "Tổng tiền"};
+		model = new DefaultTableModel(col, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
 		table = new JTable(model);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tbHeader = table.getTableHeader();
@@ -254,14 +277,14 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(new LineBorder(new Color(158, 207, 0), 1, true));
 		scrollPane.setBackground(Color.BLACK);
-		scrollPane.setBounds(0, 350, 1400, 268);
+		scrollPane.setBounds(0, 350, 1385, 275);
 		scrollPane.getHorizontalScrollBar();
 		scrollPane.setViewportView(table);
 		panel_tong.add(scrollPane);
 		lblbackground = new JLabel("");
 		lblbackground.setBounds(0, 0, 1400, 700);
 		panel_tong.add(lblbackground);
-		lblbackground.setIcon(new ImageIcon(Frm_ThongKeNhanVien.class.getResource("/imgs/bg_chot1.png")));
+		lblbackground.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/bg_chot1.png")));
 		// khai bao định dạng
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("### p");
@@ -273,43 +296,50 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		table.addMouseListener(this);
 		// kết nối data
 		ConnectDB.getInstance().connect();
-		// Danh sach Khach Hang
+		// Danh sach Dịch Vụ, Hóa Đơn
 		dsDV = new DanhSachDichVu();
 		dsHD = new DanhSachHoaDon();
+		dv = new DichVu();
+
 	}
 
 	/**
 	 * Đưa dữ liệu từ danh sách lên bảng
 	 */
 	public void upTable(ArrayList<DichVu> list) {
-		int i = 0;
+		int soluongdaban = 0;
+		int i;
 		for (DichVu dv : list) {
-				Object[] obj = new Object[5];
-				obj[0] = dv.getMaDichVu().trim();
-				obj[1] = dv.getTenDichVu().trim();
-				obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
-				obj[3] = dv.getSoLuongTon();
-				obj[4] = df.format(dv.getDonGia());
-				model.addRow(obj); 
+
+			Object[] obj = new Object[7];
+			obj[0] = dv.getMaDichVu().trim();
+			obj[1] = dv.getTenDichVu().trim();
+			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+			soluongdaban = soDVTheoMaTheoNgay(dv.getMaDichVu().trim());
+			obj[3] = soluongdaban;
+			obj[4] = df.format(dv.getDonGia());
+			obj[5] = df.format((dv.getDonGia() * soluongdaban));
+			model.addRow(obj);
+
 			if (table.getRowCount() == 0)
 				model.addRow(obj);
 			else {
-				for (i = 0; i < table.getRowCount(); i++) {
-					if (obj[0].toString().equals(table.getValueAt(i, 0)))
+				for ( i = 0; i < table.getRowCount(); i++) {
+					if (obj[1].toString().equals(table.getValueAt(i, 1)))
 						break;
 				}
 				if (i == table.getRowCount())
 					model.addRow(obj);
+
 			}
 		}
 
 	}
 
-	/**
-	 * Thống kê số dịch vụ theo ngày
-	 */
-	public void loadThongKeDichVu() {
+	// Thống kê số lần dịch vụ được đặt
 
+	public void loadThongKeDichVu() {
+		DichVu dv = new DichVu();
 		java.util.Date utilngayBD = dateChooserThongKeNgayBatDau.getDate();
 		java.util.Date utilngayKT = dateChooserThongKeNgayKetThuc.getDate();
 		@SuppressWarnings("deprecation")
@@ -318,13 +348,26 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
 			ArrayList<DichVu> listDV = dsHD.getDSDVTheoNgay(ngayBatDau, ngayKetThuc);
-			int tong = listDV.size();
-			lblthongke1.setText("Tổng số dịch vụ:");
-			lbltongtk1.setText(String.valueOf(tong));
-			upTable(listDV);
+			dv = dsHD.getDVDuocDatNhieuNhat(ngayBatDau, ngayKetThuc);
+			if (dv == null) {
+				JOptionPane.showMessageDialog(this, "Chưa có dịch vụ để thống kê");
+			} else {
+
+				int tong = dsHD.getLanDatDVNNTheoMa(ngayBatDau, ngayKetThuc);
+				float tongdoanhthudv = dsHD.TongTienDV(ngayBatDau, ngayKetThuc);
+				lblthongke1.setText("Số lần dịch vụ đặt:");
+				lbltongtk1.setText(String.valueOf(tong));
+				lbTenDVDatNN1.setText(dv.getTenDichVu());
+				lbTenDVDatNN.setText("Dịch vụ đặt nhiều nhất: ");
+				lblthongke2.setText("Tổng doanh thu của dịch vụ:");
+				lbltongtk2.setText(df.format(tongdoanhthudv));
+				upTable(listDV);
+			}
+
 		} else
 			JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!");
 	}
+
 
 	/**
 	 * 
@@ -345,16 +388,9 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 	}
 
 	/**
-	 * sự kiện click cột trong table hiện lên thống kê tổng số hóa đơn của nhân viên
+	 * sự kiện click cột trong table hiện lên thống kê tổng số dịch vụ
 	 * 
 	 */
-	public void setTextTB() {
-		int row = table.getSelectedRow();
-		String ma = (String) table.getValueAt(row, 0);
-		int tong = soDVTheoMaTheoNgay(ma);
-		lblthongke2.setText("Tổng số lượng dịch vụ đã bán:");
-		lbltongtk2.setText(String.valueOf(tong));
-	}
 
 	/**
 	 * đưa ngày được chọn thống kê lên thời gian thống kê
@@ -380,6 +416,8 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 		lbltongtk2.setText("");
 		lblthongke1.setText("");
 		lblthongke2.setText("");
+		lbTenDVDatNN.setText("");
+		lbTenDVDatNN1.setText("");
 		lbltg.setText("");
 		clearTable();
 
@@ -407,7 +445,6 @@ public class Frm_ThongKeDichVu extends JFrame implements ActionListener, MouseLi
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		setTextTB();
 	}
 
 	@Override

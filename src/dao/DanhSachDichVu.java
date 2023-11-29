@@ -22,6 +22,7 @@ public class DanhSachDichVu {
 
 	public ArrayList<DichVu> getDSDichVu() {
 		try {
+			list = new ArrayList();
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call getDSDichVu}";
@@ -133,6 +134,21 @@ public class DanhSachDichVu {
 			myCall.setString(3, dv.getloaiDichVu().getMaLoaiDichVu());
 			myCall.setInt(4, dv.getSoLuongTon());
 			myCall.setDouble(5, dv.getDonGia());
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	public boolean suaSLTDichVu(DichVu dv) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateSLTDV(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setInt(1, dv.getSoLuongTon());
+			myCall.setString(2, dv.getTenDichVu());
 			b = myCall.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -17,6 +17,13 @@ public class ChiTietHoaDon {
 		this.soLuong = soLuong;
 	}
 
+	public ChiTietHoaDon(HoaDonPhong maHoaDonPhong, DichVu dichVu, int soLuong) {
+		super();
+		this.maHoaDonPhong = maHoaDonPhong;
+		this.dichVu = dichVu;
+		this.soLuong = soLuong;
+	}
+
 	public HoaDonPhong getMaHoaDonPhong() {
 		return maHoaDonPhong;
 	}
