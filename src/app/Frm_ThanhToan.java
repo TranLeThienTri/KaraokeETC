@@ -99,7 +99,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	DanhSachPhong p;
 
 	DanhSachThuePhong tp;
-	String mahd,makh,map,tinhtrang;
+	String mahd, makh, map, tinhtrang;
 	Float tien;
 	LocalTime giotra;
 	private JLabel lbSDTQuan;
@@ -444,10 +444,13 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		if (o == btnHuy) {
 			dispose();
 		}
-		if (o == btnXacNhan)
+		if (o == btnXacNhan) {
 			if (setTTHD(mahd, tien, giotra, makh, map, "EMPT")) {
+				if (tp.getDTLTheoMa(makh) >= 10) {
+					tp.updateKHVIPTheoMa(makh);
 				JOptionPane.showMessageDialog(this, "thành công");
 				dispose();
+			}
 				try {
 					xuatHoaDonFilePDF();
 				} catch (Exception e1) {
@@ -455,6 +458,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}
 			}
+		}
 	}
 
 	public void upTT() {
@@ -476,19 +480,19 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		int i = 1;
 		float tongtiendv = 0;
 		for (ChiTietHoaDon p : list) {
-			if(p.getDichVu() != null){
-			DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
-			Object[] obj = new Object[7];
-			obj[0] = i++;
-			obj[1] = dv.getTenDichVu();
-			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
-			obj[3] = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu());
-			obj[4] = df.format(dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
-			float tong = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu())
-					* dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu());
-			tongtiendv += tong;
-			obj[5] = df.format(tong);
-			model.addRow(obj);
+			if (p.getDichVu() != null) {
+				DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
+				Object[] obj = new Object[7];
+				obj[0] = i++;
+				obj[1] = dv.getTenDichVu();
+				obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+				obj[3] = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+				obj[4] = df.format(dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+				float tong = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu())
+						* dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu());
+				tongtiendv += tong;
+				obj[5] = df.format(tong);
+				model.addRow(obj);
 			}
 		}
 		lbTongTienDV_1.setText(df.format(tongtiendv));

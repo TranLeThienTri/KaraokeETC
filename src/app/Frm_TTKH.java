@@ -163,17 +163,17 @@ public class Frm_TTKH extends JFrame implements ActionListener {
 		txtKhachHang.setBounds(160, 30, 250, 30);
 		pnKH.add(txtKhachHang);
 
-		btnHuy = new FixButton("Hủy đặt phòng");
+		btnHuy = new FixButton("");
 		btnHuy.setBounds(337, 479, 140, 40);
 		pnTTKH.add(btnHuy);
 		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
 		btnHuy.setText("Quay lại");
 		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnTinhTien = new FixButton("Làm mới");
+		btnTinhTien = new FixButton("");
 		btnTinhTien.setBounds(507, 479, 171, 40);
 		pnTTKH.add(btnTinhTien);
-		btnTinhTien.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
+		btnTinhTien.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/icon_tinhtien.png")));
 		btnTinhTien.setText("Thanh toán");
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
 

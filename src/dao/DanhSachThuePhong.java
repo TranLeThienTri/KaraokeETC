@@ -144,7 +144,8 @@ public class DanhSachThuePhong {
 		}
 		return list;
 	}
-	public boolean tinhTien(String mahd,float tien,LocalTime giotra) {
+
+	public boolean tinhTien(String mahd, float tien, LocalTime giotra) {
 		boolean b = true;
 		try {
 			ConnectDB.getInstance();
@@ -153,13 +154,14 @@ public class DanhSachThuePhong {
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, mahd);
 			myCall.setFloat(2, tien);
-			myCall.setString(3,giotra.toString());
+			myCall.setString(3, giotra.toString());
 			b = myCall.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return b;
 	}
+
 	public boolean congDTL(String makh) {
 		boolean b = true;
 		try {
@@ -174,7 +176,8 @@ public class DanhSachThuePhong {
 		}
 		return b;
 	}
-	public boolean chuyenPhong(String mahd,String map) {
+
+	public boolean chuyenPhong(String mahd, String map) {
 		boolean b = true;
 		try {
 			ConnectDB.getInstance();
@@ -189,7 +192,8 @@ public class DanhSachThuePhong {
 		}
 		return b;
 	}
-	public boolean themDVTheoMa(String mahd,String madv,int sl) {
+
+	public boolean themDVTheoMa(String mahd, String madv, int sl) {
 		boolean b = true;
 		try {
 			ConnectDB.getInstance();
@@ -205,7 +209,8 @@ public class DanhSachThuePhong {
 		}
 		return b;
 	}
-	public boolean suaDVTheoMa(String mahd,String madv,int sl) {
+
+	public boolean suaDVTheoMa(String mahd, String madv, int sl) {
 		boolean b = true;
 		try {
 			ConnectDB.getInstance();
@@ -221,12 +226,46 @@ public class DanhSachThuePhong {
 		}
 		return b;
 	}
+
 	public boolean deleteDV(String ma) {
 		boolean b = true;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
 			String sql = "{call deleteDV(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			b = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public int getDTLTheoMa(String ma) {
+		int dtl = 0;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getDTLTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				dtl = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dtl;
+	}
+
+	public boolean updateKHVIPTheoMa(String ma) {
+		boolean b = true;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call updateKHVIPTheoMa(?)}";
 			CallableStatement myCall = con.prepareCall(sql);
 			myCall.setString(1, ma);
 			b = myCall.execute();
