@@ -445,12 +445,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
 			obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().trim().equals("BOOK")) {
-				break;
-			}
 			obj[2] = p.getSucChua();
 			obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[3] = df.format(p.getGiaPhong());
+			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().trim().equals("BOOK")) {
+				continue;
+			}
 			model.addRow(obj);
 		}
 	}
@@ -809,28 +809,14 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	public void clickTable1() {
 		tableDSPhong2.clearSelection();
 		int row = tableDSPhong.getSelectedRow();
-//<<<<<<< HEAD
-//		int i = 0;
-//		while (tableDSPhong2.getRowCount() > 0) {
-//			if (tableDSPhong2.getValueAt(i, 1).equals(tableDSPhong.getValueAt(row, 0))) {
-//				tableDSPhong2.setRowSelectionInterval(i, i);
-//					upTableDV();
-//				// tableDSDichVu.setRowSelectionInterval(i, i);
-//				break;
-//=======
 		for (int i = 0; i < tableDSPhong2.getRowCount(); i++) {
 			if (tableDSPhong2.getValueAt(i, 1).equals(tableDSPhong.getValueAt(row, 0))) {
 				tableDSPhong2.setRowSelectionInterval(i, i);
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 			}
 		}
 	}
 
-	// Lọc phòng theo loại
-//<<<<<<< HEAD
-//
-//	public void clickTable() {
-//=======
+
 	public void clickTable2() {
 		tableDSPhong.clearSelection();
 		int row = tableDSPhong2.getSelectedRow();
@@ -839,7 +825,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				tableDSPhong.setRowSelectionInterval(i, i);
 			}
 		}
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
+
 	}
 
 	public void lamMoi() {

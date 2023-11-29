@@ -368,20 +368,15 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 			Object[] obj = new Object[7];
 			if (ktraDuLieuSua()) {
-				Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
-				String mada = matp1.getMaDATuDong();
-				String manu = matp1.getMaNUTuDong();
+				String ma = (String) tableDSDichVu.getValueAt(row, 0);
 				String loai = (String) comboLDV.getSelectedItem();
 				String tendv = (String) comboTDV.getSelectedItem();
 				LoaiDichVu ldv;
-				String ma;
 				if (loai.equals("Thực phẩm")) {
-					ma = mada;
 					ldv = new LoaiDichVu("FOOD", "Thực phẩm");
 
 				} else {
 					ldv = new LoaiDichVu("WATER", "Nước uống");
-					ma = manu;
 				}
 				int slt = Integer.parseInt(txtSoLuongTon.getText());
 				double giaban = Double.parseDouble(txtDonGia.getText());
@@ -391,7 +386,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				obj[2] = ldv.getTenLoaiDichVu();
 				obj[3] = slt;
 				obj[4] = df.format(giaban);
-
 				if (!dsDV.suaDichVu(dv)) {
 					JOptionPane.showMessageDialog(this, "Sửa thành công");
 					tableDSDichVu.setValueAt(obj[1], row, 1);
