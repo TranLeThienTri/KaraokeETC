@@ -316,10 +316,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		addHotKey();
 	}
 
-//	public static void main(String[] args) {
-//		new Frm_Chinh(nv).setVisible(true);
-//	}
-	
+
 	
 	
 	public void loadFrmQuanLyKhachHang() throws SQLException {

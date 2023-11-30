@@ -41,8 +41,8 @@ public class DanhSachDatPhong {
 				String maLoaiPhong = rs.getString(2);
 				int sucChua = rs.getInt(3);
 				float giaPhong = rs.getFloat(4);
-				String maLoaiHoaDon = rs.getString(5);
-
+				float dienTich = rs.getFloat(5);
+				String maLoaiHoaDon = rs.getString(6);
 				TinhTrangPhong ttp;
 				DanhSachLoaiPhong lsTypes = new DanhSachLoaiPhong();
 				DanhSachTinhTrang lsStatus = new DanhSachTinhTrang();
@@ -59,7 +59,7 @@ public class DanhSachDatPhong {
 
 				LoaiPhong lp = lsTypes.getTypeById(maLoaiPhong);
 
-				Phong p = new Phong(maP, lp, sucChua, giaPhong, ttp);
+				Phong p = new Phong(maP, lp, sucChua, giaPhong, ttp,dienTich);
 				listRoomByDate.add(p);
 			}
 		} catch (SQLException e) {
@@ -179,7 +179,6 @@ public class DanhSachDatPhong {
 		return b;
 	}
 
-
 	public HoaDonPhong getHoaDonById(String ma) {
 
 		ConnectDB.getInstance();
@@ -234,6 +233,5 @@ public class DanhSachDatPhong {
 		}
 		return flag;
 	}
-	
-	
+
 }
