@@ -99,13 +99,13 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		pnTTDDP.add(lbTenKH);
 
 		txtSDT = new JTextField(sdt);
-		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(654, 47, 250, 30);
 		txtSDT.setEditable(false);
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
-		txtKhachHang.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtKhachHang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtKhachHang.setBounds(171, 47, 250, 30);
 		pnTTDDP.add(txtKhachHang);
 
@@ -116,7 +116,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		pnTTDDP.add(lbCCCD);
 
 		txtCCCD = new JTextField();
-		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtCCCD.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtCCCD.setBounds(171, 99, 250, 30);
 		pnTTDDP.add(txtCCCD);
 
