@@ -374,7 +374,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				LoaiDichVu ldv;
 				if (loai.equals("Thực phẩm")) {
 					ldv = new LoaiDichVu("FOOD", "Thực phẩm");
-
 				} else {
 					ldv = new LoaiDichVu("WATER", "Nước uống");
 				}
@@ -501,7 +500,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		}
 		String tendv = comboTDV.getSelectedItem().toString();
 		for (int i = 0; i < tableDSDichVu.getRowCount(); i++) {
-			if (tendv.equals(tableDSDichVu.getValueAt(i, 1).toString())) {
+			if (tendv.equalsIgnoreCase(tableDSDichVu.getValueAt(i, 1).toString())) {
 				showMessage("(*) Tên dịch vụ đã tồn tại, vui lòng sửa lại số lượng tồn, đơn giá");
 				comboTDV.requestFocus();
 				return false;
@@ -546,9 +545,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			return false;
 		}
 		String tendv = comboTDV.getSelectedItem().toString();
-
 		for (int i = 0; i < tableDSDichVu.getRowCount(); i++) {
-			if (tendv.equals(tableDSDichVu.getValueAt(i, 1).toString())
+			if (tendv.equalsIgnoreCase(tableDSDichVu.getValueAt(i, 1).toString())
 					&& !tendv.equals(tableDSDichVu.getValueAt(row, 1))) {
 				JOptionPane.showMessageDialog(this, "Tên dịch vụ đã tồn tại !!!");
 				return false;

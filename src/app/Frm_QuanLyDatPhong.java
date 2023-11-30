@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -91,6 +92,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	private ButtonGroup bg;
 	public DanhSachDatPhong dsDP;
 	public DanhSachKhachHang dsKH;
+	
 	Date ngayDat;
 	String dateString;
 	boolean flag = false;
@@ -101,6 +103,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	LocalDate ngayHT;
 	LocalTime localTime;
 	NhanVien nv;
+	private DecimalFormat df;
 
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
@@ -179,12 +182,12 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		pnTTDDP.add(lbThoiGianDat);
 
 		txtSDT = new JTextField();
-		txtSDT.setFont(new Font("Dialog", Font.PLAIN, 16));
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(230, 50, 300, 25);
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
-		txtKhachHang.setFont(new Font("Dialog", Font.PLAIN, 16));
+		txtKhachHang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtKhachHang.setBounds(230, 85, 300, 25);
 		txtKhachHang.disable();
 		pnTTDDP.add(txtKhachHang);
@@ -193,7 +196,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		comboLKH.setEnabled(false);
 		comboLKH.setModel(new DefaultComboBoxModel(new String[] { "Khách hàng VIP", "Khách hàng thường" }));
 		comboLKH.setSelectedIndex(0);
-		comboLKH.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		comboLKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboLKH.setBounds(230, 120, 300, 30);
 		pnTTDDP.add(comboLKH);
 
@@ -209,7 +212,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		});
 		ngayDatPhong.setDateFormatString("dd/MM/yyyy");
 
-		ngayDatPhong.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		ngayDatPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		ngayDatPhong.getCalendarButton().setPreferredSize(new Dimension(40, 30));
 		ngayDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/calendar.png")));
 
@@ -549,13 +552,14 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	}
 
 	public void upTable1(ArrayList<Phong> arr) {
+		df = new DecimalFormat("###,### VNĐ");
 		model1.setRowCount(0);
 		for (Phong p : arr) {
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
 			obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[2] = p.getSucChua();
-			obj[3] = p.getGiaPhong();
+			obj[3] = df.format(p.getGiaPhong());
 			obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 			model1.addRow(obj);
 		}

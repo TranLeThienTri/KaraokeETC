@@ -321,8 +321,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		dsNV = new DanhSachNhanVien();
 		upTable();
 
-		comboTrangThai.setEnabled(false);
-
 	}
 
 //xoá trắng

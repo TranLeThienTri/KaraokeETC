@@ -328,7 +328,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbPhong = new JLabel("Mã Phòng:");
 		lbPhong.setForeground(Color.WHITE);
 		lbPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbPhong.setBounds(10, 10, 66, 20);
+		lbPhong.setBounds(10, 10, 100, 20);
 		pnTTPhong.add(lbPhong);
 
 		lbKH = new JLabel("Tên khách hàng:");
@@ -346,7 +346,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lblTenPhong = new JLabel("");
 		lblTenPhong.setForeground(new Color(0, 0, 0));
 		lblTenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTenPhong.setBounds(70, 10, 119, 20);
+		lblTenPhong.setBounds(100, 10, 119, 20);
 		pnTTPhong.add(lblTenPhong);
 
 		lblTenKH = new JLabel("");

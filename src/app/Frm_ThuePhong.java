@@ -91,12 +91,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	DanhSachPhong dsPhong;
 	HoaDonPhong hdP;
 	DanhSachHoaDon dsHD;
-//<<<<<<< HEAD
-//	DanhSachChiTietHoaDon dsCTHD;
-//=======
 	DanhSachDichVu dsDV;
 	DanhSachPhuThu dsPT;
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	NhanVien nv;
 
 	Panel getFrmQuanLyThuePhong() {
@@ -198,7 +194,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		radioDangThue = new JRadioButton("Đang thuê");
 		radioDangThue.setOpaque(false);
 		radioDangThue.setFont(new Font("Tahoma", Font.BOLD, 15));
-//		radioDangThue.setSelected(true);
 		radioDangThue.setBounds(164, 57, 120, 21);
 		pnLoaiPhong.add(radioDangThue);
 
@@ -254,7 +249,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		scrollPane.setBounds(0, 25, 1321, 200);
 		scrollPane.getHorizontalScrollBar();
 		pnDSP.add(scrollPane);
-//////		
 //////// table danh sach dịch vụ
 		pnDSP1 = new JPanel();
 		pnDSP1.setBackground(Color.WHITE);
@@ -265,11 +259,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP1.add(lbDSPhong);
-//<<<<<<< HEAD
-//		String col2[] = { "Mã phòng", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Giá bán", "Thành tiền" };
-//
-//		model2 = new DefaultTableModel(col2, 0);
-//=======
 		String col2[] = { "Lo\u1EA1i d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5", "S\u1ED1 l\u01B0\u1EE3ng",
 				"Giá bán" };
 
@@ -279,7 +268,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				return false; // Không cho phép chỉnh sửa ô
 			}
 		};
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		tableDSDichVu = new JTable(model2);
 
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -315,7 +303,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnLamMoi = new FixButton("Làm mới");
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_btn_lammoi.png")));
-		// btnLamMoi.setBackground(new java.awt.Color(153, 36, 36));
 		btnLamMoi.setBounds(745, 15, 200, 35);
 		pnCRUD.add(btnLamMoi);
 
@@ -323,27 +310,21 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnTinhTien.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_tinhtien.png")));
 		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTinhTien.setBounds(985, 15, 200, 35);
-		// btnTinhTien.setBackground(new java.awt.Color(153, 36, 36));
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
 		btnThuePhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
 		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		// btnThuePhong.setBackground(new java.awt.Color(153, 36, 36));
 		btnThuePhong.setBounds(505, 15, 200, 35);
 		pnCRUD.add(btnThuePhong);
 
 		btnChuyenPhong = new FixButton("Chuyển phòng");
 		btnChuyenPhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_chuyenphong.png")));
-
-		// btnChuyenPhong.setBackground(new java.awt.Color(153, 36, 36));
-
 		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnChuyenPhong.setBounds(25, 15, 200, 35);
 		pnCRUD.add(btnChuyenPhong);
 		btnThemDV = new FixButton("Thêm dịch vụ");
 		btnThemDV.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/btn_them.png")));
-		// btnThemDV.setBackground(new java.awt.Color(153, 36, 36));
 		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThemDV.setBounds(265, 15, 200, 35);
 		pnCRUD.add(btnThemDV);
@@ -412,17 +393,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnPhongThuong.addActionListener(this);
 		btnPhongVip.addActionListener(this);
 		btnTatCa.addActionListener(this);
-//<<<<<<< HEAD
-//		
-//		dsPhong = new DanhSachPhong();
-//		dsTP = new ThuePhong();
-//		dsCTHD = new DanhSachChiTietHoaDon();
-//=======
 		radioDangThue.addActionListener(this);
 		radioTrong.addActionListener(this);
+
 		dsPhong = new DanhSachPhong();
 		dsTP = new DanhSachThuePhong();
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		dsHD = new DanhSachHoaDon();
 		dsDV = new DanhSachDichVu();
 		dsPT = new DanhSachPhuThu();
@@ -480,14 +455,14 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			String ma = (String) tableDSPhong2.getValueAt(row, 0);
 			ArrayList<ChiTietHoaDon> list = dsTP.getCTHDTheoMa(ma);
 			for (ChiTietHoaDon p : list) {
-				if(p.getDichVu() != null){
-				DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
-				Object[] obj = new Object[7];
-				obj[0] = dv.getloaiDichVu().getTenLoaiDichVu();
-				obj[1] = dv.getTenDichVu();
-				obj[2] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
-				obj[3] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
-				model2.addRow(obj);
+				if (p.getDichVu() != null) {
+					DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
+					Object[] obj = new Object[7];
+					obj[0] = dv.getloaiDichVu().getTenLoaiDichVu();
+					obj[1] = dv.getTenDichVu();
+					obj[2] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+					obj[3] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+					model2.addRow(obj);
 				}
 			}
 		}
@@ -552,7 +527,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		LocalTime giothue = LocalTime.now();
 		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
 		if (!dsTP.themHDThue(phong) && !dsTP.setTTPhongTheoMa(map, "RENT")) {
-			if(ngaythue.getDayOfWeek() == DayOfWeek.THURSDAY || ngaythue.getDayOfWeek() == DayOfWeek.SUNDAY ) {
+			if (ngaythue.getDayOfWeek() == DayOfWeek.THURSDAY || ngaythue.getDayOfWeek() == DayOfWeek.SUNDAY) {
 				dsPT.themPTTheoMa(maHD);
 			}
 			JOptionPane.showMessageDialog(this, "Thuê phòng thành công");
@@ -602,8 +577,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		} else if (kh != null) {
 			txtKhachHang.setText(kh.getHoTenKhachHang());
 			System.out.println(dsHD.getDSHDTheoMaKH(kh.getMaKhachHang()).size());
-			if(dsHD.getDSHDTheoMaKH(kh.getMaKhachHang()).size() > 0) {
-			new Frm_TTKH(sdt).setVisible(true);
+			if (dsHD.getDSHDTheoMaKH(kh.getMaKhachHang()).size() > 0) {
+				new Frm_TTKH(sdt).setVisible(true);
 			}
 		} else {
 			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \nthêm khách hàng mới!!!");
@@ -645,16 +620,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		if (o == btnPhongThuong) {
 			locTheoLoaiPhongThuong();
 		}
-//<<<<<<< HEAD
-//
-//=======
 		if (o == radioDangThue) {
 			loaiPALL();
 		}
 		if (o == radioTrong) {
 			loaiPALL();
 		}
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		if (o == btnThemDV) {
 			if (ktraPhong()) {
 				HoaDonPhong hd = getHDPDuocChon();
@@ -679,10 +650,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-//<<<<<<< HEAD
-//
-//=======
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 				obj[2] = p.getSucChua();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[3] = df.format(p.getGiaPhong());
@@ -716,10 +683,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-//<<<<<<< HEAD
-//
-//=======
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 				obj[2] = p.getSucChua();
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
@@ -789,21 +752,22 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		String ma = (String) tableDSPhong2.getValueAt(row, 0);
 		HoaDonPhong hd = dsTP.getHDTheoMa(ma);
 		System.out.println(ma);
-			ArrayList<ChiTietHoaDon> listt = dsTP.getCTHDTheoMa(ma);
-			float tongtiendv = 0;
-			for (ChiTietHoaDon p : listt) {
-				DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
-				obj[0] = p.getMaHoaDonPhong().getPhong().getMaPhong();
-				obj[1] = p.getDichVu().getloaiDichVu().getTenLoaiDichVu();
-				obj[2] = p.getDichVu().getTenDichVu();
-				obj[3] = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu());
-				obj[4] = df.format(dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
-				float tong = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu())* dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu());
-				tongtiendv += tong;
-				obj[5] = df.format(tong);
-				model2.addRow(obj);
-			}
-		
+		ArrayList<ChiTietHoaDon> listt = dsTP.getCTHDTheoMa(ma);
+		float tongtiendv = 0;
+		for (ChiTietHoaDon p : listt) {
+			DichVu dv = dsdv.getDVTheoMa(p.getDichVu().getMaDichVu());
+			obj[0] = p.getMaHoaDonPhong().getPhong().getMaPhong();
+			obj[1] = p.getDichVu().getloaiDichVu().getTenLoaiDichVu();
+			obj[2] = p.getDichVu().getTenDichVu();
+			obj[3] = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+			obj[4] = df.format(dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+			float tong = dsdv.getSLTheoMaDV(p.getDichVu().getMaDichVu())
+					* dsdv.getDGTheoMaDV(p.getDichVu().getMaDichVu());
+			tongtiendv += tong;
+			obj[5] = df.format(tong);
+			model2.addRow(obj);
+		}
+
 	}
 
 	public void clickTable1() {
@@ -815,7 +779,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		}
 	}
-
 
 	public void clickTable2() {
 		tableDSPhong.clearSelection();
@@ -877,8 +840,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
 		// Đặt đường gạch chân cho JLabel
 		Object o = e.getSource();
-		if(o == lbIconSearch)
-		lbIconSearch.setBorder(bottomBorder);
+		if (o == lbIconSearch)
+			lbIconSearch.setBorder(bottomBorder);
 
 	}
 
@@ -888,7 +851,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK);
 		// Đặt đường gạch chân cho JLabel
 		Object o = e.getSource();
-		if(o == lbIconSearch)
-		lbIconSearch.setBorder(bottomBorder);
+		if (o == lbIconSearch)
+			lbIconSearch.setBorder(bottomBorder);
 	}
 }
