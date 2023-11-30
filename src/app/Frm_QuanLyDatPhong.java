@@ -437,7 +437,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		upTable1(dsDP.getAllRoomByDate(dateString));
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
-		huyDatPhongQuaHan();
+		
 	}
 
 	@Override
@@ -613,6 +613,11 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		clearTable();
 		upTable1(list);
 		upTable2(dsDP.getAllRoomStatusByDate());
+		try {
+			huyDatPhongQuaHan();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private boolean datPhong() {
@@ -626,7 +631,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		int row = tableDSPhong.getSelectedRow();
 
-//		KhachHang kh = dsKH.getKhachHangTheoSDT(sdt);
 		KhachHang kh = ktraKHDAT();
 		if (kh != null) {
 			ngayDat = ngayDatPhong.getDate();
@@ -655,7 +659,9 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 			if (checkDieuKienDatPhong(tinhTrang, kh)) {
 				dsDP.themHoaDonDat(hdp);
+				dsTP.setTTPhongTheoMa(ma, "BOOK");
 				JOptionPane.showMessageDialog(this, "Đặt phòng thành công!");
+				btnDatPhong.setEnabled(false);
 			}
 			return true;
 		} else {
@@ -827,6 +833,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 				HoaDonPhong newHD = new HoaDonPhong(maHoaDon, p, nv, kh, lhd, ngayHT, currentTime);
 				if (!dsTP.themHDThue(newHD) && !dsTP.setTTPhongTheoMa(p.getMaPhong(), "RENT")) {
 					JOptionPane.showMessageDialog(this, "Nhận phòng thành công!");
+					btnNhanPhong.setEnabled(false);
+					btnHuyDatPhong.setEnabled(false);
 					return true;
 				}
 
@@ -919,6 +927,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 				if (isDelete == JOptionPane.YES_OPTION) {
 					dsDP.huyDatPhong(maHoaDon);
 					JOptionPane.showMessageDialog(this, "Huỷ đặt phòng thành công!!");
+					btnNhanPhong.setEnabled(false);
+					btnHuyDatPhong.setEnabled(false);
 					return true;
 				} else {
 					return false;
@@ -944,11 +954,8 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		for (HoaDonPhong hd : dsDP.getAllRoomStatusByDate()) {
 			String maHoaDon = hd.getMaHoaDon().trim();
 			String ngay = hd.getNgayDat().toString();
-
 			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-
 			Date ngayDat = null;
-
 			try {
 				ngayDat = fmt.parse(ngay);
 			} catch (ParseException e) {
@@ -967,7 +974,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 					|| (ngayHienTai.compareTo(ngayDat) == 0 && gio >= gioDat && phut >= phutDat)) {
 				dsDP.huyDatPhong(maHoaDon);
 				DanhSachDatPhong dsdp = new DanhSachDatPhong();
-				upTable2(dsDP.getAllRoomStatusByDate());
+				upTable2(dsdp.getAllRoomStatusByDate());
 			}
 		}
 	}
