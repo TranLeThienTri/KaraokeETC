@@ -13,6 +13,8 @@ import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ import javax.swing.border.LineBorder;
 import com.toedter.calendar.JDateChooser;
 
 import connectDB.ConnectDB;
+import dao.DanhSachDatPhong;
 import dao.DanhSachKhachHang;
 import dao.DanhSachPhong;
 import dao.Dao_PhatSinhMa;
@@ -53,6 +56,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.JFormattedTextField;
+
 //
 public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnLoaiPhong, pnDSP, pnTTDDP;
@@ -71,6 +75,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	private DecimalFormat dfs;
 	NhanVien nv;
 	DanhSachPhong dsPhong;
+	DanhSachDatPhong dsDp;
+	String dateString;
+	private Date ngayHienTai;
 
 	public Panel getFrmQuanLyPhong() {
 		return this.pnQLDP;
@@ -87,6 +94,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	}
 
 	public void gui() {
+		dsDp = new DanhSachDatPhong();
 		getContentPane().setLayout(null);
 
 		pnQLDP = new Panel();
@@ -100,7 +108,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.setBackground(new java.awt.Color(207, 169, 0));
 
 		pnTTDDP.setBounds(100, 23, 1200, 280);
-
 
 		pnQLDP.add(pnTTDDP);
 		pnTTDDP.setLayout(null);
@@ -161,7 +168,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnThem.setBounds(357, 220, 150, 40);
 
-
 		btnThem.setBackground(new java.awt.Color(153, 36, 36));
 		pnTTDDP.add(btnThem);
 
@@ -175,7 +181,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		pnTTDDP.add(btnSua);
 
 		btnLamMoi = new FixButton("Làm mới");
-		
+
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
 
 		btnLamMoi.setBounds(757, 220, 150, 40);
@@ -287,7 +293,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		ConnectDB.getInstance().connect();
 		// Danh sach Mat Hang
 		dsPhong = new DanhSachPhong();
-		upTable();
+
 		upCombobox();
 		upCombobox2();
 
@@ -302,12 +308,19 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("## M2");
 
-	}
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ngay = localDateTime.getDayOfMonth();
+		thang = localDateTime.getMonthValue();
+		nam = localDateTime.getYear();
+		ngayHienTai = new Date(nam - 1900, thang - 1, ngay);
 
-//	public static void main(String[] args) {
-//		new Frm_QuanLyPhong(nv).setVisible(true);
-//
-//	}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateString = dateFormat.format(ngayHienTai);
+
+		clearTable();
+		ArrayList<Phong> list = dsDp.getAllRoomByDate(dateString);
+		upTable1(list);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -346,7 +359,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		} else if (o.equals(btnLamMoi)) {
 			xoaTrang();
 			clearTable();
-			upTable();
+			ArrayList<Phong> list = dsDp.getAllRoomByDate(dateString);
+			upTable1(list);
 		} else if (o.equals(btnPhongVip)) {
 			locTheoLoaiPhongVIP();
 		} else if (o.equals(btnPhongThuong)) {
@@ -354,7 +368,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			locTheoLoaiPhongThuong();
 		} else if (o.equals(btnTatCa)) {
 			clearTable();
-			upTable();
+			ArrayList<Phong> list = dsDp.getAllRoomByDate(dateString);
+			upTable1(list);
 		}
 	}
 
@@ -440,15 +455,17 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		txtDienTich.setText("");
 		tableDSPhong1.clearSelection();
 		lbTB.setText("");
+		clearTable();
+		ArrayList<Phong> list = dsDp.getAllRoomByDate(dateString);
+		upTable1(list);
 	}
 
-	public void upTable() {
-		int i = 0;
-		ArrayList<Phong> list = dsPhong.getDSPhong();
+	public void upTable1(ArrayList<Phong> arr) {
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("### M2");
-		for (Phong p : list) {
-			Object[] obj = new Object[7];
+		model1.setRowCount(0);
+		for (Phong p : arr) {
+			Object[] obj = new Object[6];
 			obj[0] = p.getMaPhong().trim();
 			obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 			obj[2] = p.getSucChua();
@@ -457,8 +474,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			obj[5] = dfs.format(p.getDienTich());
 			model1.addRow(obj);
 		}
-		xoaTrang();
 	}
+
 	// them phong
 
 	public void upCombobox() {
