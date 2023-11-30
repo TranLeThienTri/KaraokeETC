@@ -272,7 +272,7 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener, Mous
 		KhachHang kh = dsKH.getKHTheoMa(ma);
 		String makh = kh.getMaKhachHang();
 		txtKhachHang.setText(kh.getHoTenKhachHang());
-		txtSDT.setText(ma);
+		txtSDT.setText(kh.getSoDienThoai());
 		ArrayList<HoaDonPhong> list = dsHD.getDSHDDTheoMaKH(makh);
 		model.setRowCount(0);
 		for (HoaDonPhong hd : list) {

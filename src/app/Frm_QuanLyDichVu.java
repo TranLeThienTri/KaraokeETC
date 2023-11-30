@@ -368,20 +368,14 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 			Object[] obj = new Object[7];
 			if (ktraDuLieuSua()) {
-				Dao_PhatSinhMa matp1 = new Dao_PhatSinhMa();
-				String mada = matp1.getMaDATuDong();
-				String manu = matp1.getMaNUTuDong();
+				String ma = (String) tableDSDichVu.getValueAt(row, 0);
 				String loai = (String) comboLDV.getSelectedItem();
 				String tendv = (String) comboTDV.getSelectedItem();
 				LoaiDichVu ldv;
-				String ma;
 				if (loai.equals("Thực phẩm")) {
-					ma = mada;
 					ldv = new LoaiDichVu("FOOD", "Thực phẩm");
-
 				} else {
 					ldv = new LoaiDichVu("WATER", "Nước uống");
-					ma = manu;
 				}
 				int slt = Integer.parseInt(txtSoLuongTon.getText());
 				double giaban = Double.parseDouble(txtDonGia.getText());
@@ -391,7 +385,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				obj[2] = ldv.getTenLoaiDichVu();
 				obj[3] = slt;
 				obj[4] = df.format(giaban);
-
 				if (!dsDV.suaDichVu(dv)) {
 					JOptionPane.showMessageDialog(this, "Sửa thành công");
 					tableDSDichVu.setValueAt(obj[1], row, 1);
@@ -507,7 +500,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		}
 		String tendv = comboTDV.getSelectedItem().toString();
 		for (int i = 0; i < tableDSDichVu.getRowCount(); i++) {
-			if (tendv.equals(tableDSDichVu.getValueAt(i, 1).toString())) {
+			if (tendv.equalsIgnoreCase(tableDSDichVu.getValueAt(i, 1).toString())) {
 				showMessage("(*) Tên dịch vụ đã tồn tại, vui lòng sửa lại số lượng tồn, đơn giá");
 				comboTDV.requestFocus();
 				return false;
@@ -552,9 +545,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 			return false;
 		}
 		String tendv = comboTDV.getSelectedItem().toString();
-
 		for (int i = 0; i < tableDSDichVu.getRowCount(); i++) {
-			if (tendv.equals(tableDSDichVu.getValueAt(i, 1).toString())
+			if (tendv.equalsIgnoreCase(tableDSDichVu.getValueAt(i, 1).toString())
 					&& !tendv.equals(tableDSDichVu.getValueAt(row, 1))) {
 				JOptionPane.showMessageDialog(this, "Tên dịch vụ đã tồn tại !!!");
 				return false;

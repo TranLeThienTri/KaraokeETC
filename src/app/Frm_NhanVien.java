@@ -321,8 +321,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		dsNV = new DanhSachNhanVien();
 		upTable();
 
-		comboTrangThai.setEnabled(false);
-
 	}
 
 //xoá trắng
@@ -482,9 +480,9 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			String tt = (String) comboTrangThai.getSelectedItem();
 			boolean trangThai;
 			if (tt.equals("Đang làm việc")) {
-				trangThai = false;
-			} else
 				trangThai = true;
+			} else
+				trangThai = false;
 
 			Date date = ngaySinh.getDate();
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());

@@ -68,6 +68,7 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 	private DecimalFormat df;
 	private DecimalFormat dfs;
 	private DecimalFormat dfh;
+	private DecimalFormat dfdt;
 	private DateTimeFormatter dt;
 	private SimpleDateFormat sf;
 	private JScrollPane scrollPane;
@@ -208,17 +209,17 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		lbliconthongke1.setForeground(new Color(189, 0, 88));
 		lbliconthongke1.setBounds(205, 25, 64, 64);
 		panel_thongke1.add(lbliconthongke1);
-		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tknv.png")));
+		lbliconthongke1.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tkphong.png")));
 
 		lblthongke1 = new JLabel("");
 		lblthongke1.setForeground(new Color(255, 255, 255));
 		lblthongke1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke1.setBounds(111, 122, 250, 35);
+		lblthongke1.setBounds(150, 122, 250, 35);
 		panel_thongke1.add(lblthongke1);
 		lbltongtk1 = new JLabel("");
 		lbltongtk1.setForeground(new Color(255, 255, 255));
 		lbltongtk1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbltongtk1.setBounds(199, 150, 70, 43);
+		lbltongtk1.setBounds(220, 150, 70, 43);
 		panel_thongke1.add(lbltongtk1);
 
 		panel_thongke2 = new JPanel();
@@ -231,12 +232,12 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		lbliconthongke2 = new JLabel("");
 		lbliconthongke2.setBounds(205, 25, 64, 64);
 		panel_thongke2.add(lbliconthongke2);
-		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tkkh1.png")));
+		lbliconthongke2.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/icon_tkphong2.png")));
 
 		lblthongke2 = new JLabel("");
 		lblthongke2.setForeground(new Color(255, 255, 255));
 		lblthongke2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblthongke2.setBounds(46, 120, 356, 35);
+		lblthongke2.setBounds(60, 120, 356, 35);
 		panel_thongke2.add(lblthongke2);
 		lbltongtk2 = new JLabel("");
 		lbltongtk2.setForeground(new Color(255, 255, 255));
@@ -244,7 +245,12 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		lbltongtk2.setBounds(150, 154, 180, 41);
 		panel_thongke2.add(lbltongtk2);
 		String col[] = {  "Mã phòng", "Sức chứa", "Loại phòng", "Giá phòng", "Diện tích"  };
-		model = new DefaultTableModel(col, 0);
+		model = new DefaultTableModel(col, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Không cho phép chỉnh sửa ô
+			}
+		};
 		table = new JTable(model);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tbHeader = table.getTableHeader();
@@ -269,6 +275,7 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		lblbackground.setIcon(new ImageIcon(Frm_ThongKePhong.class.getResource("/imgs/bg_chot1.png")));
 		// khai bao định dạng
 		df = new DecimalFormat("###,### VNĐ");
+		dfdt = new DecimalFormat("### M2");
 		dfs = new DecimalFormat("### p");
 		dfh = new DecimalFormat("### h");
 		sf = new SimpleDateFormat("dd/MM/yyy");
@@ -296,7 +303,7 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 			obj[1] = p.getSucChua();
 			obj[2] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[3] = df.format(p.getGiaPhong());
-			obj[4] = p.getDienTich();
+			obj[4] = dfdt.format(p.getDienTich());
 			if (table.getRowCount() == 0)
 				model.addRow(obj);
 			else {
@@ -344,6 +351,11 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 		Date ngayBatDau = new Date(utilngayBD.getYear(), utilngayBD.getMonth(), utilngayBD.getDate());
 		@SuppressWarnings("deprecation")
 		Date ngayKetThuc = new Date(utilngayKT.getYear(), utilngayKT.getMonth(), utilngayKT.getDate());
+		int ca1 =0;
+		int ca2 =0;
+		int ca3 =0;
+		int ca4 =0;
+		int ca5 =0;
 		if (ngayBatDau.before(ngayKetThuc) || ngayBatDau.equals(ngayKetThuc)) {
 			ArrayList<HoaDonPhong> listHD = dsHD.getDSHDTheoNgay(ngayBatDau, ngayKetThuc);
 			LocalTime timeAt9 = LocalTime.of(9, 0);
@@ -351,27 +363,20 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 			LocalTime timeAt15 = LocalTime.of(15, 0);
 			LocalTime timeAt18 = LocalTime.of(18, 0);
 			LocalTime timeAt21 = LocalTime.of(21, 0);
-			LocalTime timeAt24= LocalTime.of(0, 0);
-			int ca1 =0;
-			int ca2 =0;
-			int ca3 =0;
-			int ca4 =0;
-			int ca5 =0;
-
+			LocalTime timeAt24= LocalTime.of(23, 59);
 			for (HoaDonPhong hd : listHD) {
 				if(hd.getGioBatDauThue().isAfter(timeAt9)&& hd.getGioBatDauThue().isBefore(timeAt12)) {
-					ca1++;
+					ca1 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt12)&& hd.getGioBatDauThue().isBefore(timeAt15)) {
-					ca2++;
+					ca2 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt15)&& hd.getGioBatDauThue().isBefore(timeAt18)) {
-					ca3++;
+					ca3 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt18)&& hd.getGioBatDauThue().isBefore(timeAt21)) {
-					ca4++;
+					ca4 += 1;
 				}else if(hd.getGioBatDauThue().isAfter(timeAt21)&& hd.getGioBatDauThue().isBefore(timeAt24)) {
-					ca5++;
+					ca5 += 1;
 				}
 			}
-			
 			if(ca1>=ca2 &&ca1>=ca3 &&ca1>=ca4 && ca1>=ca5) {
 				lblthongke2.setText("Khung giờ cao điểm phòng thuê:");
 				lbltongtk2.setText(String.valueOf(timeAt9) +" ==> "+ String.valueOf(timeAt12));
@@ -399,7 +404,6 @@ public class Frm_ThongKePhong extends JFrame implements ActionListener, MouseLis
 	 */
 	public void setTextTB() {
 		 KhungTheoMaTheoNgay();
-
 	}
 
 	/**
