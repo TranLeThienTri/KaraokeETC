@@ -420,7 +420,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	public boolean ktraSLSua(String ma) {
 		int slt = 0;
 		int row = tableDSDichVu.getSelectedRow();
-		int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 3).toString());
+		int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 4).toString());
 		try {
 			slt = Integer.parseInt(txtSoLuongTon.getText());
 			if (slt <= 0) {
@@ -489,9 +489,9 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 
 	public void clickTB() {
 		int row = tableDSDichVu.getSelectedRow();
-		comboLDV.setSelectedItem(tableDSDichVu.getValueAt(row, 1).toString());
-		comboTDV.setSelectedItem(tableDSDichVu.getValueAt(row, 2).toString());
-		txtSoLuongTon.setText(tableDSDichVu.getValueAt(row, 3).toString());
+		comboLDV.setSelectedItem(tableDSDichVu.getValueAt(row, 2).toString());
+		comboTDV.setSelectedItem(tableDSDichVu.getValueAt(row, 3).toString());
+		txtSoLuongTon.setText(tableDSDichVu.getValueAt(row, 4).toString());
 	}
 
 	public void suaDV() {
@@ -502,11 +502,11 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		if (ktraSLSua(madv)) {
 			int sl = Integer.parseInt(txtSoLuongTon.getText());
 			int slt = dsDV.getSLTonTheoMaDV(madv);
-			int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 3).toString());
+			int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 4).toString());
 			dsDV.updateSLTon(madv, slt + slg - sl);
 			if (!tp.suaDVTheoMa(hd.getMaHoaDon(), madv, sl)) {
-				tableDSDichVu.setValueAt(sl, row, 3);
-				tableDSDichVu.setValueAt(df.format(sl * dsDV.getDGTheoMaDV(madv)), row, 5);
+				tableDSDichVu.setValueAt(sl, row, 4);
+				tableDSDichVu.setValueAt(df.format(sl * dsDV.getDGTheoMaDV(madv)), row, 6);
 				JOptionPane.showMessageDialog(this, "Sửa thành công");
 			}
 		}
@@ -519,7 +519,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		String madv = dsDV.getMaDVTheoTen(tdv);
 		boolean bl = true;
 		for (int i = 0; i < row; i++) {
-			if (tdv.equals(tableDSDichVu.getValueAt(i, 2))) {
+			if (tdv.equals(tableDSDichVu.getValueAt(i, 3))) {
 				JOptionPane.showMessageDialog(this, "Dịch vụ đã được thêm!!!\nKhông thêm mới");
 				bl = false;
 				break;
@@ -549,9 +549,9 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 
 	public void huyDV() {
 		int row = tableDSDichVu.getSelectedRow();
-		String madv = dsDV.getMaDVTheoTen(tableDSDichVu.getValueAt(row, 2).toString());
+		String madv = dsDV.getMaDVTheoTen(tableDSDichVu.getValueAt(row, 3).toString());
 		int slt = dsDV.getSLTonTheoMaDV(madv);
-		int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 3).toString());
+		int slg = Integer.parseInt(tableDSDichVu.getValueAt(row, 4).toString());
 		dsDV.updateSLTon(madv, slt + slg);
 		if (JOptionPane.showConfirmDialog(this, "Bạn có chắn chắn muốn xóa dịch vụ không?", "Thông báo",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
