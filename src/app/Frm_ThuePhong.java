@@ -787,7 +787,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			obj[5] = df.format(tong);
 			model2.addRow(obj);
 		}
-
 	}
 
 	public void clickTable1() {
