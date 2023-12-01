@@ -182,8 +182,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 
 		lbIconSearch = new JLabel("New label");
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_search.png")));
-		lbIconSearch.setBounds(536, 30, 30, 30);
-		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		lbIconSearch.setBounds(536, 69, 30, 30);
 		pnTTDV.add(lbIconSearch);
 
 		pnDSDichVu = new JPanel();
@@ -303,7 +302,10 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		}
 		if (o == comboLDV) {
 			phanLoaiCombobox();
+			locTheoLoaiDichVu();
+
 		}
+
 	}
 
 	public void xoaTrang() {
@@ -311,7 +313,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		txtDonGia.setText("");
 		tableDSDichVu.clearSelection();
 		lbTB.setText("");
-		comboLDV.setSelectedIndex(0);
 	}
 
 	// Up thông tin lên bảng
@@ -429,6 +430,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		for (DichVu s : list) {
 			comboTDV.addItem(s.getTenDichVu());
 		}
+
 	}
 
 // Lọc dịch vụ theo loại dịch vụ
@@ -446,6 +448,26 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		int i = 0;
 		for (DichVu dv : list) {
 			if (dv.getloaiDichVu().getMaLoaiDichVu().equals(ma)) {
+				Object[] obj = new Object[6];
+				obj[0] = dv.getMaDichVu().trim();
+				obj[1] = dv.getTenDichVu();
+				obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+				obj[3] = dv.getSoLuongTon();
+				obj[4] = df.format(dv.getDonGia());
+				model.addRow(obj);
+			}
+		}
+	}
+
+	// Lọc dịch vụ theo loại dịch vụ
+	public void locTheoTenDichVu() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		String tendv = String.valueOf(comboTDV.getSelectedItem());
+		ArrayList<DichVu> list = dsDV.getDSDichVu();
+		int i = 0;
+		for (DichVu dv : list) {
+			if (dv.getTenDichVu().equalsIgnoreCase(tendv)) {
 				Object[] obj = new Object[6];
 				obj[0] = dv.getMaDichVu().trim();
 				obj[1] = dv.getTenDichVu();
@@ -483,39 +505,40 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	public void showMessage(String message) {
 		lbTB.setText(message);
 	}
+
 	// hot key Ctrl1
-		public void addHotKey1() {
+	public void addHotKey1() {
 
-			btnThem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
-			btnThem.getActionMap().put("clickButton", new AbstractAction() {
+		btnThem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
+		btnThem.getActionMap().put("clickButton", new AbstractAction() {
 //							        @Override
-				public void actionPerformed(ActionEvent e) {
-					btnThem.doClick();
-				}
-			});
-		}
+			public void actionPerformed(ActionEvent e) {
+				btnThem.doClick();
+			}
+		});
+	}
 
-		// hot key Crtl2
-		public void addHotKey2() {
-			btnSua.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
-			btnSua.getActionMap().put("clickButton", new AbstractAction() {
+	// hot key Crtl2
+	public void addHotKey2() {
+		btnSua.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
+		btnSua.getActionMap().put("clickButton", new AbstractAction() {
 //							        @Override
-				public void actionPerformed(ActionEvent e) {
-					btnSua.doClick();
-				}
-			});
-		}
+			public void actionPerformed(ActionEvent e) {
+				btnSua.doClick();
+			}
+		});
+	}
 
-		// hot key Crtl3
-		public void addHotKey3() {
-			btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
-			btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
+	// hot key Crtl3
+	public void addHotKey3() {
+		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
+		btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
 //							        @Override
-				public void actionPerformed(ActionEvent e) {
-					btnLamMoi.doClick();
-				}
-			});
-		}
+			public void actionPerformed(ActionEvent e) {
+				btnLamMoi.doClick();
+			}
+		});
+	}
 
 // Kiểm tra dữ liêu nhập vào
 	public boolean ktraDuLieu() {
@@ -614,7 +637,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
-			locTheoLoaiDichVu();
+			locTheoTenDichVu();
 		} else {
 			setTextTB();
 		}
@@ -636,12 +659,18 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
 }
