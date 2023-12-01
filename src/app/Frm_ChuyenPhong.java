@@ -326,7 +326,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		Phong phong = p.getPhongTheoMa(hd.getPhong().getMaPhong());
 		String map = (String) tableDSPhong.getValueAt(row, 0);
 		if (!tp.chuyenPhong(hd.getMaHoaDon(), map)) {
-			ArrayList<ChiTietHoaDon> list = tp.getCTHDTheoMa(hd.getMaHoaDon());
+			ArrayList<ChiTietHoaDon> list = dsCT.getCTHDPTheoMa(hd.getMaHoaDon());
 			ChiTietHoaDon ct = null;
 			if (list.size()>0) {
 				for (ChiTietHoaDon c : list) {

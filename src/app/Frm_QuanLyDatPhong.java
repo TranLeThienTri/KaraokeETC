@@ -460,6 +460,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		addHotKey2();
 		addHotKey3();
 		addHotKey4();
+		xoaTrang();
 
 	}
 

@@ -222,8 +222,9 @@ public class DanhSachHoaDon {
 				String maloaihd = rs.getString(9);
 				LoaiHoaDon lhd = new LoaiHoaDon(maloaihd);
 				String makh = rs.getString(7);
+				String sdt = getSDTKHTheoMa(makh);
 				String tenkh = getTenKHTheoMa(makh);
-				KhachHang kh = new KhachHang(makh, tenkh);
+				KhachHang kh = new KhachHang(makh, tenkh,sdt);
 				String manv = rs.getString(8);
 				String tennv = getTenNVTheoMa(manv);
 				NhanVien nv = new NhanVien(manv, tennv);
