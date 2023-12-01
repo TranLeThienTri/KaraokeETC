@@ -59,7 +59,7 @@ public class DanhSachDatPhong {
 
 				LoaiPhong lp = lsTypes.getTypeById(maLoaiPhong);
 
-				Phong p = new Phong(maP, lp, sucChua, giaPhong, ttp,dienTich);
+				Phong p = new Phong(maP, lp, sucChua, giaPhong, ttp, dienTich);
 				listRoomByDate.add(p);
 			}
 		} catch (SQLException e) {

@@ -64,8 +64,6 @@ public class Frm_TrangChu extends JFrame {
 		pnPnTC.setBounds(0, 0, 1400, 670);
 		getContentPane().add(pnPnTC);
 		pnPnTC.setLayout(null);
-		
-
 
 		// add background ở cuối
 		lbBGQLDP = new JLabel("");
@@ -75,8 +73,4 @@ public class Frm_TrangChu extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
-		new Frm_TrangChu().setVisible(true);
-
-	}
 }

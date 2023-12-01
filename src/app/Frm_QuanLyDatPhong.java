@@ -284,7 +284,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		// bỏ viền
 		rDangDat.setFocusPainted(false);
 		rDangDat.setFont(new Font("Tahoma", Font.BOLD, 15));
-//		rDangDat.setSelected(true);
 		rDangDat.setBounds(164, 50, 111, 21);
 		pnLoaiPhong.add(rDangDat);
 
