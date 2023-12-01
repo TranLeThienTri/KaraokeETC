@@ -292,6 +292,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTKHD.addActionListener(this);
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
+		pnHeader.addMouseListener(this);
 		
 		//add và địng nghĩa các hot key cho ứng dụng
 		keyStrokeF1 = KeyStroke.getKeyStroke("F1");
@@ -397,6 +398,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		pnCenter.add(frTC.getFrmTrangChu());
 
 	}
+	
+	public void loadFrm_Profile() {
+		Frm_Profile frmProfile = new Frm_Profile(nv);
+		frmProfile.setVisible(true);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -425,6 +431,9 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrmQuanLyPhong();
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
+		if(o == pnHeader) {
+			loadFrm_Profile();
+		}
 		
 	}
 
@@ -648,4 +657,6 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	        }
 	    });
 	}
+	
+
 }

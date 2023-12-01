@@ -205,10 +205,12 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	
 	public boolean doiMatKhau() {
 		if(comparePass()) {
-			Frm_DangNhap frmDangNhap = new Frm_DangNhap();
-			frmDangNhap.setVisible(true);
+//			Frm_DangNhap frmDangNhap = new Frm_DangNhap();
+//			frmDangNhap.setVisible(true);
 			this.setVisible(false);
 			return  dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());			
+		}else {
+			JOptionPane.showMessageDialog(this, "Không khớp, vui lòng kiểm tra lại!!");
 		}
 		return false;
 	}

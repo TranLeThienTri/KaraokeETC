@@ -132,8 +132,17 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		getContentPane().add(pnBGR);
 
 		pnBGR.setLayout(null);
+		
+		FixButton btnQuayLai = new FixButton("Đăng Nhập");
+		btnQuayLai.setIcon(new ImageIcon(Frm_GuiMail.class.getResource("/imgs/btn_quaylai.png")));
+		btnQuayLai.setText("");
+		btnQuayLai.setHideActionText(true);
+		btnQuayLai.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btnQuayLai.setFocusPainted(false);
+		btnQuayLai.setBounds(0, 0, 91, 46);
+		pnBGR.add(btnQuayLai);
 		pnSendMail = new JPanel();
-		pnSendMail.setBounds(83, 83, 620, 331);
+		pnSendMail.setBounds(83, 73, 620, 341);
 		pnBGR.add(pnSendMail);
 		pnSendMail.setBackground(new Color(192, 192, 192, 150));
 		pnSendMail.setLayout(null);
@@ -149,6 +158,7 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		JLabel lbBGR = new JLabel(resizedIcon);
 		lbBGR.setBounds(0, 0, 800, 500);
 		pnBGR.add(lbBGR);
+		btnQuayLai.addActionListener(this);
 	}
 
 	// Hiển thị ngày hiện tại
@@ -178,6 +188,10 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if (o == btnSend) {
 			sendMail();
+		}else {
+			Frm_DangNhap fmDangNhap = new Frm_DangNhap();
+			fmDangNhap.setVisible(true);
+			this.setVisible(false);
 		}
 	}
 
