@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -58,6 +59,8 @@ import entitys.Phong;
 import entitys.TinhTrangPhong;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
@@ -83,6 +86,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	JPanel pnDSP, panel;
 	private JLabel lbIconSearch;
 	DanhSachTaiKhoan dstk;
+	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3;
 
 	public Frm_NhanVien() {
 		setTitle("QUẢN LÝ NHÂN VIÊN");
@@ -226,25 +230,21 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbTB.setForeground(Color.RED);
 		panel.add(lbTB);
 
-		btnThem = new FixButton("Thêm");
+		btnThem = new FixButton("Thêm (Ctrl 1)");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setText("Thêm");
-		btnThem.setBounds(680, 240, 150, 36);
+		btnThem.setBounds(540, 240, 200, 36);
 		panel.add(btnThem);
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnSua = new FixButton("Sửa");
+		btnSua = new FixButton("Sửa (Ctrl 2)");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setText("Sửa");
-		btnSua.setBounds(850, 240, 150, 36);
+		btnSua.setBounds(760, 240, 200, 36);
 		panel.add(btnSua);
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi = new FixButton("Làm mới (Ctrl 3)");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setText("Làm mới");
-		btnLamMoi.setBounds(1020, 240, 150, 36);
-		;
+		btnLamMoi.setBounds(980, 240, 200, 36);
 		panel.add(btnLamMoi);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 
@@ -322,6 +322,16 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		dsNV = new DanhSachNhanVien();
 		upTable();
 
+		// add và định nghĩa các hot key cho ứng dụng
+		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
+		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
+		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
+
+		// Phím nóng
+		addHotKey1();
+		addHotKey2();
+		addHotKey3();
+
 	}
 
 //xoá trắng
@@ -389,6 +399,40 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			comboTrangThai.setSelectedIndex(1);
 	}
 
+	// hot key Ctrl1
+	public void addHotKey1() {
+
+		btnThem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
+		btnThem.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnThem.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl2
+	public void addHotKey2() {
+		btnSua.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
+		btnSua.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnSua.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl3
+	public void addHotKey3() {
+		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
+		btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnLamMoi.doClick();
+			}
+		});
+	}
+
 	public static void main(String[] args) {
 		new Frm_NhanVien().setVisible(true);
 	}
@@ -432,27 +476,27 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
+			if (btnThem.getText().equalsIgnoreCase("Thêm (Ctrl 1)")) {
 				btnThem.setText("Xác nhận");
-				btnSua.setText("Huỷ");
+				btnSua.setText("Hủy");
 			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				if (themNV()) {
-					btnSua.setText("Sửa");
-					btnThem.setText("Thêm");
+					btnSua.setText("Sửa (Ctrl 2)");
+					btnThem.setText("Thêm (Ctrl 1)");
 				}
-			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận ")) {
+			} else if (btnThem.getText().equals("Xác nhận ")) {
 				if (suaNV()) {
-					btnThem.setText("Thêm");
-					btnSua.setText("Sửa");
+					btnThem.setText("Thêm (Ctrl 1)");
+					btnSua.setText("Sửa (Ctrl 2)");
 				}
 			}
 		} else if (o.equals(btnSua)) {
-			if (btnSua.getText().equalsIgnoreCase("Huỷ")) {
-				btnThem.setText("Thêm");
-				btnSua.setText("Sửa");
-			} else if (btnSua.getText().equalsIgnoreCase("Sửa")) {
+			if (btnSua.getText().equals("Hủy")) {
+				btnThem.setText("Thêm (Ctrl 1)");
+				btnSua.setText("Sửa (Ctrl 2)");
+			} else if (btnSua.getText().equals("Sửa (Ctrl 2)")) {
 				btnThem.setText("Xác nhận ");
-				btnSua.setText("Huỷ");
+				btnSua.setText("Hủy");
 			}
 		} else if (o.equals(btnLamMoi)) {
 			clearTable();
