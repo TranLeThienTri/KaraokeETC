@@ -8,6 +8,9 @@ public class ChiTietHoaDon {
 	private DichVu dichVu;
 	private int soLuong;
 	private PhuThu phuThu;
+	private Phong maPhong;
+	private LocalTime gioChuyen;
+	private LocalTime gioVao;
 
 	public ChiTietHoaDon(HoaDonPhong maHoaDonPhong, DichVu dichVu, int soLuong, PhuThu phuThu) {
 
@@ -22,6 +25,25 @@ public class ChiTietHoaDon {
 		this.maHoaDonPhong = maHoaDonPhong;
 		this.dichVu = dichVu;
 		this.soLuong = soLuong;
+	}
+
+	public ChiTietHoaDon(HoaDonPhong maHoaDonPhong, Phong maPhong, LocalTime gioChuyen,LocalTime gioVao) {
+		super();
+		this.maHoaDonPhong = maHoaDonPhong;
+		this.maPhong = maPhong;
+		this.gioChuyen = gioChuyen;
+		this.gioVao = gioVao;
+	}
+
+	public ChiTietHoaDon(HoaDonPhong p, DichVu dv, int sl, PhuThu pt, Phong map, LocalTime gioChuyen,
+			LocalTime gioVao) {
+		this.maHoaDonPhong = p;
+		this.dichVu = dv;
+		this.phuThu = pt;
+		this.soLuong = sl;
+		this.maPhong = map;
+		this.gioChuyen = gioChuyen;
+		this.gioVao = gioVao;
 	}
 
 	public HoaDonPhong getMaHoaDonPhong() {
@@ -54,6 +76,30 @@ public class ChiTietHoaDon {
 
 	public void setSoLuong(int soLuong) {
 		this.soLuong = soLuong;
+	}
+
+	public Phong getMaPhong() {
+		return maPhong;
+	}
+
+	public void setMaPhong(Phong maPhong) {
+		this.maPhong = maPhong;
+	}
+
+	public LocalTime getGioChuyen() {
+		return gioChuyen;
+	}
+
+	public void setGioChuyen(LocalTime gioChuyen) {
+		this.gioChuyen = gioChuyen;
+	}
+
+	public LocalTime getGioVao() {
+		return gioVao;
+	}
+
+	public void setGioVao(LocalTime gioVao) {
+		this.gioVao = gioVao;
 	}
 
 }

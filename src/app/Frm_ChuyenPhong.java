@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -27,9 +29,12 @@ import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.DanhSachChiTietHoaDon;
+import dao.DanhSachDatPhong;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
 import dao.DanhSachThuePhong;
+import entitys.ChiTietHoaDon;
 import entitys.HoaDonPhong;
 import entitys.Phong;
 
@@ -60,6 +65,8 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	DanhSachPhong p;
 	DanhSachHoaDon dsHD;
 	DanhSachThuePhong tp;
+	DanhSachDatPhong dsDP;
+	DanhSachChiTietHoaDon dsCT;
 
 	public Panel getFrmChuyenPhong() {
 		return this.pnChuyenPhong;
@@ -252,6 +259,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_trong.png")));
 		lbBGQLDV.setBounds(0, 0, 1000, 820);
 		pnChuyenPhong.add(lbBGQLDV);
+		dsDP = new DanhSachDatPhong();
 		txtGiaPhong.setEditable(false);
 		txtKhachHang.setEditable(false);
 		txtSucChua.setEditable(false);
@@ -259,6 +267,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		df = new DecimalFormat("###,### VNĐ");
 		p = new DanhSachPhong();
 		tp = new DanhSachThuePhong();
+		dsCT = new DanhSachChiTietHoaDon();
 		upTT();
 		upTable();
 	}
@@ -296,7 +305,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	}
 
 	public void upTable() {
-		ArrayList<Phong> list = p.getDSPhong();
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 		for (Phong p : list) {
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
@@ -312,12 +321,24 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		}
 	}
 
-	public boolean chuyenPhong(HoaDonPhong p) {
+	public boolean chuyenPhong(HoaDonPhong hd) {
 		int row = tableDSPhong.getSelectedRow();
+		Phong phong = p.getPhongTheoMa(hd.getPhong().getMaPhong());
 		String map = (String) tableDSPhong.getValueAt(row, 0);
-		if (!tp.chuyenPhong(p.getMaHoaDon(), map)) {
+		if (!tp.chuyenPhong(hd.getMaHoaDon(), map)) {
+			ArrayList<ChiTietHoaDon> list = tp.getCTHDTheoMa(hd.getMaHoaDon());
+			ChiTietHoaDon ct = null;
+			if (list.size()>0) {
+				for (ChiTietHoaDon c : list) {
+					if (c.getGioChuyen() != null)
+						ct = new ChiTietHoaDon(hd, phong, LocalTime.now(), c.getGioChuyen());
+				}
+			} else 
+				ct = new ChiTietHoaDon(hd, phong, LocalTime.now(), hd.getGioBatDauThue());
+
+			dsCT.luuTTChuyenPhong(ct);
 			tp.setTTPhongTheoMa(map, "RENT");
-			tp.setTTPhongTheoMa(p.getPhong().getMaPhong(), "EMPT");
+			tp.setTTPhongTheoMa(hd.getPhong().getMaPhong(), "EMPT");
 			return true;
 		}
 		return false;

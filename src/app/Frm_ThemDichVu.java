@@ -297,7 +297,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbPhong = new JLabel("Mã Phòng:");
 		lbPhong.setForeground(Color.WHITE);
 		lbPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbPhong.setBounds(10, 10, 82, 20);
+		lbPhong.setBounds(10, 10, 100, 20);
 		pnTTPhong.add(lbPhong);
 
 		lbKH = new JLabel("Tên khách hàng:");
@@ -315,7 +315,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lblTenPhong = new JLabel("");
 		lblTenPhong.setForeground(new Color(0, 0, 0));
 		lblTenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTenPhong.setBounds(102, 10, 119, 20);
+		lblTenPhong.setBounds(100, 10, 119, 20);
 		pnTTPhong.add(lblTenPhong);
 
 		lblTenKH = new JLabel("");
@@ -465,7 +465,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lblTenPhong.setText(hd.getPhong().getMaPhong());
 		lblTenKH.setText(hd.getMaKhachHang().getHoTenKhachHang());
 		lblTime.setText(dt.format(hd.getGioBatDauThue()));
-		ArrayList<ChiTietHoaDon> list = tp.getCTHDTheoMa(hd.getMaHoaDon());
+		ArrayList<ChiTietHoaDon> list = tp.getCTHDDVTheoMa(hd.getMaHoaDon());
 		int i = 1;
 		float tongtiendv = 0;
 		for (ChiTietHoaDon p : list) {
