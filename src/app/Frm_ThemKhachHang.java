@@ -9,6 +9,7 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -98,12 +99,13 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		pnTTDDP.add(lbTenKH);
 
 		txtSDT = new JTextField(sdt);
-		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(654, 47, 250, 30);
+		txtSDT.setEditable(false);
 		pnTTDDP.add(txtSDT);
 
 		txtKhachHang = new JTextField();
-		txtKhachHang.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtKhachHang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtKhachHang.setBounds(171, 47, 250, 30);
 		pnTTDDP.add(txtKhachHang);
 
@@ -114,7 +116,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		pnTTDDP.add(lbCCCD);
 
 		txtCCCD = new JTextField();
-		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtCCCD.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtCCCD.setBounds(171, 99, 250, 30);
 		pnTTDDP.add(txtCCCD);
 
@@ -190,6 +192,32 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		txtSDT.setText("");
 		comboGT.setSelectedIndex(0);
 	}
+	public boolean ktraDuLieu() {
+		String ten = txtKhachHang.getText();
+		if (ten.equals("") || !ten.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			JOptionPane.showMessageDialog(this, "Tên không được để trống và viết hoa chữ cái đầu");
+			txtKhachHang.requestFocus();
+			return false;
+		}
+		String cccd = txtCCCD.getText();
+		DanhSachKhachHang dsKh = new DanhSachKhachHang();
+		ArrayList<KhachHang> list =  dsKH.getDSKhachHang();
+		for(KhachHang kh : list) {
+			if (cccd.equals(kh.getSoCCCD())) {
+				JOptionPane.showMessageDialog(this, "Số CCCD đã tồn tại");
+				txtCCCD.requestFocus();
+				return false;
+			}
+		}
+		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+			JOptionPane.showMessageDialog(this, "Số CCCD không để trống và chỉ được 12 số");
+			txtCCCD.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
 
 	private boolean luuThongTinKhachHang() {
 		String tenKH = txtKhachHang.getText().trim();
@@ -202,7 +230,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		Object[] obj = new Object[7];
 		LoaiKhachHang lkh = new LoaiKhachHang("NOR");
 		kh = new KhachHang(ma, tenKH, sCCD, sdtKH, 0, gtt, lkh);
-		if (!dsKH.themKhachHang(kh)) {
+		if (!dsKH.themKhachHang(kh) && ktraDuLieu()) {
 			obj[0] = ma;
 			obj[1] = tenKH;
 			obj[2] = sCCD;

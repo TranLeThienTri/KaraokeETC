@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -47,6 +48,7 @@ import connectDB.ConnectDB;
 import dao.DanhSachChucVu;
 import dao.DanhSachKhachHang;
 import dao.DanhSachNhanVien;
+import dao.DanhSachTaiKhoan;
 import dao.Dao_PhatSinhMa;
 import entitys.ChucVu;
 import entitys.KhachHang;
@@ -57,6 +59,8 @@ import entitys.Phong;
 import entitys.TinhTrangPhong;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
@@ -81,6 +85,8 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	DanhSachNhanVien dsNV;
 	JPanel pnDSP, panel;
 	private JLabel lbIconSearch;
+	DanhSachTaiKhoan dstk;
+	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3;
 
 	public Frm_NhanVien() {
 		setTitle("QUẢN LÝ NHÂN VIÊN");
@@ -96,7 +102,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	}
 
 	public void gui() {
-
+		dstk = new DanhSachTaiKhoan();
 		getContentPane().setLayout(null);
 		pnQLNV = new Panel();
 		pnQLNV.setBounds(0, 0, 1400, 700);
@@ -110,7 +116,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		panel.setBounds(102, 60, 1200, 286);
 		pnQLNV.add(panel);
 		panel.setLayout(null);
-
 
 		lbTTDV = new JLabel("Thông tin nhân viên");
 		lbTTDV.setBounds(102, 30, 250, 20);
@@ -225,25 +230,21 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbTB.setForeground(Color.RED);
 		panel.add(lbTB);
 
-		btnThem = new FixButton("Thêm");
+		btnThem = new FixButton("Thêm (Ctrl 1)");
 		btnThem.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_them.png")));
-		btnThem.setText("Thêm");
-		btnThem.setBounds(680, 240, 150, 36);
+		btnThem.setBounds(540, 240, 200, 36);
 		panel.add(btnThem);
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnSua = new FixButton("Sửa");
+		btnSua = new FixButton("Sửa (Ctrl 2)");
 		btnSua.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
-		btnSua.setText("Sửa");
-		btnSua.setBounds(850, 240, 150, 36);
+		btnSua.setBounds(760, 240, 200, 36);
 		panel.add(btnSua);
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi = new FixButton("Làm mới (Ctrl 3)");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setText("Làm mới");
-		btnLamMoi.setBounds(1020, 240, 150, 36);
-		;
+		btnLamMoi.setBounds(980, 240, 200, 36);
 		panel.add(btnLamMoi);
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 
@@ -321,7 +322,15 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		dsNV = new DanhSachNhanVien();
 		upTable();
 
-		comboTrangThai.setEnabled(false);
+		// add và định nghĩa các hot key cho ứng dụng
+		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
+		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
+		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
+
+		// Phím nóng
+		addHotKey1();
+		addHotKey2();
+		addHotKey3();
 
 	}
 
@@ -390,6 +399,40 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			comboTrangThai.setSelectedIndex(1);
 	}
 
+	// hot key Ctrl1
+	public void addHotKey1() {
+
+		btnThem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
+		btnThem.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnThem.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl2
+	public void addHotKey2() {
+		btnSua.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
+		btnSua.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnSua.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl3
+	public void addHotKey3() {
+		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
+		btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnLamMoi.doClick();
+			}
+		});
+	}
+
 	public static void main(String[] args) {
 		new Frm_NhanVien().setVisible(true);
 	}
@@ -433,27 +476,27 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			if (btnThem.getText().equalsIgnoreCase("Thêm")) {
+			if (btnThem.getText().equalsIgnoreCase("Thêm (Ctrl 1)")) {
 				btnThem.setText("Xác nhận");
-				btnSua.setText("Huỷ");
+				btnSua.setText("Hủy");
 			} else if (btnThem.getText().equalsIgnoreCase("Xác nhận")) {
 				if (themNV()) {
-					btnSua.setText("Sửa");
-					btnThem.setText("Thêm");
+					btnSua.setText("Sửa (Ctrl 2)");
+					btnThem.setText("Thêm (Ctrl 1)");
 				}
 			} else if (btnThem.getText().equals("Xác nhận ")) {
 				if (suaNV()) {
-					btnThem.setText("Thêm");
-					btnSua.setText("Sửa");
+					btnThem.setText("Thêm (Ctrl 1)");
+					btnSua.setText("Sửa (Ctrl 2)");
 				}
 			}
 		} else if (o.equals(btnSua)) {
-			if (btnSua.getText().equals("Huỷ")) {
-				btnThem.setText("Thêm");
-				btnSua.setText("Sửa");
-			} else if (btnSua.getText().equals("Sửa")) {
+			if (btnSua.getText().equals("Hủy")) {
+				btnThem.setText("Thêm (Ctrl 1)");
+				btnSua.setText("Sửa (Ctrl 2)");
+			} else if (btnSua.getText().equals("Sửa (Ctrl 2)")) {
 				btnThem.setText("Xác nhận ");
-				btnSua.setText("Huỷ");
+				btnSua.setText("Hủy");
 			}
 		} else if (o.equals(btnLamMoi)) {
 			clearTable();
@@ -475,23 +518,23 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			String cccd = txtCCCD.getText();
 			String gt = (String) comboGT.getSelectedItem();
 			boolean gioitinh;
-			if (gt.equals("Nam")) {
+			if (gt.equalsIgnoreCase("Nam")) {
 				gioitinh = true;
 			} else
 				gioitinh = false;
 			String tt = (String) comboTrangThai.getSelectedItem();
 			boolean trangThai;
-			if (tt.equals("Đang làm việc")) {
-				trangThai = false;
-			} else
+			if (tt.equalsIgnoreCase("Đang làm việc")) {
 				trangThai = true;
+			} else
+				trangThai = false;
 
 			Date date = ngaySinh.getDate();
 			Date ngaySinhh = new Date(date.getYear(), date.getMonth(), date.getDate());
 
 			String tenChucVu = String.valueOf(comboChucVu.getSelectedItem());
 			String maChucVu = null;
-			if (tenChucVu.equals("Quản lý")) {
+			if (tenChucVu.equalsIgnoreCase("Quản lý")) {
 				maChucVu = "QL";
 			} else
 				maChucVu = "NV";
@@ -511,6 +554,9 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 				obj[8] = tt;
 				model.addRow(obj);
 				xoaTrang();
+
+				// tạo tk
+				dstk.createAccount(ma, ma.toLowerCase());
 				return true;
 			}
 		}
@@ -532,13 +578,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 				String cccd = txtCCCD.getText();
 				String gt = (String) comboGT.getSelectedItem();
 				boolean gioitinh;
-				if (gt.equals("Nam")) {
+				if (gt.equalsIgnoreCase("Nam")) {
 					gioitinh = true;
 				} else
 					gioitinh = false;
 				String tt = (String) comboTrangThai.getSelectedItem();
 				boolean trangThai;
-				if (tt.equals("Đang làm việc")) {
+				if (tt.equalsIgnoreCase("Đang làm việc")) {
 					trangThai = true;
 				} else
 					trangThai = false;
@@ -548,7 +594,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 				String tenChucVu = String.valueOf(comboChucVu.getSelectedItem());
 				String maChucVu = null;
-				if (tenChucVu.equals("Quản lý")) {
+				if (tenChucVu.equalsIgnoreCase("Quản lý")) {
 					maChucVu = "QL";
 				} else
 					maChucVu = "NV";
@@ -590,7 +636,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 	public boolean ktraDuLieu() {
 		String ten = txtHoTen.getText();
-		if (ten.equals("") || !ten.matches(
+		if (ten.equalsIgnoreCase("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
 			txtHoTen.requestFocus();
@@ -599,19 +645,19 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 		String dt = txtSDT.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (dt.equals(table.getValueAt(i, 6).toString())) {
+			if (dt.equalsIgnoreCase(table.getValueAt(i, 6).toString())) {
 				showMessage("(*)Số điện thoại đã tồn tại");
 				txtSDT.requestFocus();
 				return false;
 			}
 		}
-		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+		if (dt.equalsIgnoreCase("") || !dt.matches("^(0[0-9]{9})$")) {
 			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
 			txtSDT.requestFocus();
 			return false;
 		}
 		String dc = txtDiaChi.getText();
-		if (dc.equals("") || !dc.matches(
+		if (dc.equalsIgnoreCase("") || !dc.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Địa chỉ không được để trống và viết hoa chữ cái đầu");
 			txtDiaChi.requestFocus();
@@ -620,13 +666,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 		String cccd = txtCCCD.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (cccd.equals(table.getValueAt(i, 7).toString())) {
+			if (cccd.equalsIgnoreCase(table.getValueAt(i, 7).toString())) {
 				showMessage("(*)Số CCCD đã tồn tại");
 				txtCCCD.requestFocus();
 				return false;
 			}
 		}
-		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+		if (cccd.equalsIgnoreCase("") || !cccd.matches("^([0-9]{12})$")) {
 			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
 			txtCCCD.requestFocus();
 			return false;
@@ -659,14 +705,14 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		}
 
 		String ten = txtHoTen.getText();
-		if (ten.equals("") || !ten.matches(
+		if (ten.equalsIgnoreCase("") || !ten.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Tên không được để trống và viết hoa chữ cái đầu");
 			txtHoTen.requestFocus();
 			return false;
 		}
 		String dc = txtDiaChi.getText();
-		if (dc.equals("") || !dc.matches(
+		if (dc.equalsIgnoreCase("") || !dc.matches(
 				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
 			showMessage("(*) Địa chỉ không được để trống và viết hoa chữ cái đầu");
 			txtDiaChi.requestFocus();
@@ -674,12 +720,12 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		}
 		String dt = txtSDT.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (dt.equals(table.getValueAt(i, 6).toString()) && !dt.equals(table.getValueAt(row, 6))) {
+			if (dt.equalsIgnoreCase(table.getValueAt(i, 6).toString()) && !dt.equals(table.getValueAt(row, 6))) {
 				JOptionPane.showMessageDialog(this, "SĐT đã tồn tại");
 				return false;
 			}
 		}
-		if (dt.equals("") || !dt.matches("^(0[0-9]{9})$")) {
+		if (dt.equalsIgnoreCase("") || !dt.matches("^(0[0-9]{9})$")) {
 			showMessage("(*)Số điện thoại không để trống và chỉ được 10 số, bắt đầu bằng số 0");
 			txtSDT.requestFocus();
 			return false;
@@ -687,13 +733,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 
 		String cccd = txtCCCD.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if (cccd.equals(table.getValueAt(i, 7).toString()) && !cccd.equals(table.getValueAt(row, 7))) {
+			if (cccd.equalsIgnoreCase(table.getValueAt(i, 7).toString()) && !cccd.equals(table.getValueAt(row, 7))) {
 				JOptionPane.showMessageDialog(this, "CCCD đã tồn tại");
 				return false;
 
 			}
 		}
-		if (cccd.equals("") || !cccd.matches("^([0-9]{12})$")) {
+		if (cccd.equalsIgnoreCase("") || !cccd.matches("^([0-9]{12})$")) {
 			showMessage("(*)Số CCCD không để trống và chỉ được 12 số");
 			txtCCCD.requestFocus();
 			return false;
@@ -755,7 +801,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			comboGT.setSelectedIndex(i);
 			String cv = nv.getchucVu().getTenChucVu();
 			int j;
-			if (cv.equals("Quản Lý")) {
+			if (cv.equalsIgnoreCase("Quản Lý")) {
 				j = 0;
 			} else {
 				j = 1;
@@ -778,7 +824,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			JOptionPane.showMessageDialog(this, "Nhân viên chưa có trong hệ thống \n Thêm nhân viên mới!!!");
 			txtHoTen.requestFocus();
 		}
-		if (sdt.equals("")) {
+		if (sdt.equalsIgnoreCase("")) {
 			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
 			txtSDT.requestFocus();
 		} else if (!sdt.matches("^(0[0-9]{9})$")) {

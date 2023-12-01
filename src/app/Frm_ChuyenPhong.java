@@ -305,7 +305,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[4] = df.format(p.getGiaPhong());
 			if (p.getMaTinhTrangPhong().getTenTinhTrangPhong().trim().equals("RENT")) {
-				break;
+				continue;
 			}
 			model.addRow(obj);
 		}

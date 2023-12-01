@@ -69,5 +69,20 @@ public class DanhSachTaiKhoan {
 		}
 		return flag;
 	}
+	public boolean createAccount(String ma,String pass) {
+		connectDB.ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		boolean flag = true;
+		try {
+			String sql = "{call createAccount(?,?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			myCall.setString(2, pass);
+			flag = myCall.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 
 }

@@ -72,7 +72,7 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import java.text.SimpleDateFormat;
 
-public class Frm_ThongTinKhachDat extends JFrame implements ActionListener {
+public class Frm_ThongTinKhachDat extends JFrame implements ActionListener, MouseListener {
 	JPanel pnDSDichVu;
 	Panel pnTTKHD;
 	private JTable tableDSPhong;
@@ -200,14 +200,14 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener {
 		txtKhachHang.setBounds(160, 30, 250, 30);
 		pnKH.add(txtKhachHang);
 
-		btnQL = new FixButton("Hủy đặt phòng");
+		btnQL = new FixButton("Quay Lai");
 		btnQL.setBounds(123, 484, 171, 51);
 		pnTTKHD.add(btnQL);
 		btnQL.setIcon(new ImageIcon(Frm_ThongTinKhachDat.class.getResource("/imgs/btn_quaylai.png")));
 		btnQL.setText("Quay Lại");
 		btnQL.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		btnNhanPhong = new FixButton("Làm mới");
+		btnNhanPhong = new FixButton("Nhận Phòng");
 		btnNhanPhong.setBounds(706, 484, 171, 51);
 		pnTTKHD.add(btnNhanPhong);
 		btnNhanPhong.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
@@ -230,23 +230,37 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener {
 		btnQL.addActionListener(this);
 		btnNhanPhong.addActionListener(this);
 		btnHuyDatPhong.addActionListener(this);
+		tableDSPhong.addMouseListener(this);
 		dt = DateTimeFormatter.ofPattern("HH:mm");
 		p = new DanhSachPhong();
 		tp = new DanhSachThuePhong();
 		dsKH = new DanhSachKhachHang();
 		dsHD = new DanhSachHoaDon();
 		upTable();
+		getIndexRow();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		Object o = e.getSource();
-		if (o == btnQL)
-			dispose();
-		if (o == btnNhanPhong) {
-			boolean isNhanPhong = nhanPhong();
+		if (o == btnQL) {
+			this.dispose();
+
+		} else if (o == btnNhanPhong) {
+			try {
+
+				boolean isNhanPhong = nhanPhong();
+			} catch (Exception e2) {
+				throw new Error("Chưa chọn phiếu đặt phòng!");
+			}
 		} else {
-			boolean huyDatPhong = huyDatPhong();
+			try {
+
+				boolean huyDatPhong = huyDatPhong();
+			} catch (Exception e2) {
+				throw new Error("Chưa chọn phiếu đặt phòng!");
+			}
 			upTable();
 		}
 	}
@@ -258,7 +272,7 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener {
 		KhachHang kh = dsKH.getKHTheoMa(ma);
 		String makh = kh.getMaKhachHang();
 		txtKhachHang.setText(kh.getHoTenKhachHang());
-		txtSDT.setText(ma);
+		txtSDT.setText(kh.getSoDienThoai());
 		ArrayList<HoaDonPhong> list = dsHD.getDSHDDTheoMaKH(makh);
 		model.setRowCount(0);
 		for (HoaDonPhong hd : list) {
@@ -380,6 +394,48 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener {
 			}
 		}
 		return false;
+
+	}
+
+	public void getIndexRow() {
+		int isSelected1 = tableDSPhong.getSelectedRow();
+		if (isSelected1 == -1) {
+			btnNhanPhong.setEnabled(false);
+			btnHuyDatPhong.setEnabled(false);
+			tableDSPhong.clearSelection();
+		} else {
+			btnHuyDatPhong.setEnabled(true);
+			btnNhanPhong.setEnabled(true);
+		}
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		getIndexRow();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
