@@ -91,12 +91,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	DanhSachPhong dsPhong;
 	HoaDonPhong hdP;
 	DanhSachHoaDon dsHD;
-//<<<<<<< HEAD
-//	DanhSachChiTietHoaDon dsCTHD;
-//=======
 	DanhSachDichVu dsDV;
 	DanhSachPhuThu dsPT;
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	NhanVien nv;
 
 	Panel getFrmQuanLyThuePhong() {
@@ -265,11 +261,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		lbDSPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSPhong.setBounds(10, 0, 150, 25);
 		pnDSP1.add(lbDSPhong);
-//<<<<<<< HEAD
-//		String col2[] = { "Mã phòng", "Loại dịch vụ", "Tên dịch vụ", "Số lượng", "Giá bán", "Thành tiền" };
-//
-//		model2 = new DefaultTableModel(col2, 0);
-//=======
 		String col2[] = { "Lo\u1EA1i d\u1ECBch v\u1EE5", "T\u00EAn d\u1ECBch v\u1EE5", "S\u1ED1 l\u01B0\u1EE3ng",
 				"Giá bán" };
 
@@ -279,7 +270,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				return false; // Không cho phép chỉnh sửa ô
 			}
 		};
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		tableDSDichVu = new JTable(model2);
 
 		tableDSDichVu.setBackground(Color.WHITE);
@@ -412,17 +402,10 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnPhongThuong.addActionListener(this);
 		btnPhongVip.addActionListener(this);
 		btnTatCa.addActionListener(this);
-//<<<<<<< HEAD
-//		
-//		dsPhong = new DanhSachPhong();
-//		dsTP = new ThuePhong();
-//		dsCTHD = new DanhSachChiTietHoaDon();
-//=======
 		radioDangThue.addActionListener(this);
 		radioTrong.addActionListener(this);
 		dsPhong = new DanhSachPhong();
 		dsTP = new DanhSachThuePhong();
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		dsHD = new DanhSachHoaDon();
 		dsDV = new DanhSachDichVu();
 		dsPT = new DanhSachPhuThu();
@@ -434,7 +417,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
-
 	}
 
 	public void upTable1() {
@@ -645,16 +627,12 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		if (o == btnPhongThuong) {
 			locTheoLoaiPhongThuong();
 		}
-//<<<<<<< HEAD
-//
-//=======
 		if (o == radioDangThue) {
 			loaiPALL();
 		}
 		if (o == radioTrong) {
 			loaiPALL();
 		}
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		if (o == btnThemDV) {
 			if (ktraPhong()) {
 				HoaDonPhong hd = getHDPDuocChon();
@@ -679,10 +657,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-//<<<<<<< HEAD
-//
-//=======
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 				obj[2] = p.getSucChua();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[3] = df.format(p.getGiaPhong());
@@ -716,10 +690,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
-//<<<<<<< HEAD
-//
-//=======
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 				obj[2] = p.getSucChua();
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
@@ -832,7 +802,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
-		upTableDV();
 		txtSDT.setText("");
 		txtKhachHang.setText("");
 		tableDSPhong.clearSelection();

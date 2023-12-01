@@ -54,6 +54,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 	DanhSachKhachHang dsKH;
 	String sdt;
 	KhachHang kh;
+
 	public Frm_ThemKhachHang(String sdt) {
 		this.sdt = sdt;
 		setTitle("THÊM KHÁCH HÀNG");
@@ -192,6 +193,7 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		txtSDT.setText("");
 		comboGT.setSelectedIndex(0);
 	}
+
 	public boolean ktraDuLieu() {
 		String ten = txtKhachHang.getText();
 		if (ten.equals("") || !ten.matches(
@@ -202,8 +204,8 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		}
 		String cccd = txtCCCD.getText();
 		DanhSachKhachHang dsKh = new DanhSachKhachHang();
-		ArrayList<KhachHang> list =  dsKH.getDSKhachHang();
-		for(KhachHang kh : list) {
+		ArrayList<KhachHang> list = dsKH.getDSKhachHang();
+		for (KhachHang kh : list) {
 			if (cccd.equals(kh.getSoCCCD())) {
 				JOptionPane.showMessageDialog(this, "Số CCCD đã tồn tại");
 				txtCCCD.requestFocus();
@@ -218,7 +220,6 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		return true;
 	}
 
-
 	private boolean luuThongTinKhachHang() {
 		String tenKH = txtKhachHang.getText().trim();
 		String sCCD = txtCCCD.getText().trim();
@@ -230,16 +231,18 @@ public class Frm_ThemKhachHang extends JFrame implements ActionListener {
 		Object[] obj = new Object[7];
 		LoaiKhachHang lkh = new LoaiKhachHang("NOR");
 		kh = new KhachHang(ma, tenKH, sCCD, sdtKH, 0, gtt, lkh);
-		if (!dsKH.themKhachHang(kh) && ktraDuLieu()) {
-			obj[0] = ma;
-			obj[1] = tenKH;
-			obj[2] = sCCD;
-			obj[3] = sdtKH;
-			obj[4] = gtt;
-			obj[5] = lkh;
-			obj[6] = 0;
-			xoaTrang();
-			return true;
+		if (ktraDuLieu() == true) {
+			if (!dsKH.themKhachHang(kh)) {
+				obj[0] = ma;
+				obj[1] = tenKH;
+				obj[2] = sCCD;
+				obj[3] = sdtKH;
+				obj[4] = gtt;
+				obj[5] = lkh;
+				obj[6] = 0;
+				xoaTrang();
+				return true;
+			}
 		}
 		return false;
 	}

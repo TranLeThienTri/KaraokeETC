@@ -82,6 +82,22 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		getContentPane().add(pnChuyenPhong);
 		pnChuyenPhong.setLayout(null);
 
+		btnChuyen = new FixButton("Làm mới");
+		btnChuyen.setBounds(517, 718, 140, 40);
+		pnChuyenPhong.add(btnChuyen);
+		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
+		btnChuyen.setText("Xác nhận");
+		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnChuyen.addActionListener(this);
+
+		btnHuy = new FixButton("Hủy đặt phòng");
+		btnHuy.setBounds(354, 718, 140, 40);
+		pnChuyenPhong.add(btnHuy);
+		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
+		btnHuy.setText("Hủy");
+		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnHuy.addActionListener(this);
+
 		lbTTKH = new JLabel("Thông tin khách hàng");
 		lbTTKH.setForeground(Color.WHITE);
 		lbTTKH.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -90,7 +106,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
-		pnDSDichVu.setBounds(0, 537, 980, 250);
+		pnDSDichVu.setBounds(32, 458, 926, 250);
 		pnChuyenPhong.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
@@ -98,10 +114,10 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-		String col[] = {"Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng"};
-		model = new DefaultTableModel(col,0);
+		String col[] = { "Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng" };
+		model = new DefaultTableModel(col, 0);
 		tableDSPhong = new JTable(model);
-		
+
 		tableDSPhong.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -224,20 +240,6 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbGiaPhong.setBounds(10, 130, 200, 25);
 		pnTTPHT.add(lbGiaPhong);
 
-		btnHuy = new FixButton("Hủy đặt phòng");
-		btnHuy.setBounds(337, 467, 140, 40);
-		pnChuyenPhong.add(btnHuy);
-		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
-		btnHuy.setText("Hủy");
-		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
-
-		btnChuyen = new FixButton("Làm mới");
-		btnChuyen.setBounds(507, 467, 140, 40);
-		pnChuyenPhong.add(btnChuyen);
-		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
-		btnChuyen.setText("Xác nhận");
-		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
-
 		lbChuyenPhong = new JLabel("CHUYỂN PHÒNG");
 		lbChuyenPhong.setForeground(Color.WHITE);
 		lbChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -254,15 +256,12 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		txtKhachHang.setEditable(false);
 		txtSucChua.setEditable(false);
 		txtTinhTrang.setEditable(false);
-		btnHuy.addActionListener(this);
-		btnChuyen.addActionListener(this);
 		df = new DecimalFormat("###,### VNĐ");
 		p = new DanhSachPhong();
 		tp = new DanhSachThuePhong();
 		upTT();
 		upTable();
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -272,8 +271,8 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 			dispose();
 		}
-		if(o == btnChuyen) {
-			if(chuyenPhong(hd)) {
+		if (o == btnChuyen) {
+			if (chuyenPhong(hd)) {
 				JOptionPane.showMessageDialog(this, "Chuyển phòng thành công");
 				dispose();
 			}
@@ -295,6 +294,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		txtSucChua.setText(succhua);
 		txtLoaiPhong.setText(tt);
 	}
+
 	public void upTable() {
 		ArrayList<Phong> list = p.getDSPhong();
 		for (Phong p : list) {
@@ -304,16 +304,18 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 			obj[2] = p.getSucChua();
 			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[4] = df.format(p.getGiaPhong());
-			if (p.getMaTinhTrangPhong().getTenTinhTrangPhong().trim().equals("RENT")) {
+			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")
+					|| p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")) {
 				continue;
 			}
 			model.addRow(obj);
 		}
 	}
+
 	public boolean chuyenPhong(HoaDonPhong p) {
 		int row = tableDSPhong.getSelectedRow();
 		String map = (String) tableDSPhong.getValueAt(row, 0);
-		if(!tp.chuyenPhong(p.getMaHoaDon(), map)) {
+		if (!tp.chuyenPhong(p.getMaHoaDon(), map)) {
 			tp.setTTPhongTheoMa(map, "RENT");
 			tp.setTTPhongTheoMa(p.getPhong().getMaPhong(), "EMPT");
 			return true;
