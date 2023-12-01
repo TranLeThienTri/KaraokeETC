@@ -133,10 +133,41 @@ public class DanhSachThuePhong {
 				String madv = rs.getString(2);
 				int sl = rs.getInt(3);
 				String mapt = rs.getString(4);
-				HoaDonPhong p = getHDTheoMa(mahd);
+				String map = rs.getString(5);
+				LocalTime gioChuyen = LocalTime.parse(rs.getString(6));
+				LocalTime gioVao = LocalTime.parse(rs.getString(7));
+				HoaDonPhong hd = getHDTheoMa(mahd);
+				DanhSachPhong dsP = new DanhSachPhong();
+				Phong p = dsP.getPhongTheoMa(map);
 				DichVu dv = daov.getDVTheoMa(madv);
 				PhuThu pt = daopt.getPTTheoMa(mapt);
-				ChiTietHoaDon ct = new ChiTietHoaDon(p, dv, sl, pt);
+				ChiTietHoaDon ct = new ChiTietHoaDon(hd, dv, sl, pt, p, gioChuyen, gioVao);
+				list.add(ct);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<ChiTietHoaDon> getCTHDDVTheoMa(String ma) {
+		ArrayList<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
+		DanhSachDichVu daov = new DanhSachDichVu();
+		DanhSachPhuThu daopt = new DanhSachPhuThu();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "{call getCTHDTheoMa(?)}";
+			CallableStatement myCall = con.prepareCall(sql);
+			myCall.setString(1, ma);
+			ResultSet rs = myCall.executeQuery();
+			while (rs.next()) {
+				String mahd = rs.getString(1);
+				String madv = rs.getString(2);
+				int sl = rs.getInt(3);
+				HoaDonPhong hd = getHDTheoMa(mahd);
+				DichVu dv = daov.getDVTheoMa(madv);
+				ChiTietHoaDon ct = new ChiTietHoaDon(hd, dv, sl);
 				list.add(ct);
 			}
 		} catch (SQLException e) {

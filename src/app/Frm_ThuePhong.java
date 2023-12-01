@@ -54,7 +54,7 @@ import org.apache.poi.examples.hsmf.Msg2txt;
 import connectDB.ConnectDB;
 
 import dao.DanhSachThuePhong;
-
+import dao.DanhSachDatPhong;
 import dao.DanhSachDichVu;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
@@ -96,6 +96,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	DanhSachHoaDon dsHD;
 	DanhSachDichVu dsDV;
 	DanhSachPhuThu dsPT;
+	DanhSachDatPhong dsDP;
 	NhanVien nv;
 	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3, keyStrokeCTRL4, keyStrokeCTRL5;
 
@@ -404,7 +405,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnTatCa.addActionListener(this);
 		radioDangThue.addActionListener(this);
 		radioTrong.addActionListener(this);
-
+		dsDP = new DanhSachDatPhong();
 		dsPhong = new DanhSachPhong();
 		dsTP = new DanhSachThuePhong();
 		dsHD = new DanhSachHoaDon();
@@ -418,12 +419,11 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
-
 		// add và định nghĩa các hot key cho ứng dụng
 		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
 		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
 		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
-		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4");
+		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4	");
 		keyStrokeCTRL5 = KeyStroke.getKeyStroke("ctrl 5");
 
 		// Phím nóng
@@ -437,8 +437,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 	public void upTable1() {
 		int i = 3;
-		ArrayList<Phong> list = new ArrayList();
-		list = dsPhong.getDSPhong();
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 		for (Phong p : list) {
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
@@ -476,7 +475,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		int row = tableDSPhong2.getSelectedRow();
 		if (row >= 0) {
 			String ma = (String) tableDSPhong2.getValueAt(row, 0);
-			ArrayList<ChiTietHoaDon> list = dsTP.getCTHDTheoMa(ma);
+			ArrayList<ChiTietHoaDon> list = dsTP.getCTHDDVTheoMa(ma);
 			for (ChiTietHoaDon p : list) {
 				if (p.getDichVu() != null) {
 					DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
@@ -818,7 +817,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
-		upTableDV();
 		txtSDT.setText("");
 		txtKhachHang.setText("");
 		tableDSPhong.clearSelection();
