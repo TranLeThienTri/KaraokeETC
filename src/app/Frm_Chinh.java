@@ -350,9 +350,15 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrmQuanLyPhong() {
-		pnCenter.removeAll();
-		Frm_QuanLyPhong frQLP = new Frm_QuanLyPhong(nv);
-		pnCenter.add(frQLP.getFrmQuanLyPhong());
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_QuanLyPhong frQLP = new Frm_QuanLyPhong(nv);
+			pnCenter.add(frQLP.getFrmQuanLyPhong());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	// load Frm Linh Kien
@@ -364,17 +370,27 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrm_ThongKeDichVu() {
-		pnCenter.removeAll();
-		Frm_ThongKeDichVu frTKDV = new Frm_ThongKeDichVu();
-		pnCenter.add(frTKDV.getFrmThongKeDichVu());
-
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_ThongKeDichVu frTKDV = new Frm_ThongKeDichVu();
+			pnCenter.add(frTKDV.getFrmThongKeDichVu());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}	
 	}
 
 	public void loadFrm_ThongKeHoaDon() {
-		pnCenter.removeAll();
-		Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
-		pnCenter.add(frTKHD.getFrmThongKeHoaDon());
-
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
+			pnCenter.add(frTKHD.getFrmThongKeHoaDon());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	public void loadFrm_ThongKeKhachHang() {
