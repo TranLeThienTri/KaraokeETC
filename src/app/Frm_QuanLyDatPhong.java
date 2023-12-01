@@ -25,15 +25,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
@@ -92,7 +95,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	private ButtonGroup bg;
 	public DanhSachDatPhong dsDP;
 	public DanhSachKhachHang dsKH;
-	
+
 	Date ngayDat;
 	String dateString;
 	boolean flag = false;
@@ -104,6 +107,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	LocalTime localTime;
 	NhanVien nv;
 	private DecimalFormat df;
+	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3, keyStrokeCTRL4;
 
 	public Panel getFrmQuanLyDatPhong() {
 		return this.pnQLDP;
@@ -374,28 +378,32 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		scrDSPDD.setViewportView(tableDSPhong1);
 
 		btnLamMoi = new FixButton("Làm mới");
+		btnLamMoi.setText("Làm mới (Ctrl 4)");
 		btnLamMoi.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_lammoi.png")));
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLamMoi.setBounds(1116, 571, 190, 51);
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnLamMoi.setBounds(1116, 571, 230, 51);
 		pnQLDP.add(btnLamMoi);
 
 		btnHuyDatPhong = new FixButton("Hủy đặt phòng");
+		btnHuyDatPhong.setText("Hủy đặt phòng (Ctrl 3)");
 		btnHuyDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_huydv.png")));
-		btnHuyDatPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnHuyDatPhong.setBounds(1116, 499, 190, 51);
+		btnHuyDatPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnHuyDatPhong.setBounds(1116, 499, 230, 51);
 		pnQLDP.add(btnHuyDatPhong);
 
 		btnDatPhong = new FixButton("Đặt phòng");
+		btnDatPhong.setText("Đặt phòng (Ctrl 2)");
 		btnDatPhong.setMouseHoverEnable(true);
 		btnDatPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_xacnhan.png")));
-		btnDatPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDatPhong.setBounds(1116, 430, 190, 51);
+		btnDatPhong.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnDatPhong.setBounds(1116, 430, 230, 51);
 		pnQLDP.add(btnDatPhong);
 
 		btnNhanPhong = new FixButton("Nhận phòng");
+		btnNhanPhong.setText("Nhận phòng (Ctrl 1)");
 		btnNhanPhong.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/btn_nhanphong.png")));
-		btnNhanPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnNhanPhong.setBounds(1116, 358, 190, 51);
+		btnNhanPhong.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNhanPhong.setBounds(1116, 358, 230, 51);
 		pnQLDP.add(btnNhanPhong);
 
 		// add background ở cuối
@@ -439,7 +447,19 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		upTable1(dsDP.getAllRoomByDate(dateString));
 		upTable2(dsDP.getAllRoomStatusByDate());
 		getIndexRow();
-		
+
+		// add và định nghĩa các hot key cho ứng dụng
+		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
+		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
+		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
+		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4");
+
+		// Phím nóng
+		addHotKey1();
+		addHotKey2();
+		addHotKey3();
+		addHotKey4();
+
 	}
 
 	@Override
@@ -982,4 +1002,50 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 			}
 		}
 	}
+
+	// hot key Ctrl1
+	public void addHotKey1() {
+
+		btnNhanPhong.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
+		btnNhanPhong.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnNhanPhong.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl2
+	public void addHotKey2() {
+		btnDatPhong.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
+		btnDatPhong.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnDatPhong.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl3
+	public void addHotKey3() {
+		btnHuyDatPhong.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
+		btnHuyDatPhong.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnHuyDatPhong.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl4
+	public void addHotKey4() {
+		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL4, "clickButton");
+		btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnLamMoi.doClick();
+			}
+		});
+	}
+
 }

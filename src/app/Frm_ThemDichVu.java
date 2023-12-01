@@ -91,30 +91,13 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	JComboBox comboTDV, comboLDV;
 	JTextField txtSoLuongTon;
 	Panel pnTDV;
-//<<<<<<< HEAD
-//	FixButton btnHuyDV, btnXacNhan, btnLamMoi, btnThemDV;
-//=======
 	FixButton btnHuyDV, btnXacNhan, btnLamMoi, btnThemDV, btnSuaDV;
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	FixButton2 btnQuayLai;
 	private JTable tableDSDichVu;
 	private DefaultTableModel model;
 	private DateTimeFormatter dt;
 	private JLabel lbTongTien;
-//<<<<<<< HEAD
-//	private JLabel lbPhong, lbShowMaPhong;
-//	private JLabel lbTenKH, lbShowTenKhh;
-//	private JLabel lbGioVao, lbShowGioVao;
-//	DanhSachDichVu dsDV;
-//	DanhSachHoaDon dsHD;
-//	DanhSachChiTietHoaDon dsCTHD;
-//	HoaDonPhong hd;
-//	ChiTietHoaDon ct;
-//	DanhSachPhong p;
-//	ThuePhong tp;
-//	PhuThu pt;
 	int STT = 0;
-//=======
 	private JLabel lbPhong;
 	private JLabel lbKH;
 	private JLabel lbGioVao;
@@ -122,7 +105,6 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	DanhSachDichVu dsDV;
 	DanhSachHoaDon dsHD;
 	DanhSachThuePhong tp;
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 	private DecimalFormat df;
 
 	public Panel getFrmThemDichVu(HoaDonPhong hd) {
@@ -193,16 +175,11 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		txtSoLuongTon.setBounds(200, 125, 80, 30);
 		txtSoLuongTon.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnDV.add(txtSoLuongTon);
-
-//<<<<<<< HEAD
-//		btnThemDV = new FixButton();
-//=======
 		btnThemDV = new FixButton("Làm mới");
 		btnThemDV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		btnThemDV.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/cart.png")));
 		btnThemDV.setText("Thêm dịch vụ");
 		btnThemDV.setBounds(129, 206, 300, 35);
@@ -220,8 +197,6 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbGiamSL.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_giam.png")));
 		lbGiamSL.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbGiamSL.setBounds(158, 125, 30, 27);
-//		Border bottomBorder1 = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
-//		lbGiamSL.setBorder(bottomBorder1);
 		pnDV.add(lbGiamSL);
 
 		lbTangSL = new JLabel("");
@@ -229,7 +204,6 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbTangSL.setForeground(Color.WHITE);
 		lbTangSL.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbTangSL.setBounds(286, 125, 30, 27);
-//		lbTangSL.setBorder(bottomBorder1);
 		pnDV.add(lbTangSL);
 
 		lbTongTien = new JLabel("Đơn giá:");
@@ -303,12 +277,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		btnHuyDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnHuyDV.setBounds(700, 470, 200, 40);
 		pnTDV.add(btnHuyDV);
-
-//<<<<<<< HEAD
-//		btnXacNhan = new FixButton();
-//=======
 		btnXacNhan = new FixButton("");
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
 		btnXacNhan.setIcon(new ImageIcon(Frm_ThemDichVu.class.getResource("/imgs/btn_xacnhan.png")));
 		btnXacNhan.setText("Xác nhận");
 		btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -496,23 +465,25 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lblTenPhong.setText(hd.getPhong().getMaPhong());
 		lblTenKH.setText(hd.getMaKhachHang().getHoTenKhachHang());
 		lblTime.setText(dt.format(hd.getGioBatDauThue()));
-		ArrayList<ChiTietHoaDon> list = tp.getCTHDTheoMa(hd.getMaHoaDon());
+		ArrayList<ChiTietHoaDon> list = tp.getCTHDDVTheoMa(hd.getMaHoaDon());
 		int i = 1;
 		float tongtiendv = 0;
 		for (ChiTietHoaDon p : list) {
-			DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
-			Object[] obj = new Object[7];
-			obj[0] = i++;
-			obj[1] = p.getDichVu().getMaDichVu();
-			obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
-			obj[3] = dv.getTenDichVu();
-			obj[4] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
-			obj[5] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
-			float tong = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu())
-					* dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu());
-			tongtiendv += tong;
-			obj[6] = df.format(tong);
-			model.addRow(obj);
+			if (p.getDichVu() != null) {
+				DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
+				Object[] obj = new Object[7];
+				obj[0] = i++;
+				obj[1] = p.getDichVu().getMaDichVu();
+				obj[2] = dv.getloaiDichVu().getTenLoaiDichVu();
+				obj[3] = dv.getTenDichVu();
+				obj[4] = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu());
+				obj[5] = df.format(dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu()));
+				float tong = dsDV.getSLTheoMaDV(p.getDichVu().getMaDichVu())
+						* dsDV.getDGTheoMaDV(p.getDichVu().getMaDichVu());
+				tongtiendv += tong;
+				obj[6] = df.format(tong);
+				model.addRow(obj);
+			}
 		}
 	}
 
@@ -561,14 +532,15 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 				dsDV.updateSLTon(madv, slt - sl);
 				if (!tp.themDVTheoMa(hd.getMaHoaDon(), madv, sl)) {
 					JOptionPane.showMessageDialog(this, "Thêm thành công");
-					Object[] obj = new Object[6];
+					Object[] obj = new Object[7];
 					obj[0] = row + 1;
-					obj[1] = ldv;
-					obj[2] = tdv;
-					obj[3] = sl;
-					obj[4] = df.format(dsDV.getDGTheoMaDV(madv));
+					obj[1] = madv;
+					obj[2] = ldv;
+					obj[3] = tdv;
+					obj[4] = sl;
+					obj[5] = df.format(dsDV.getDGTheoMaDV(madv));
 					float tong = sl * dsDV.getDGTheoMaDV(madv);
-					obj[5] = df.format(tong);
+					obj[6] = df.format(tong);
 					model.addRow(obj);
 				}
 			}

@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -27,9 +29,12 @@ import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.DanhSachChiTietHoaDon;
+import dao.DanhSachDatPhong;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
 import dao.DanhSachThuePhong;
+import entitys.ChiTietHoaDon;
 import entitys.HoaDonPhong;
 import entitys.Phong;
 
@@ -60,6 +65,8 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 	DanhSachPhong p;
 	DanhSachHoaDon dsHD;
 	DanhSachThuePhong tp;
+	DanhSachDatPhong dsDP;
+	DanhSachChiTietHoaDon dsCT;
 
 	public Panel getFrmChuyenPhong() {
 		return this.pnChuyenPhong;
@@ -82,6 +89,22 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		getContentPane().add(pnChuyenPhong);
 		pnChuyenPhong.setLayout(null);
 
+		btnChuyen = new FixButton("Làm mới");
+		btnChuyen.setBounds(517, 718, 140, 40);
+		pnChuyenPhong.add(btnChuyen);
+		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
+		btnChuyen.setText("Xác nhận");
+		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnChuyen.addActionListener(this);
+
+		btnHuy = new FixButton("Hủy đặt phòng");
+		btnHuy.setBounds(354, 718, 140, 40);
+		pnChuyenPhong.add(btnHuy);
+		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
+		btnHuy.setText("Hủy");
+		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnHuy.addActionListener(this);
+
 		lbTTKH = new JLabel("Thông tin khách hàng");
 		lbTTKH.setForeground(Color.WHITE);
 		lbTTKH.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -90,7 +113,7 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
-		pnDSDichVu.setBounds(0, 537, 980, 250);
+		pnDSDichVu.setBounds(32, 458, 926, 250);
 		pnChuyenPhong.add(pnDSDichVu);
 		pnDSDichVu.setLayout(null);
 
@@ -98,10 +121,10 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbDSDichVu.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbDSDichVu.setBounds(10, 0, 150, 25);
 		pnDSDichVu.add(lbDSDichVu);
-		String col[] = {"Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng"};
-		model = new DefaultTableModel(col,0);
+		String col[] = { "Mã phòng", "Tình trạng", "Sức chứa", "Loại phòng", "Giá phòng" };
+		model = new DefaultTableModel(col, 0);
 		tableDSPhong = new JTable(model);
-		
+
 		tableDSPhong.setBackground(Color.WHITE);
 
 		// Set màu cho table
@@ -224,20 +247,6 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbGiaPhong.setBounds(10, 130, 200, 25);
 		pnTTPHT.add(lbGiaPhong);
 
-		btnHuy = new FixButton("Hủy đặt phòng");
-		btnHuy.setBounds(337, 467, 140, 40);
-		pnChuyenPhong.add(btnHuy);
-		btnHuy.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_huydv.png")));
-		btnHuy.setText("Hủy");
-		btnHuy.setFont(new Font("Tahoma", Font.BOLD, 15));
-
-		btnChuyen = new FixButton("Làm mới");
-		btnChuyen.setBounds(507, 467, 140, 40);
-		pnChuyenPhong.add(btnChuyen);
-		btnChuyen.setIcon(new ImageIcon(Frm_ThanhToan.class.getResource("/imgs/btn_xacnhan.png")));
-		btnChuyen.setText("Xác nhận");
-		btnChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
-
 		lbChuyenPhong = new JLabel("CHUYỂN PHÒNG");
 		lbChuyenPhong.setForeground(Color.WHITE);
 		lbChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -250,19 +259,18 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		lbBGQLDV.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/bg_trong.png")));
 		lbBGQLDV.setBounds(0, 0, 1000, 820);
 		pnChuyenPhong.add(lbBGQLDV);
+		dsDP = new DanhSachDatPhong();
 		txtGiaPhong.setEditable(false);
 		txtKhachHang.setEditable(false);
 		txtSucChua.setEditable(false);
 		txtTinhTrang.setEditable(false);
-		btnHuy.addActionListener(this);
-		btnChuyen.addActionListener(this);
 		df = new DecimalFormat("###,### VNĐ");
 		p = new DanhSachPhong();
 		tp = new DanhSachThuePhong();
+		dsCT = new DanhSachChiTietHoaDon();
 		upTT();
 		upTable();
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -272,8 +280,8 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 
 			dispose();
 		}
-		if(o == btnChuyen) {
-			if(chuyenPhong(hd)) {
+		if (o == btnChuyen) {
+			if (chuyenPhong(hd)) {
 				JOptionPane.showMessageDialog(this, "Chuyển phòng thành công");
 				dispose();
 			}
@@ -295,8 +303,9 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 		txtSucChua.setText(succhua);
 		txtLoaiPhong.setText(tt);
 	}
+
 	public void upTable() {
-		ArrayList<Phong> list = p.getDSPhong();
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 		for (Phong p : list) {
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
@@ -304,18 +313,32 @@ public class Frm_ChuyenPhong extends JFrame implements ActionListener {
 			obj[2] = p.getSucChua();
 			obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
 			obj[4] = df.format(p.getGiaPhong());
-			if (p.getMaTinhTrangPhong().getTenTinhTrangPhong().trim().equals("RENT")) {
+			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("RENT")
+					|| p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")) {
 				continue;
 			}
 			model.addRow(obj);
 		}
 	}
-	public boolean chuyenPhong(HoaDonPhong p) {
+
+	public boolean chuyenPhong(HoaDonPhong hd) {
 		int row = tableDSPhong.getSelectedRow();
+		Phong phong = p.getPhongTheoMa(hd.getPhong().getMaPhong());
 		String map = (String) tableDSPhong.getValueAt(row, 0);
-		if(!tp.chuyenPhong(p.getMaHoaDon(), map)) {
+		if (!tp.chuyenPhong(hd.getMaHoaDon(), map)) {
+			ArrayList<ChiTietHoaDon> list = tp.getCTHDTheoMa(hd.getMaHoaDon());
+			ChiTietHoaDon ct = null;
+			if (list.size()>0) {
+				for (ChiTietHoaDon c : list) {
+					if (c.getGioChuyen() != null)
+						ct = new ChiTietHoaDon(hd, phong, LocalTime.now(), c.getGioChuyen());
+				}
+			} else 
+				ct = new ChiTietHoaDon(hd, phong, LocalTime.now(), hd.getGioBatDauThue());
+
+			dsCT.luuTTChuyenPhong(ct);
 			tp.setTTPhongTheoMa(map, "RENT");
-			tp.setTTPhongTheoMa(p.getPhong().getMaPhong(), "EMPT");
+			tp.setTTPhongTheoMa(hd.getPhong().getMaPhong(), "EMPT");
 			return true;
 		}
 		return false;

@@ -23,16 +23,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.SimpleTimeZone;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
@@ -51,7 +54,7 @@ import org.apache.poi.examples.hsmf.Msg2txt;
 import connectDB.ConnectDB;
 
 import dao.DanhSachThuePhong;
-
+import dao.DanhSachDatPhong;
 import dao.DanhSachDichVu;
 import dao.DanhSachHoaDon;
 import dao.DanhSachPhong;
@@ -93,7 +96,9 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 	DanhSachHoaDon dsHD;
 	DanhSachDichVu dsDV;
 	DanhSachPhuThu dsPT;
+	DanhSachDatPhong dsDP;
 	NhanVien nv;
+	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3, keyStrokeCTRL4, keyStrokeCTRL5;
 
 	Panel getFrmQuanLyThuePhong() {
 		return this.pnQLDP;
@@ -297,36 +302,41 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 		pnCRUD = new JPanel();
 		pnCRUD.setBackground(new Color(158, 207, 0, 1));
-		pnCRUD.setBounds(106, 572, 1184, 57);
+		pnCRUD.setBounds(30, 578, 1321, 57);
 		pnQLDP.add(pnCRUD);
 		pnCRUD.setLayout(null);
 		btnLamMoi = new FixButton("Làm mới");
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLamMoi.setText("Làm mới (Ctrl 4)");
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnLamMoi.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_btn_lammoi.png")));
-		btnLamMoi.setBounds(745, 15, 200, 35);
+		btnLamMoi.setBounds(800, 12, 220, 35);
 		pnCRUD.add(btnLamMoi);
 
 		btnTinhTien = new FixButton("Tính tiền");
+		btnTinhTien.setText("Tính tiền (Ctrl 5)");
 		btnTinhTien.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_tinhtien.png")));
-		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnTinhTien.setBounds(985, 15, 200, 35);
+		btnTinhTien.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnTinhTien.setBounds(1050, 12, 220, 35);
 		pnCRUD.add(btnTinhTien);
 
 		btnThuePhong = new FixButton("Thuê phòng");
+		btnThuePhong.setText("Thuê phòng (Ctrl 3)");
 		btnThuePhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_thuephong.png")));
-		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThuePhong.setBounds(505, 15, 200, 35);
+		btnThuePhong.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThuePhong.setBounds(550, 12, 220, 35);
 		pnCRUD.add(btnThuePhong);
 
 		btnChuyenPhong = new FixButton("Chuyển phòng");
+		btnChuyenPhong.setText("Chuyển phòng (Ctrl 1)");
 		btnChuyenPhong.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_chuyenphong.png")));
-		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnChuyenPhong.setBounds(25, 15, 200, 35);
+		btnChuyenPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnChuyenPhong.setBounds(50, 12, 220, 35);
 		pnCRUD.add(btnChuyenPhong);
 		btnThemDV = new FixButton("Thêm dịch vụ");
+		btnThemDV.setText("Thêm dịch vụ (Ctrl 2)");
 		btnThemDV.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/btn_them.png")));
-		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnThemDV.setBounds(265, 15, 200, 35);
+		btnThemDV.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThemDV.setBounds(300, 12, 220, 35);
 		pnCRUD.add(btnThemDV);
 //table thong tin thuê phòng	
 		pnDSP2 = new JPanel();
@@ -395,7 +405,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		btnTatCa.addActionListener(this);
 		radioDangThue.addActionListener(this);
 		radioTrong.addActionListener(this);
-
+		dsDP = new DanhSachDatPhong();
 		dsPhong = new DanhSachPhong();
 		dsTP = new DanhSachThuePhong();
 		dsHD = new DanhSachHoaDon();
@@ -409,13 +419,25 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
+		// add và định nghĩa các hot key cho ứng dụng
+		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
+		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
+		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
+		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4	");
+		keyStrokeCTRL5 = KeyStroke.getKeyStroke("ctrl 5");
+
+		// Phím nóng
+		addHotKey1();
+		addHotKey2();
+		addHotKey3();
+		addHotKey4();
+		addHotKey5();
 
 	}
 
 	public void upTable1() {
 		int i = 3;
-		ArrayList<Phong> list = new ArrayList();
-		list = dsPhong.getDSPhong();
+		ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 		for (Phong p : list) {
 			Object[] obj = new Object[5];
 			obj[0] = p.getMaPhong().trim();
@@ -453,7 +475,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		int row = tableDSPhong2.getSelectedRow();
 		if (row >= 0) {
 			String ma = (String) tableDSPhong2.getValueAt(row, 0);
-			ArrayList<ChiTietHoaDon> list = dsTP.getCTHDTheoMa(ma);
+			ArrayList<ChiTietHoaDon> list = dsTP.getCTHDDVTheoMa(ma);
 			for (ChiTietHoaDon p : list) {
 				if (p.getDichVu() != null) {
 					DichVu dv = dsDV.getDVTheoMa(p.getDichVu().getMaDichVu());
@@ -794,7 +816,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable();
 		upTable1();
 		upTable2();
-		upTableDV();
 		txtSDT.setText("");
 		txtKhachHang.setText("");
 		tableDSPhong.clearSelection();
@@ -802,6 +823,62 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		tableDSDichVu.clearSelection();
 		bg.clearSelection();
 
+	}
+
+	// hot key Ctrl1
+	public void addHotKey1() {
+
+		btnChuyenPhong.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
+		btnChuyenPhong.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnChuyenPhong.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl2
+	public void addHotKey2() {
+		btnThemDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
+		btnThemDV.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnThemDV.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl3
+	public void addHotKey3() {
+		btnThuePhong.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
+		btnThuePhong.getActionMap().put("clickButton", new AbstractAction() {
+//								        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnThuePhong.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl4
+	public void addHotKey4() {
+		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL4, "clickButton");
+		btnLamMoi.getActionMap().put("clickButton", new AbstractAction() {
+//											        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnLamMoi.doClick();
+			}
+		});
+	}
+
+	// hot key Crtl5
+	public void addHotKey5() {
+		btnTinhTien.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL5, "clickButton");
+		btnTinhTien.getActionMap().put("clickButton", new AbstractAction() {
+//											        @Override
+			public void actionPerformed(ActionEvent e) {
+				btnTinhTien.doClick();
+			}
+		});
 	}
 
 	@Override

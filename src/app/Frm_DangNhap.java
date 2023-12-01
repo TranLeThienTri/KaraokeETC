@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.Panel;
@@ -132,6 +134,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		lbQuenMatKhau.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lbQuenMatKhau.setBounds(428, 212, 139, 25);
 		formDangNhap.add(lbQuenMatKhau);
+		
 
 		lbIconUser = new JLabel("");
 		lbIconUser.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/icon_user.png")));
@@ -153,6 +156,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		btnDangNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDangNhap.setFont(new Font("Tahoma", Font.BOLD, 22));
 		btnDangNhap.setBounds(250, 257, 171, 51);
+		btnDangNhap.setBackground(new Color(254, 255, 212));
 		formDangNhap.add(btnDangNhap);
 	}
 
@@ -251,11 +255,16 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		btnDangNhap.setBackground(new Color(117, 154, 169, 100));
+		lbQuenMatKhau.setForeground(new Color(227, 204, 0));
+		lbQuenMatKhau.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(227, 204, 0)));
+		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		lbQuenMatKhau.setForeground(Color.WHITE);
+		lbQuenMatKhau.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(227, 204, 0)));
+		btnDangNhap.setBackground(new Color(254, 255, 212));
 		// TODO Auto-generated method stub
 	}
 
@@ -286,6 +295,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		frmSendMail.setVisible(true);
 		this.setVisible(false);
 	}
+	
 
 	public static void main(String[] args) {
 		new Frm_DangNhap().setVisible(true);

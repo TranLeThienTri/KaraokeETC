@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -54,6 +55,9 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -72,7 +76,6 @@ import javax.swing.JOptionPane;
 import java.awt.ScrollPane;
 import javax.swing.JScrollBar;
 import java.awt.Panel;
-
 
 public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	private JTextField txtMaKH, txtTenKH, txtDiaChi, txtThanhPho, txtQuocGia, txtSDT, txtGioiTinh, txtTuoi, txtCMND,
@@ -93,9 +96,9 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	private JLabel lbChucVu;
 	private JLabel lbIconChucVu;
 	public NhanVien nv;
-	KeyStroke keyStrokeF1,keyStrokeF2,keyStrokeF3,keyStrokeF4,keyStrokeF5,keyStrokeF6,keyStrokeF7,keyStrokeF71,keyStrokeF72,keyStrokeF73,keyStrokeF74,keyStrokeF8,keyStrokeF9;
+	KeyStroke keyStrokeF1, keyStrokeF2, keyStrokeF3, keyStrokeF4, keyStrokeF5, keyStrokeF6, keyStrokeF7, keyStrokeF71,
+			keyStrokeF72, keyStrokeF73, keyStrokeF74, keyStrokeF8, keyStrokeF9;
 
-	
 	public Frm_Chinh() throws HeadlessException {
 		super();
 	}
@@ -113,7 +116,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void gui() {
-		
+
 		getContentPane().setLayout(null);
 
 		PnChinh = new JPanel();
@@ -292,9 +295,13 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTKHD.addActionListener(this);
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
+
 		pnHeader.addMouseListener(this);
-		
-		//add và địng nghĩa các hot key cho ứng dụng
+
+		// add và địng nghĩa các hot key cho ứng dụng
+
+		// add và địng nghĩa các hot key cho ứng dụng
+
 		keyStrokeF1 = KeyStroke.getKeyStroke("F1");
 		keyStrokeF2 = KeyStroke.getKeyStroke("F2");
 		keyStrokeF3 = KeyStroke.getKeyStroke("F3");
@@ -313,13 +320,10 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		ngayHienTai();
 		gioHienTai();
 		loadFrm_TrangChu();
-		
+
 		addHotKey();
 	}
 
-
-	
-	
 	public void loadFrmQuanLyKhachHang() throws SQLException {
 		pnCenter.removeAll();
 		Frm_KhachHang frKH = new Frm_KhachHang();
@@ -329,11 +333,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	public void loadFrmQuanLyNhanVien() {
 		String maCV = "QL";
 		ChucVu cv = new ChucVu(maCV);
-		if(nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
 			pnCenter.removeAll();
 			Frm_NhanVien frNV = new Frm_NhanVien();
 			pnCenter.add(frNV.getFrmQuanLyNhanVien());
-		}else {
+		} else {
 			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
 		}
 	}
@@ -351,9 +355,15 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrmQuanLyPhong() {
-		pnCenter.removeAll();
-		Frm_QuanLyPhong frQLP = new Frm_QuanLyPhong(nv);
-		pnCenter.add(frQLP.getFrmQuanLyPhong());
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_QuanLyPhong frQLP = new Frm_QuanLyPhong(nv);
+			pnCenter.add(frQLP.getFrmQuanLyPhong());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	// load Frm Linh Kien
@@ -365,17 +375,27 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrm_ThongKeDichVu() {
-		pnCenter.removeAll();
-		Frm_ThongKeDichVu frTKDV = new Frm_ThongKeDichVu();
-		pnCenter.add(frTKDV.getFrmThongKeDichVu());
-
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_ThongKeDichVu frTKDV = new Frm_ThongKeDichVu();
+			pnCenter.add(frTKDV.getFrmThongKeDichVu());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	public void loadFrm_ThongKeHoaDon() {
-		pnCenter.removeAll();
-		Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
-		pnCenter.add(frTKHD.getFrmThongKeHoaDon());
-
+		String maCV = "QL";
+		ChucVu cv = new ChucVu(maCV);
+		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
+			pnCenter.removeAll();
+			Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
+			pnCenter.add(frTKHD.getFrmThongKeHoaDon());
+		} else {
+			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
+		}
 	}
 
 	public void loadFrm_ThongKeKhachHang() {
@@ -392,13 +412,14 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		pnCenter.add(frTKNV.getFrmPhong());
 
 	}
+
 	public void loadFrm_TrangChu() {
 		pnCenter.removeAll();
 		Frm_TrangChu frTC = new Frm_TrangChu();
 		pnCenter.add(frTC.getFrmTrangChu());
 
 	}
-	
+
 	public void loadFrm_Profile() {
 		Frm_Profile frmProfile = new Frm_Profile(nv);
 		frmProfile.setVisible(true);
@@ -431,10 +452,29 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrmQuanLyPhong();
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
-		if(o == pnHeader) {
+
+		if (o == pnHeader) {
 			loadFrm_Profile();
 		}
-		
+
+		if (o == mnTrangChu)
+			loadFrm_TrangChu();
+		if (o == mnTroGiup) {
+			String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+			try {
+				Desktop.getDesktop().browse(new URL(webURL).toURI());
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
 	}
 
 	@Override
@@ -472,7 +512,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		else if (o == mnTKKH)
 			loadFrm_ThongKeKhachHang();
 		else if (o == mnTKNV)
-			
+
 			loadFrm_ThongKePhong();
 		else if (o == btnDangxuat) {
 			dangXuat();
@@ -505,7 +545,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		timer.setInitialDelay(0);
 		timer.start();
 	}
-	
+
 	public void dangXuat() {
 		if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất không?", "Cảnh báo",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -514,7 +554,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			this.setVisible(false);
 		}
 	}
-	
+
 	public void addInfoStaff(NhanVien nv) {
 		pnHeader = new JPanel();
 		lbHoTenNV = new JLabel(nv.getHoTenNhanVien());
@@ -524,139 +564,162 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		pnHeader.add(lbHoTenNV);
 	}
 
-	
 	public void addHotKey() {
 		// hot key f1
 		mnTrangChu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF1, "clickButton");
 		mnTrangChu.getActionMap().put("clickButton", new AbstractAction() {
 //	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            mnTrangChu.doClick();
-	            loadFrm_TrangChu();
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				mnTrangChu.doClick();
+				loadFrm_TrangChu();
+			}
+		});
 		// hot key f2
-				mnQLP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF2, "clickButton");
-				mnQLP.getActionMap().put("clickButton", new AbstractAction() {
+		mnQLP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF2, "clickButton");
+		mnQLP.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			        	mnQLP.doClick();
-			            loadFrmQuanLyPhong();
-			        }
-			    });
-				// hot key f3
-				mnQLTP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF3, "clickButton");
-				mnQLTP.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnQLP.doClick();
+				loadFrmQuanLyPhong();
+			}
+		});
+		// hot key f3
+		mnQLTP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF3, "clickButton");
+		mnQLTP.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			        	mnQLTP.doClick();
-			            loadFrmQuanLyThuePhong();
-			        }
-			    });
-				// hot key f4
-				mnQLDP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF4, "clickButton");
-				mnQLDP.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnQLTP.doClick();
+				loadFrmQuanLyThuePhong();
+			}
+		});
+		// hot key f4
+		mnQLDP.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF4, "clickButton");
+		mnQLDP.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			        	mnQLDP.doClick();
-			            loadFrmQuanLyDatPhong();
-			        }
-			    });
-				// hot key f5
-				mnQLKH.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF5, "clickButton");
-				mnQLKH.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnQLDP.doClick();
+				loadFrmQuanLyDatPhong();
+			}
+		});
+		// hot key f5
+		mnQLKH.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF5, "clickButton");
+		mnQLKH.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			            mnQLKH.doClick();
-			            try {
-							loadFrmQuanLyKhachHang();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-			        }
-			    });
-				// hot key f6
-				mnQLDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF6, "clickButton");
-				mnQLDV.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnQLKH.doClick();
+				try {
+					loadFrmQuanLyKhachHang();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		// hot key f6
+		mnQLDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF6, "clickButton");
+		mnQLDV.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			        	mnQLDV.doClick();
-			            try {
-							loadFrmQuanLyDichVu();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-			        }
-			    });
-				// hot key f7
-				mnTK.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF7, "clickButton");
-				mnTK.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnQLDV.doClick();
+				try {
+					loadFrmQuanLyDichVu();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		// hot key f7
+		mnTK.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF7, "clickButton");
+		mnTK.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			            mnTK.doClick();
-			        	callTKNV();    
-			        	callTKKH();
-			        	callTKDV();
-			        	callTKHD();
-			        }
-			    });
-				// hot key f8
-				mnQLNV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF8, "clickButton");
-				mnQLNV.getActionMap().put("clickButton", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				mnTK.doClick();
+				callTKNV();
+				callTKKH();
+				callTKDV();
+				callTKHD();
+			}
+		});
+		// hot key f8
+		mnQLNV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF8, "clickButton");
+		mnQLNV.getActionMap().put("clickButton", new AbstractAction() {
 //			        @Override
-			        public void actionPerformed(ActionEvent e) {
-			            mnQLNV.doClick();
-			            loadFrmQuanLyNhanVien();
-			        }
-			    });
+			public void actionPerformed(ActionEvent e) {
+				mnQLNV.doClick();
+				loadFrmQuanLyNhanVien();
+			}
+		});
+		// hot key f9
+		mnTroGiup.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF9, "clickButton");
+		mnTroGiup.getActionMap().put("clickButton", new AbstractAction() {
+//					        @Override
+			public void actionPerformed(ActionEvent e) {
+				mnTroGiup.doClick();
+				String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+				try {
+					Desktop.getDesktop().browse(new URL(webURL).toURI());
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 	}
-	
+
 	public void callTKNV() {
 		// hot key f71
 		mnTKNV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF71, "clickButton");
 		mnTKNV.getActionMap().put("clickButton", new AbstractAction() {
 //	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	mnTKNV.doClick();
-	        	loadFrm_ThongKePhong() ;
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				mnTKNV.doClick();
+				loadFrm_ThongKePhong();
+			}
+		});
 	}
+
 	public void callTKKH() {
 		// hot key f71
 		mnTKKH.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF72, "clickButton");
 		mnTKKH.getActionMap().put("clickButton", new AbstractAction() {
 //	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	mnTKKH.doClick();
-	            loadFrm_ThongKeKhachHang();
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				mnTKKH.doClick();
+				loadFrm_ThongKeKhachHang();
+			}
+		});
 	}
+
 	public void callTKDV() {
 		// hot key f71
 		mnTKDV.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF73, "clickButton");
 		mnTKDV.getActionMap().put("clickButton", new AbstractAction() {
 //	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	mnTKDV.doClick();
-	            loadFrm_ThongKeDichVu();
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				mnTKDV.doClick();
+				loadFrm_ThongKeDichVu();
+			}
+		});
 	}
+
 	public void callTKHD() {
 		// hot key f71
 		mnTKHD.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF74, "clickButton");
 		mnTKHD.getActionMap().put("clickButton", new AbstractAction() {
 //	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	mnTKHD.doClick();
-	            loadFrm_ThongKeHoaDon();
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				mnTKHD.doClick();
+				loadFrm_ThongKeHoaDon();
+			}
+		});
 	}
-	
 
 }
