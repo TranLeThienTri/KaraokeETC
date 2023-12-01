@@ -202,6 +202,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
 		lbBgTrai.setBounds(0, 0, 440, 500);
 		pnBGR.add(lbBgTrai);
+		
 	}
 
 	// Hiển thị ngày hiện tại

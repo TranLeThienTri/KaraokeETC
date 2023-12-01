@@ -296,7 +296,12 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
 
+		pnHeader.addMouseListener(this);
+
 		// add và địng nghĩa các hot key cho ứng dụng
+
+		// add và địng nghĩa các hot key cho ứng dụng
+
 		keyStrokeF1 = KeyStroke.getKeyStroke("F1");
 		keyStrokeF2 = KeyStroke.getKeyStroke("F2");
 		keyStrokeF3 = KeyStroke.getKeyStroke("F3");
@@ -378,7 +383,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			pnCenter.add(frTKDV.getFrmThongKeDichVu());
 		} else {
 			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
-		}	
+		}
 	}
 
 	public void loadFrm_ThongKeHoaDon() {
@@ -415,6 +420,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 	}
 
+	public void loadFrm_Profile() {
+		Frm_Profile frmProfile = new Frm_Profile(nv);
+		frmProfile.setVisible(true);
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
@@ -442,6 +452,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrmQuanLyPhong();
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
+
+		if (o == pnHeader) {
+			loadFrm_Profile();
+		}
+
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
 		if (o == mnTroGiup) {
@@ -459,9 +474,8 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 				e1.printStackTrace();
 			}
 		}
-	}
 
-	
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -637,29 +651,28 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			}
 		});
 		// hot key f9
-				mnTroGiup.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF9, "clickButton");
-				mnTroGiup.getActionMap().put("clickButton", new AbstractAction() {
+		mnTroGiup.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF9, "clickButton");
+		mnTroGiup.getActionMap().put("clickButton", new AbstractAction() {
 //					        @Override
-					public void actionPerformed(ActionEvent e) {
-						mnTroGiup.doClick();
-						String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
-						try {
-							Desktop.getDesktop().browse(new URL(webURL).toURI());
-						} catch (MalformedURLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (URISyntaxException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				});
-			
+			public void actionPerformed(ActionEvent e) {
+				mnTroGiup.doClick();
+				String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+				try {
+					Desktop.getDesktop().browse(new URL(webURL).toURI());
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 	}
-	
 
 	public void callTKNV() {
 		// hot key f71
@@ -708,4 +721,5 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			}
 		});
 	}
+
 }

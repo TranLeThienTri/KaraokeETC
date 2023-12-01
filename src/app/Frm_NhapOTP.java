@@ -90,6 +90,7 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		lbTextNoti2.setBackground(UIManager.getColor("Button.background"));
 		lbTextNoti2.setBounds(48, 144, 539, 36);
 		pnSendOTP.add(lbTextNoti2);
+		
 
 	}
 
@@ -126,6 +127,15 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		getContentPane().add(pnBGR);
 
 		pnBGR.setLayout(null);
+		
+		FixButton btnQuayLai = new FixButton("Đăng Nhập");
+		btnQuayLai.setIcon(new ImageIcon(Frm_NhapOTP.class.getResource("/imgs/btn_quaylai.png")));
+		btnQuayLai.setText("");
+		btnQuayLai.setHideActionText(true);
+		btnQuayLai.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btnQuayLai.setFocusPainted(false);
+		btnQuayLai.setBounds(0, 0, 86, 46);
+		pnBGR.add(btnQuayLai);
 		pnSendOTP = new JPanel();
 		pnSendOTP.setBounds(83, 83, 620, 331);
 		pnBGR.add(pnSendOTP);
@@ -174,6 +184,10 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 			if(ktraDuLieu()) {
 				compareOTP();				
 			}
+		}else {
+			Frm_DangNhap fmDangNhap = new Frm_DangNhap();
+			fmDangNhap.setVisible(true);
+			this.setVisible(false);
 		}
 	}
 
