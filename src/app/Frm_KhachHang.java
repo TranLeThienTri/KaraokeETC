@@ -199,8 +199,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 
 		lbIconSearch = new JLabel("New label");
 		lbIconSearch.setIcon(new ImageIcon(Frm_KhachHang.class.getResource("/imgs/icon_search.png")));
-		lbIconSearch.setBounds(1117, 20, 30, 30);
-		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		lbIconSearch.setBounds(1125, 20, 30, 30);
 		panel.add(lbIconSearch);
 
 		// Danh sách khách hàng table
@@ -637,13 +636,19 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
 
 }

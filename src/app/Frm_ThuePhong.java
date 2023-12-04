@@ -158,10 +158,8 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		pnTTDDP.add(txtKhachHang);
 
 		lbIconSearch = new JLabel("New label");
-		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/icon_search.png")));
-		lbIconSearch.setBounds(507, 29, 22, 20);
-		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
-		lbIconSearch.setBorder(bottomBorder);
+		lbIconSearch.setIcon(new ImageIcon(Frm_ThuePhong.class.getResource("/imgs/icon_search.png")));
+		lbIconSearch.setBounds(510, 22, 32, 30);
 		pnTTDDP.add(lbIconSearch);
 
 		lbTTDDP = new JLabel("Thông tin đơn thuê phòng");
@@ -434,7 +432,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
 		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
 		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
-		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4	");
+		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4");
 		keyStrokeCTRL5 = KeyStroke.getKeyStroke("ctrl 5");
 
 		// Phím nóng
@@ -885,22 +883,22 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		Border bottomBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);
-		// Đặt đường gạch chân cho JLabel
+		// Hover cho JLabel
 		Object o = e.getSource();
-		if (o == lbIconSearch)
-			lbIconSearch.setBorder(bottomBorder);
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK);
-		// Đặt đường gạch chân cho JLabel
 		Object o = e.getSource();
-		if (o == lbIconSearch)
-			lbIconSearch.setBorder(bottomBorder);
+		// Hover cho JLabel
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
 
 	@Override

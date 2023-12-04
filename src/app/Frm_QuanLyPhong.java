@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
@@ -64,7 +66,7 @@ import javax.swing.JFormattedTextField;
 public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnLoaiPhong, pnDSP, pnTTDDP;
 	private JLabel lbLoaiPhongTK, lbDSPhong, lbBGQLDP, lbTTDDP, lbLoaiPhong, lblDinTch, lblMPhng, lblGiPhng, lbSDT,
-			lbTenKH, lbTB;
+			lbTenKH, lbTB, lbIconSearch;
 	private JTableHeader tbHeader1;
 	private FixButton2 btnTatCa, btnPhongThuong, btnPhongVip;
 	Panel pnQLDP;
@@ -143,19 +145,19 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		lblGiPhng = new JLabel("Giá phòng:");
 		lblGiPhng.setForeground(Color.WHITE);
 		lblGiPhng.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblGiPhng.setBounds(676, 37, 126, 25);
+		lblGiPhng.setBounds(676, 95, 126, 25);
 		pnTTDDP.add(lblGiPhng);
 
 		lblDinTch = new JLabel("Diện tích:");
 		lblDinTch.setForeground(Color.WHITE);
 		lblDinTch.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDinTch.setBounds(676, 93, 126, 25);
+		lblDinTch.setBounds(676, 155, 126, 25);
 		pnTTDDP.add(lblDinTch);
 
 		lblMPhng = new JLabel("Mã phòng:");
 		lblMPhng.setForeground(Color.WHITE);
 		lblMPhng.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMPhng.setBounds(676, 154, 126, 25);
+		lblMPhng.setBounds(676, 32, 126, 25);
 		pnTTDDP.add(lblMPhng);
 
 		lbTB = new JLabel();
@@ -198,22 +200,48 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 		txtGia = new JTextField();
 		txtGia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtGia.setBounds(795, 37, 323, 30);
+		txtGia.setBounds(795, 93, 323, 30);
 		txtGia.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnTTDDP.add(txtGia);
 
 		txtDienTich = new JTextField();
 		txtDienTich.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtDienTich.setBounds(795, 93, 323, 30);
+		txtDienTich.setBounds(795, 154, 323, 30);
 		txtDienTich.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnTTDDP.add(txtDienTich);
 
 		txtMaPhong = new JTextField();
 		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtMaPhong.setBounds(795, 151, 323, 28);
-		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 17));
-		txtMaPhong.setEditable(false);
+		txtMaPhong.setBounds(795, 33, 323, 28);
+
 		pnTTDDP.add(txtMaPhong);
+		// Place holder Jtextfield
+		txtMaPhong.setForeground(Color.GRAY);
+		// Đặt placeholder mặc định
+		txtMaPhong.setText("Tìm kiếm phòng theo mã phòng");
+		txtMaPhong.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if (txtMaPhong.getText().isEmpty()) {
+					txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+					txtMaPhong.setText("Tìm kiếm phòng theo mã phòng");
+					txtMaPhong.setForeground(Color.GRAY); // Đổi màu khi mất focus
+				}
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+
+				if (txtMaPhong.getText().equals("Tìm kiếm phòng theo mã phòng")) {
+					txtMaPhong.setText("");
+					txtMaPhong.setForeground(Color.BLACK); // Đổi màu khi nhập liệu
+				}
+			}
+		});
 
 		comboLoaiPhong = new JComboBox();
 		comboLoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -233,6 +261,11 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		comboSucChua.setBounds(215, 93, 323, 28);
 		comboSucChua.setSelectedIndex(0);
 		pnTTDDP.add(comboSucChua);
+
+		lbIconSearch = new JLabel("New label");
+		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyPhong.class.getResource("/imgs/icon_search.png")));
+		lbIconSearch.setBounds(1130, 30, 32, 30);
+		pnTTDDP.add(lbIconSearch);
 
 		pnLoaiPhong = new JPanel();
 		pnLoaiPhong.setBorder(new LineBorder(new Color(0, 0, 0), 5));
@@ -311,6 +344,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		btnPhongVip.addActionListener(this);
 		btnPhongThuong.addActionListener(this);
 		tableDSPhong1.addMouseListener(this);
+		lbIconSearch.addMouseListener(this);
 
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("## M2");
@@ -469,9 +503,13 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 	public void xoaTrang() {
 		txtGia.setText("");
-		txtMaPhong.setText("");
+		txtMaPhong.setText("Tìm kiếm phòng theo mã phòng");
+		txtMaPhong.setForeground(Color.GRAY);
 		txtDienTich.setText("");
 		tableDSPhong1.clearSelection();
+		comboTinhTrang.setSelectedIndex(1);
+		comboSucChua.setSelectedIndex(0);
+		comboLoaiPhong.setSelectedIndex(0);
 		lbTB.setText("");
 		clearTable();
 		ArrayList<Phong> list = dsDp.getAllRoomByDate(dateString);
@@ -519,7 +557,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		dfs = new DecimalFormat("### M2");
 		int row = tableDSPhong1.getSelectedRow();
 		txtGia.setText(df.parse(tableDSPhong1.getValueAt(row, 4).toString()) + "");
-		txtMaPhong.setText(tableDSPhong1.getValueAt(row, 0).toString());
 		txtDienTich.setText(dfs.parse(tableDSPhong1.getValueAt(row, 5).toString()) + "");
 
 		int i = 2;
@@ -600,6 +637,74 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		}
 	}
 
+	// Lọc phòng theo mã phòng
+	public void locTheoMaPhong() {
+		clearTable();
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		String maphong = txtMaPhong.getText().toString();
+		Phong p = dsPhong.getPhongTheoMa(maphong);
+		Object[] obj = new Object[6];
+		obj[0] = p.getMaPhong().trim();
+		obj[1] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+		obj[2] = p.getSucChua();
+		obj[3] = p.getMaLoaiPhong().getTenLoaiPhong();
+		obj[4] = df.format(p.getGiaPhong());
+		obj[5] = dfs.format(p.getDienTich());
+		model1.addRow(obj);
+
+	}
+
+	// Kiểm tra phòng
+	public void kiemTraPhong() {
+		df = new DecimalFormat("###,### VNĐ");
+		dfs = new DecimalFormat("##,## M2");
+		String maPhong = txtMaPhong.getText();
+		Phong p = dsPhong.getPhongTheoMa(maPhong);
+		if (p != null) {
+
+			int i = 2;
+			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("BOOK")) {
+				i = 0;
+			} else if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")) {
+				i = 1;
+			}
+			comboTinhTrang.setSelectedIndex(i);
+
+			int indexSc = 0;
+			if (p.getSucChua() == 15) {
+				indexSc = 1;
+			} else if (p.getSucChua() == 20) {
+				indexSc = 2;
+			}
+			comboSucChua.setSelectedIndex(indexSc);
+
+			int indexLp = 0;
+			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")) {
+				indexLp = 1;
+			}
+			comboLoaiPhong.setSelectedIndex(indexLp);
+			txtDienTich.setText(dfs.format(p.getDienTich()));
+			txtGia.setText(df.format(p.getGiaPhong()));
+			locTheoMaPhong();
+		}
+
+		else
+
+		{
+			JOptionPane.showMessageDialog(this, "Phòng chưa có trong hệ thống \n Thêm phòng mới!!!");
+			txtMaPhong.requestFocus();
+		}
+		if (maPhong.equals("Tìm kiếm phòng theo mã phòng") || maPhong.equals("")) {
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phòng ! \nMã phòng không được để trống");
+			txtMaPhong.requestFocus();
+		} else if (!maPhong.matches("[MP]{2}\\d{3}")) {
+			JOptionPane.showMessageDialog(this, "Mã phòng phải bắt đầu MP theo sau là 3 kí số. \nVD: MP001");
+			txtMaPhong.requestFocus();
+		}
+
+	}
+
 	// Lọc phòng theo loại
 	public void locTheoLoaiPhongThuong() {
 		clearTable();
@@ -626,9 +731,10 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			model1.removeRow(0);
 		}
 	}
+
 	// hot key Ctrl1
 	public void addHotKey1() {
-		
+
 		btnThem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL1, "clickButton");
 		btnThem.getActionMap().put("clickButton", new AbstractAction() {
 //					        @Override
@@ -637,6 +743,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			}
 		});
 	}
+
 	// hot key Crtl2
 	public void addHotKey2() {
 		btnSua.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL2, "clickButton");
@@ -647,6 +754,7 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 			}
 		});
 	}
+
 	// hot key Crtl3
 	public void addHotKey3() {
 		btnLamMoi.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeCTRL3, "clickButton");
@@ -661,12 +769,18 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		try {
-			setTextTB();
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			kiemTraPhong();
+		} else {
+			try {
+				setTextTB();
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
+
 	}
 
 	@Override
@@ -684,13 +798,18 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
-
 }

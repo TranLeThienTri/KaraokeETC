@@ -206,7 +206,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 		lbIconSearch = new JLabel();
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDatPhong.class.getResource("/imgs/icon_search.png")));
-		lbIconSearch.setBounds(540, 52, 29, 20);
+		lbIconSearch.setBounds(540, 47, 32, 30);
 		pnTTDDP.add(lbIconSearch);
 
 		ngayDatPhong = new JDateChooser();
@@ -737,6 +737,9 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (o == btnPhongThuong) {
 			btnPhongThuong.setBackground(new Color(90, 125, 144));
 		}
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
@@ -752,6 +755,10 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (o == btnPhongThuong) {
 			btnPhongThuong.setBackground(new Color(255, 255, 255));
 		}
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
+		
 	}
 
 	@Override

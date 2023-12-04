@@ -41,6 +41,7 @@ import entitys.NhanVien;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -168,7 +169,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		lbChucVu = new JLabel(nv.getchucVu().getTenChucVu());
 		lbChucVu.setForeground(Color.WHITE);
 		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbChucVu.setBounds(980, 35, 200, 25);
+		lbChucVu.setBounds(980, 35, 60, 25);
 		pnHeader.add(lbChucVu);
 
 		lbIconChucVu = new JLabel("");
@@ -290,6 +291,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnQLP.addMouseListener(this);
 		mnQLTP.addMouseListener(this);
 		mnTroGiup.addMouseListener(this);
+		lbChucVu.addMouseListener(this);
 
 		mnTKDV.addActionListener(this);
 		mnTKHD.addActionListener(this);
@@ -429,7 +431,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
-		if (o == lbHoTenNV) { 
+		if (o == lbHoTenNV) {
 			loadFrm_Profile();
 		}
 		if (o == mnQLDP)
@@ -457,10 +459,14 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
 
+		if (o == lbChucVu) {
+			loadFrm_Profile();
+		}
+
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
 		if (o == mnTroGiup) {
-			String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+			String webURL = "https://qhuy1504.github.io/KaraokeETC_HELP/";
 			try {
 				Desktop.getDesktop().browse(new URL(webURL).toURI());
 			} catch (MalformedURLException e1) {
@@ -491,14 +497,27 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		btnDangxuat.setBackground(Color.red);
+		Object o = e.getSource();
+		if (o == lbChucVu) {
+			lbChucVu.setForeground(new Color(227, 204, 0));
+			lbChucVu.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(227, 204, 0)));
+		} else if (o == btnDangxuat) {
+			// TODO Auto-generated method stub
+			btnDangxuat.setBackground(Color.red);
+		}
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		btnDangxuat.setBackground(Color.white);
+		Object o = e.getSource();
+		if (o == lbChucVu) {
+			lbChucVu.setForeground(Color.WHITE);
+			lbChucVu.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(227, 204, 0)));
+		} else if (o == btnDangxuat) {
+			// TODO Auto-generated method stub
+			btnDangxuat.setBackground(Color.white);
+		}
 	}
 
 	@Override
@@ -656,7 +675,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 //					        @Override
 			public void actionPerformed(ActionEvent e) {
 				mnTroGiup.doClick();
-				String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+				String webURL = "https://qhuy1504.github.io/KaraokeETC_HELP/";
 				try {
 					Desktop.getDesktop().browse(new URL(webURL).toURI());
 				} catch (MalformedURLException e1) {

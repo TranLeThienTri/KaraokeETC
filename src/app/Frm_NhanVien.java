@@ -303,7 +303,6 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 		lbIconSearch = new JLabel("New label");
 		lbIconSearch.setIcon(new ImageIcon(Frm_NhanVien.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(1122, 18, 30, 30);
-		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel.add(lbIconSearch);
 
 		lbBG = new JLabel();
@@ -462,13 +461,18 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		//
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
 
 	@Override
