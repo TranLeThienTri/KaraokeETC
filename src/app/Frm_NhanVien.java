@@ -82,12 +82,12 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	LocalDate curent;
 	LocalDateTime localDateTime;
 	String selectedDate;
-	DanhSachNhanVien dsNV;
 	JPanel pnDSP, panel;
 	private JLabel lbIconSearch;
 	DanhSachTaiKhoan dstk;
 	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3;
-
+	DanhSachNhanVien dsNV;
+//	DanhSachTaiKhoan dsTK;
 	public Frm_NhanVien() {
 		setTitle("QUẢN LÝ NHÂN VIÊN");
 		setSize(1400, 700);
@@ -610,6 +610,10 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 				obj[6] = sdt;
 				obj[7] = cccd;
 				obj[8] = tt;
+				
+				if(!trangThai)
+					dstk.deleteAccountById(ma);
+					
 				if (!dsNV.suaNhanVien(nv)) {
 					JOptionPane.showMessageDialog(this, "Sửa thành công");
 					table.setValueAt(obj[1], row, 1);

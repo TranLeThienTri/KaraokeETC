@@ -296,7 +296,8 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
 
-		pnHeader.addMouseListener(this);
+//		pnHeader.addMouseListener(this);
+		lbHoTenNV.addMouseListener(this);
 
 		// add và địng nghĩa các hot key cho ứng dụng
 
@@ -428,6 +429,9 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
+		if (o == lbHoTenNV) { 
+			loadFrm_Profile();
+		}
 		if (o == mnQLDP)
 			loadFrmQuanLyDatPhong();
 		if (o == mnQLKH)
@@ -452,10 +456,6 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrmQuanLyPhong();
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
-
-		if (o == pnHeader) {
-			loadFrm_Profile();
-		}
 
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
