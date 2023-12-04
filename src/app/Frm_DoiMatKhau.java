@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import java.awt.Rectangle;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.MenuListener;
 
 import connectDB.ConnectDB;
@@ -53,8 +54,7 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	private JPanel formDangNhap, pnTaiKhoan;
 	private JTextField txtTaiKhoan;
 	private JPasswordField pwdNv;
-	private JLabel ngayLabel;
-	private JLabel lbPass;
+	private JLabel lbPass, lbBGR, lbBgTrai;
 	private Frm_Chinh frmChinh;
 	public TaiKhoan tk;
 	private DanhSachTaiKhoan dsTK;
@@ -68,8 +68,8 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		ConnectDB.getInstance().connect();
 		frmChinh = new Frm_Chinh();
 		getContentPane().setBackground(SystemColor.controlHighlight);
-		setTitle("Đăng Nhập");
-		setSize(800, 500);
+		setTitle("Thay đổi mật khẩu");
+		setSize(1200, 500);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -120,12 +120,13 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		pwdNv.setBounds(226, 7, 301, 36);
 		pnMatKhau.add(pwdNv);
 
-		lbPass = new JLabel("PASSWORD");
+		lbPass = new JLabel("Thay đổi mật khẩu");
+		lbPass.setBounds(210, 20, 300, 45);
 		lbPass.setForeground(new Color(255, 255, 255));
 		lbPass.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lbPass.setBounds(218, 23, 184, 45);
 		formDangNhap.add(lbPass);
-//		lbQuenMatKhau.addMouseListener(this);
+		
+		// add sự kiện nút xác nhận
 		btnXacNhan.addActionListener(this);
 	}
 
@@ -154,14 +155,16 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 
 		getContentPane().setLayout(null);
 		JPanel pnBGR = new JPanel();
-		pnBGR.setBounds(0, 0, 786, 463);
+		pnBGR.setBounds(0, 0, 1200, 500);
 		getContentPane().add(pnBGR);
-
 		pnBGR.setLayout(null);
+		
 		formDangNhap = new JPanel();
-		formDangNhap.setBounds(83, 83, 620, 331);
+		formDangNhap.setBounds(505, 74, 620, 331);
+		formDangNhap.setForeground(new Color(255, 140, 0));
+		formDangNhap.setBackground(new Color(17, 85, 136));
+		formDangNhap.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(240, 248, 255)));
 		pnBGR.add(formDangNhap);
-		formDangNhap.setBackground(new Color(192, 192, 192, 100));
 		formDangNhap.setLayout(null);
 
 		ImageIcon originalIcon = new ImageIcon(Frm_DoiMatKhau.class.getResource("/imgs/bg_chot1.png"));
@@ -170,23 +173,25 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		Image resizedImage = image.getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon = new ImageIcon(resizedImage);
 		pnBGR.setLayout(null);
+		
 		// add ảnh
-		JLabel lbBGR = new JLabel(resizedIcon);
-		lbBGR.setBounds(0, 0, 800, 500);
+		lbBGR = new JLabel();
+		lbBGR.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_phai1.png")));
+		lbBGR.setBackground(new Color(0, 100, 230));
+		lbBGR.setBounds(430, 0, 760, 500);
 		pnBGR.add(lbBGR);
+
+		lbBgTrai = new JLabel("");
+		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
+		lbBgTrai.setBounds(0, 0, 440, 500);
+		pnBGR.add(lbBgTrai);
 	}
 
 	// Hiển thị ngày hiện tại
 	public void lbNgayHienTai() {
-		ngayLabel = new JLabel();
-		ngayLabel.setForeground(SystemColor.text);
-		ngayLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		Date ngayHienTai = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String ngayHienTaiChuoi = sdf.format(ngayHienTai);
-		ngayLabel.setText(ngayHienTaiChuoi);
-		ngayLabel.setBounds(310, 0, 166, 81);
-		getContentPane().add(ngayLabel);
 	}
 
 	public void showGui() {
@@ -205,10 +210,9 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	
 	public boolean doiMatKhau() {
 		if(comparePass()) {
-//			Frm_DangNhap frmDangNhap = new Frm_DangNhap();
-//			frmDangNhap.setVisible(true);
 			this.setVisible(false);
-			return  dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());			
+			dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());
+			return true;		
 		}else {
 			JOptionPane.showMessageDialog(this, "Không khớp, vui lòng kiểm tra lại!!");
 		}
@@ -221,6 +225,11 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if(o == btnXacNhan) {
 			Boolean fl = doiMatKhau();
+			if (fl==true) {
+				JOptionPane.showMessageDialog(this, "Thay đổi mật khẩu thành công !");
+				Frm_DangNhap frmDangNhap = new Frm_DangNhap();
+				frmDangNhap.setVisible(true);
+			}
 		}	
 	}	
 }

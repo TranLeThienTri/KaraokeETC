@@ -86,7 +86,7 @@ import javax.swing.border.EtchedBorder;
 public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListener {
 
 	JPanel pnDSDichVu, pnDV;
-	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL, lbldongia, lblTenPhong,
+	JLabel lbDSDichVu, lbBGQLDV, lbDV, lbLoaiDichVu, lbTenDV, lbSoLuong, lbGiamSL, lbTangSL, lblTenPhong,
 			lblTenKH, lblTime;
 	JComboBox comboTDV, comboLDV;
 	JTextField txtSoLuongTon;
@@ -106,6 +106,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	DanhSachHoaDon dsHD;
 	DanhSachThuePhong tp;
 	private DecimalFormat df;
+	private JLabel lbTongTien_1;
 
 	public Panel getFrmThemDichVu(HoaDonPhong hd) {
 		return this.pnTDV;
@@ -129,7 +130,8 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		pnTDV.setLayout(null);
 
 		pnDV = new JPanel();
-		pnDV.setBackground(new java.awt.Color(255, 255, 255, 80));
+		pnDV.setBorder(new LineBorder(new Color(255, 255, 255), 3));
+		pnDV.setBackground(new java.awt.Color(17, 85, 136));
 		pnDV.setBounds(20, 90, 481, 424);
 		pnTDV.add(pnDV);
 		pnDV.setLayout(null);
@@ -213,17 +215,19 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		lbTongTien.setBounds(14, 165, 111, 30);
 		pnDV.add(lbTongTien);
 
-		lbldongia = new JLabel("");
-		lbldongia.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lbldongia.setBounds(145, 165, 151, 30);
-		pnDV.add(lbldongia);
-
 		btnSuaDV = new FixButton("Sửa dịch vụ");
 		btnSuaDV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnSuaDV.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_btn_sua.png")));
 		btnSuaDV.setForeground(new Color(255, 255, 255));
 		btnSuaDV.setBounds(129, 251, 300, 35);
 		pnDV.add(btnSuaDV);
+		
+		lbTongTien_1 = new JLabel("Đơn giá:");
+		lbTongTien_1.setForeground(Color.WHITE);
+		lbTongTien_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbTongTien_1.setBackground(Color.WHITE);
+		lbTongTien_1.setBounds(129, 165, 300, 30);
+		pnDV.add(lbTongTien_1);
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
@@ -343,6 +347,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		btnQuayLai.addActionListener(this);
 		btnXacNhan.addActionListener(this);
 		comboLDV.addActionListener(this);
+		comboTDV.addActionListener(this);
 		tableDSDichVu.addMouseListener(this);
 		btnSuaDV.addActionListener(this);
 		dt = DateTimeFormatter.ofPattern("HH:mm");
@@ -354,6 +359,10 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		tp = new DanhSachThuePhong();
 		upTT();
 		phanLoaiCombobox();
+		
+		
+		
+	
 
 	}
 
@@ -443,6 +452,10 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 	public void lamMoi() {
 		txtSoLuongTon.setText("");
 		tableDSDichVu.clearSelection();
+		
+		comboLDV.setSelectedIndex(0);
+		comboTDV.setSelectedIndex(0);
+		lbTongTien_1.setText("");
 	}
 
 	public void phanLoaiCombobox() {
@@ -459,6 +472,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		for (DichVu s : list) {
 			comboTDV.addItem(s.getTenDichVu());
 		}
+		
 	}
 
 	public void upTT() {
@@ -492,6 +506,7 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		comboLDV.setSelectedItem(tableDSDichVu.getValueAt(row, 2).toString());
 		comboTDV.setSelectedItem(tableDSDichVu.getValueAt(row, 3).toString());
 		txtSoLuongTon.setText(tableDSDichVu.getValueAt(row, 4).toString());
+		lbTongTien_1.setText(tableDSDichVu.getValueAt(row, 5).toString());
 	}
 
 	public void suaDV() {
@@ -597,6 +612,10 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		}
 		if (o == comboLDV) {
 			phanLoaiCombobox();
+		}if (o==comboTDV) {
+			String tdv = (String) comboTDV.getSelectedItem();
+			String madv = dsDV.getMaDVTheoTen(tdv);
+			lbTongTien_1.setText(df.format(dsDV.getDGTheoMaDV(madv)));
 		}
 
 		if (o == btnThemDV) {

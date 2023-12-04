@@ -29,17 +29,19 @@ import entitys.TaiKhoan;
 import mail.Config;
 
 import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
 
 public class Frm_GuiMail extends JFrame implements ActionListener {
 	private JButton btnSend;
 	private JPanel pnSendMail;
 	private JTextField txtMail;
-	private JLabel ngayLabel;
+	private JLabel lbBGR, lbBgTrai;
 	Date ngayHienTai;
 	ImageIcon originalIcon, resizedIcon;
 	JLabel lbQuenMatKhau;
 	Image image, resizedImage;
 	public TaiKhoan tk;
+
 	public JPanel get_FrmSendMail() {
 		return this.pnSendMail;
 	}
@@ -48,13 +50,12 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		this.tk = tk;
 		getContentPane().setBackground(SystemColor.controlHighlight);
 		setTitle("Gửi Mail");
-		setSize(800, 500);
+		setSize(1200, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
 		showGui();
 	}
-
 
 	private void formSendMail() {
 		btnSend();
@@ -106,11 +107,11 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 	}
 
 	private void btnSend() {
-		JLabel lbSendMail = new JLabel("SEND MAIL");
+		JLabel lbSendMail = new JLabel("Bảo mật tài khoản");
 		lbSendMail.setBackground(new Color(192, 192, 192));
 		lbSendMail.setForeground(new Color(255, 255, 255));
 		lbSendMail.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lbSendMail.setBounds(218, 21, 183, 45);
+		lbSendMail.setBounds(210, 20, 300, 45);
 		pnSendMail.add(lbSendMail);
 		btnSend = new FixButton("Đăng Nhập");
 		btnSend.setText("Gửi");
@@ -128,23 +129,23 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		opacity();
 		getContentPane().setLayout(null);
 		JPanel pnBGR = new JPanel();
-		pnBGR.setBounds(0, 0, 786, 463);
+		pnBGR.setBounds(0, 0, 1200, 500);
 		getContentPane().add(pnBGR);
-
 		pnBGR.setLayout(null);
-		
-		FixButton btnQuayLai = new FixButton("Đăng Nhập");
+
+		FixButton2 btnQuayLai = new FixButton2("");
 		btnQuayLai.setIcon(new ImageIcon(Frm_GuiMail.class.getResource("/imgs/btn_quaylai.png")));
-		btnQuayLai.setText("");
 		btnQuayLai.setHideActionText(true);
 		btnQuayLai.setFont(new Font("Tahoma", Font.BOLD, 22));
 		btnQuayLai.setFocusPainted(false);
-		btnQuayLai.setBounds(0, 0, 91, 46);
+		btnQuayLai.setBounds(0, 0, 91, 40);
 		pnBGR.add(btnQuayLai);
+		
 		pnSendMail = new JPanel();
-		pnSendMail.setBounds(83, 73, 620, 341);
+		pnSendMail.setBounds(505, 74, 620, 331);
+		pnSendMail.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(240, 248, 255)));
 		pnBGR.add(pnSendMail);
-		pnSendMail.setBackground(new Color(192, 192, 192, 150));
+		pnSendMail.setBackground(new Color(17, 85, 136));
 		pnSendMail.setLayout(null);
 
 		originalIcon = new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_chot1.png"));
@@ -154,24 +155,26 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		resizedIcon = new ImageIcon(resizedImage);
 		pnBGR.setLayout(null);
 
-		// add ảnh
-		JLabel lbBGR = new JLabel(resizedIcon);
-		lbBGR.setBounds(0, 0, 800, 500);
-		pnBGR.add(lbBGR);
 		btnQuayLai.addActionListener(this);
+
+		// add ảnh
+		lbBGR = new JLabel();
+		lbBGR.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_phai1.png")));
+		lbBGR.setBackground(new Color(0, 100, 230));
+		lbBGR.setBounds(430, 0, 760, 500);
+		pnBGR.add(lbBGR);
+
+		lbBgTrai = new JLabel("");
+		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
+		lbBgTrai.setBounds(0, 0, 440, 500);
+		pnBGR.add(lbBgTrai);
 	}
 
 	// Hiển thị ngày hiện tại
 	public void lbNgayHienTai() {
-		ngayLabel = new JLabel();
-		ngayLabel.setForeground(SystemColor.text);
-		ngayLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		ngayHienTai = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String ngayHienTaiChuoi = sdf.format(ngayHienTai);
-		ngayLabel.setText(ngayHienTaiChuoi);
-		ngayLabel.setBounds(310, 0, 166, 81);
-		getContentPane().add(ngayLabel);
 	}
 
 	public void showGui() {
@@ -188,7 +191,7 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if (o == btnSend) {
 			sendMail();
-		}else {
+		} else {
 			Frm_DangNhap fmDangNhap = new Frm_DangNhap();
 			fmDangNhap.setVisible(true);
 			this.setVisible(false);
@@ -196,30 +199,29 @@ public class Frm_GuiMail extends JFrame implements ActionListener {
 	}
 
 	public void sendMail() {
-		if(ktraDuLieu()) {
+		if (ktraDuLieu()) {
 			String mail = txtMail.getText().trim();
 			Config sendMail = new Config(mail);
 			sendMail.main(null);// send mail
 			String rd = sendMail.getRd();
 			JOptionPane.showMessageDialog(this, "Đang gửi mail xác thực, vui lòng đợi trong giây lát ^^!");
 			xoaTrang();
-			Frm_NhapOTP frmOtp = new Frm_NhapOTP(tk,rd);
+			Frm_NhapOTP frmOtp = new Frm_NhapOTP(tk, rd);
 			frmOtp.setVisible(true);
-			this.setVisible(false);			
+			this.setVisible(false);
 		}
 	}
-	
+
 	// kiểm tra regex
-		public boolean ktraDuLieu() {
-			String email = txtMail.getText();
-			if (email.equals("") || !email.matches(
-					"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}")) {
-				JOptionPane.showMessageDialog(this, "Email không được để trống và phải đúng định dạng,\nVD: xxx@gmail.com");
-				txtMail.requestFocus();
-				return false;
-			}
-			return true;
+	public boolean ktraDuLieu() {
+		String email = txtMail.getText();
+		if (email.equals("") || !email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}")) {
+			JOptionPane.showMessageDialog(this, "Email không được để trống và phải đúng định dạng,\nVD: xxx@gmail.com");
+			txtMail.requestFocus();
+			return false;
 		}
+		return true;
+	}
 
 	public void xoaTrang() {
 		txtMail.setText("");

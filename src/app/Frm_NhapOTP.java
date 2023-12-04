@@ -30,28 +30,31 @@ import entitys.TaiKhoan;
 import mail.Config;
 
 import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
+
 import org.apache.poi.ss.formula.functions.T;
 
 public class Frm_NhapOTP extends JFrame implements ActionListener {
 	private JButton btnSend;
 	private JPanel pnSendOTP;
 	private JTextField txtOtp;
-	private JLabel ngayLabel;
+	private JLabel lbBGR, lbBgTrai;
 	private Date ngayHienTai;
 	ImageIcon originalIcon, resizedIcon;
 	Image image, resizedImage;
 	String otp;
 	public TaiKhoan tk;
+
 	public JPanel get_FrmSendMail() {
 		return this.pnSendOTP;
 	}
 
-	public Frm_NhapOTP(TaiKhoan tk,String otp) {
-		this.tk =tk;
+	public Frm_NhapOTP(TaiKhoan tk, String otp) {
+		this.tk = tk;
 		this.otp = otp;
 		getContentPane().setBackground(SystemColor.controlHighlight);
 		setTitle("Nhập OTP");
-		setSize(800, 500);
+		setSize(1200, 500);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -101,11 +104,11 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 	}
 
 	private void btnDangNhap() {
-		JLabel lbIndexOTP = new JLabel("OTP");
+		JLabel lbIndexOTP = new JLabel("Bảo mật tài khoản");
 		lbIndexOTP.setBackground(new Color(192, 192, 192));
 		lbIndexOTP.setForeground(new Color(255, 255, 255));
 		lbIndexOTP.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lbIndexOTP.setBounds(278, 21, 64, 45);
+		lbIndexOTP.setBounds(210, 20, 300, 45);
 		pnSendOTP.add(lbIndexOTP);
 		btnSend = new FixButton("Đăng Nhập");
 		btnSend.setText("Gửi");
@@ -123,24 +126,25 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		opacity();
 		getContentPane().setLayout(null);
 		JPanel pnBGR = new JPanel();
-		pnBGR.setBounds(0, 0, 786, 463);
+		pnBGR.setBounds(0, 0, 1200, 500);
 		getContentPane().add(pnBGR);
 
 		pnBGR.setLayout(null);
-		
-		FixButton btnQuayLai = new FixButton("Đăng Nhập");
+
+		FixButton2 btnQuayLai = new FixButton2("");
 		btnQuayLai.setIcon(new ImageIcon(Frm_NhapOTP.class.getResource("/imgs/btn_quaylai.png")));
-		btnQuayLai.setText("");
 		btnQuayLai.setHideActionText(true);
 		btnQuayLai.setFont(new Font("Tahoma", Font.BOLD, 22));
 		btnQuayLai.setFocusPainted(false);
-		btnQuayLai.setBounds(0, 0, 86, 46);
+		btnQuayLai.setBounds(0, 0, 86, 40);
 		pnBGR.add(btnQuayLai);
+		
 		pnSendOTP = new JPanel();
-		pnSendOTP.setBounds(83, 83, 620, 331);
-		pnBGR.add(pnSendOTP);
-		pnSendOTP.setBackground(new Color(192, 192, 192, 150));
+		pnSendOTP.setBounds(505, 74, 620, 331);
+		pnSendOTP.setBackground(new Color(17, 85, 136));
+		pnSendOTP.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(240, 248, 255)));
 		pnSendOTP.setLayout(null);
+		pnBGR.add(pnSendOTP);
 
 		originalIcon = new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_chot1.png"));
 		Image image = originalIcon.getImage();
@@ -150,22 +154,25 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		pnBGR.setLayout(null);
 
 		// add ảnh
-		JLabel lbBGR = new JLabel(resizedIcon);
-		lbBGR.setBounds(0, 0, 800, 500);
+		lbBGR = new JLabel();
+		lbBGR.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_phai1.png")));
+		lbBGR.setBackground(new Color(0, 100, 230));
+		lbBGR.setBounds(430, 0, 760, 500);
 		pnBGR.add(lbBGR);
+
+		lbBgTrai = new JLabel("");
+		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
+		lbBgTrai.setBounds(0, 0, 440, 500);
+		pnBGR.add(lbBgTrai);
+		
+		btnQuayLai.addActionListener(this);
 	}
 
 	// Hiển thị ngày hiện tại
 	public void lbNgayHienTai() {
-		ngayLabel = new JLabel();
-		ngayLabel.setForeground(SystemColor.text);
-		ngayLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		ngayHienTai = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String ngayHienTaiChuoi = sdf.format(ngayHienTai);
-		ngayLabel.setText(ngayHienTaiChuoi);
-		ngayLabel.setBounds(310, 0, 166, 81);
-		getContentPane().add(ngayLabel);
 	}
 
 	public void showGui() {
@@ -181,39 +188,40 @@ public class Frm_NhapOTP extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnSend) {
-			if(ktraDuLieu()) {
-				compareOTP();				
+			if (ktraDuLieu()) {
+				compareOTP();
 			}
-		}else {
-			Frm_DangNhap fmDangNhap = new Frm_DangNhap();
-			fmDangNhap.setVisible(true);
+		} else {
+			Frm_GuiMail frmGuiMail = new Frm_GuiMail(tk);
+			frmGuiMail.setVisible(true);
 			this.setVisible(false);
 		}
 	}
 
 	public void compareOTP() {
 		String s = txtOtp.getText().trim();
-		if(s.equalsIgnoreCase(otp)) {
+		if (s.equalsIgnoreCase(otp)) {
 			Frm_DoiMatKhau frmDoiMatKhau = new Frm_DoiMatKhau(tk);
 			frmDoiMatKhau.setVisible(true);
 			this.setVisible(false);
-		}else {
-			txtOtp.setText("Nhập sai OTP rồi ông cóc");
+		} else {
+			txtOtp.requestFocus();
+			JOptionPane.showMessageDialog(this, "Mã OTP không đúng, vui lòng kiểm tra lại !");
+
 		}
-			
+
 	}
 
 	public boolean ktraDuLieu() {
 		String otp = txtOtp.getText();
-		if (otp.equals("") || !otp.matches(
-				"\\d{6}")) {
+		if (otp.equals("") || !otp.matches("\\d{6}")) {
 			JOptionPane.showMessageDialog(this, "OTP không được Trống và phải là số!!");
 			txtOtp.requestFocus();
 			return false;
 		}
 		return true;
 	}
-	
+
 	public void xoaTrang() {
 		txtOtp.setText("");
 	}
