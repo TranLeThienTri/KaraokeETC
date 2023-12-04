@@ -421,7 +421,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		keyStrokeCTRL1 = KeyStroke.getKeyStroke("ctrl 1");
 		keyStrokeCTRL2 = KeyStroke.getKeyStroke("ctrl 2");
 		keyStrokeCTRL3 = KeyStroke.getKeyStroke("ctrl 3");
-		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4	");
+		keyStrokeCTRL4 = KeyStroke.getKeyStroke("ctrl 4");
 		keyStrokeCTRL5 = KeyStroke.getKeyStroke("ctrl 5");
 
 		// Phím nóng

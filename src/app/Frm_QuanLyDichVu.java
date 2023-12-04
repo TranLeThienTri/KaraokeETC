@@ -60,7 +60,7 @@ import javax.swing.table.JTableHeader;
 
 public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnDSDichVu, pnTTDV;
-	private JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia, lbTB, lbIconSearch;
+	private JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia, lbTB, lbIconSearch, lbIconSearchLTP;
 	private JComboBox comboTDV, comboLDV;
 	private JTextField txtDonGia, txtSoLuongTon;
 	private Panel pnQLDV;
@@ -184,6 +184,11 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(536, 69, 30, 30);
 		pnTTDV.add(lbIconSearch);
+		
+		lbIconSearchLTP = new JLabel("");
+		lbIconSearchLTP.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_search.png")));
+		lbIconSearchLTP.setBounds(536, 29, 30, 30);
+		pnTTDV.add(lbIconSearchLTP);
 
 		pnDSDichVu = new JPanel();
 		pnDSDichVu.setBackground(Color.WHITE);
@@ -244,6 +249,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		comboLDV.addActionListener(this);
 		tableDSDichVu.addMouseListener(this);
 		lbIconSearch.addMouseListener(this);
+		lbIconSearchLTP.addMouseListener(this);
 		// kết nối data
 		ConnectDB.getInstance().connect();
 		// Danh sach Mat Hang
@@ -302,8 +308,6 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		}
 		if (o == comboLDV) {
 			phanLoaiCombobox();
-			locTheoLoaiDichVu();
-
 		}
 
 	}
@@ -638,7 +642,11 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
 			locTheoTenDichVu();
-		} else {
+		} 
+		else if (o == lbIconSearchLTP) {
+			locTheoLoaiDichVu();
+		}
+		else {
 			setTextTB();
 		}
 
@@ -662,6 +670,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
 			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}else if(o == lbIconSearchLTP) {
+			lbIconSearchLTP.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		}
 	}
 
@@ -671,6 +681,8 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
 			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}else if(o == lbIconSearchLTP) {
+			lbIconSearchLTP.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		}
 	}
 }
