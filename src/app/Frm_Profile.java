@@ -173,13 +173,13 @@ public class Frm_Profile extends JFrame implements ActionListener {
 		lbHeader.setFont(new Font("Tahoma", Font.BOLD, 24));
 
 		JLabel lblTnN = new JLabel(nv.getHoTenNhanVien().toString());
-		lblTnN.setBounds(430, 187, 313, 32);
+		lblTnN.setBounds(425, 187, 313, 32);
 		lblTnN.setForeground(Color.WHITE);
 		lblTnN.setFont(new Font("Tahoma", Font.BOLD, 24));
 		pnBGR.add(lblTnN);
 		
 		JLabel lblDiaChi = new JLabel(nv.getDiaChi().toString());
-		lblDiaChi.setBounds(454, 216, 313, 32);
+		lblDiaChi.setBounds(460, 216, 313, 32);
 		pnBGR.add(lblDiaChi);
 		lblDiaChi.setForeground(Color.WHITE);
 		lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 20));
