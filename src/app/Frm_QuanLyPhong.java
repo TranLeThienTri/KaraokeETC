@@ -657,8 +657,8 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 
 	// Kiểm tra phòng
 	public void kiemTraPhong() {
-		df = new DecimalFormat("###,### VNĐ");
-		dfs = new DecimalFormat("##,## M2");
+		df = new DecimalFormat("######");
+		dfs = new DecimalFormat("##,##");
 		String maPhong = txtMaPhong.getText();
 		Phong p = dsPhong.getPhongTheoMa(maPhong);
 		if (maPhong.equals("Tìm kiếm phòng theo mã phòng") || maPhong.equals("")) {
