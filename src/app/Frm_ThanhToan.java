@@ -438,6 +438,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 	public void upTT() {
 		mahd = hd.getMaHoaDon();
 		lblHd.setText(mahd);
+		lbSDT_1.setText(hd.getMaKhachHang().getSoDienThoai());
 		makh = hd.getMaKhachHang().getMaKhachHang();
 		lblNguynVnA.setText(hd.getMaNhanVien().getHoTenNhanVien());
 		lbTenKH_1.setText(hd.getMaKhachHang().getHoTenKhachHang());
@@ -597,7 +598,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 
 	public BufferedImage chuyenDoiHinhTuJpanel(JPanel panel) {
 		int width = pnThanhToan.getWidth();
-		int height = 720;
+		int height = 750;
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = image.createGraphics();
 		panel.paint(g);

@@ -667,7 +667,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -680,7 +680,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -700,7 +700,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -714,7 +714,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -734,7 +734,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -749,7 +749,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
