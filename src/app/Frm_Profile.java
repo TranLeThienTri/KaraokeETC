@@ -203,7 +203,10 @@ public class Frm_Profile extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if (o == btnQuayLai) {
 			dispose();
+			Frm_Chinh frm_Chinh = new Frm_Chinh(nv);
+			frm_Chinh.setVisible(true);
 		} else {
+			
 			this.dispose();
 			doiPass();
 		}

@@ -111,15 +111,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
-
 		gui();
-
 	}
 
 	public void gui() {
-
 		getContentPane().setLayout(null);
-
 		PnChinh = new JPanel();
 		PnChinh.setBounds(0, 0, 1400, 800);
 		PnChinh.setEnabled(false);
@@ -417,6 +413,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	public void loadFrm_Profile() {
 		Frm_Profile frmProfile = new Frm_Profile(nv);
 		frmProfile.setVisible(true);
+		this.setVisible(false);
 	}
 
 	@Override

@@ -665,7 +665,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -678,7 +678,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -698,7 +698,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -712,7 +712,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -724,6 +724,18 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
 					model.addRow(obj);
 			}
+		}else {
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
+			for (Phong p : list) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = df.format(p.getGiaPhong());
+				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")))
+					model.addRow(obj);
+			}
 		}
 	}
 
@@ -732,7 +744,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		clearTable1();
 		if (radioDangThue.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -747,17 +759,28 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			}
 		} else if (radioTrong.isSelected()) {
 			int i = 0;
-			ArrayList<Phong> list = dsPhong.getDSPhong();
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
 			for (Phong p : list) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 				obj[2] = p.getSucChua();
-
 				obj[3] = df.format(p.getGiaPhong());
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")
 						&& p.getMaTinhTrangPhong().getMaTinhTrangPhong().equals("EMPT")))
+					model.addRow(obj);
+			}
+		}else {
+			ArrayList<Phong> list = dsDP.getAllRoomByDate(LocalDate.now().toString());
+			for (Phong p : list) {
+				Object[] obj = new Object[6];
+				obj[0] = p.getMaPhong().trim();
+				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
+				obj[2] = p.getSucChua();
+				obj[3] = df.format(p.getGiaPhong());
+				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
+				if ((p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")))
 					model.addRow(obj);
 			}
 		}

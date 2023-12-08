@@ -386,23 +386,6 @@ public class Frm_ThemDichVu extends JFrame implements ActionListener, MouseListe
 		if (o == tableDSDichVu) {
 			clickTB();
 		}
-//>>>>>>> 0cb884e6cc745bcdf8c94e97aca6c848886290e8
-
-//		if (o == lbTangSL) {
-//			if (txtSoLuongTon.getText().equalsIgnoreCase("")) {
-//				JOptionPane.showMessageDialog(this, "Chưa nhập số lượng dịch vụ");
-//			} else {
-//				ktTangSL();
-//			}
-//		} else if (o == lbGiamSL) {
-//			if (txtSoLuongTon.getText().equalsIgnoreCase("")) {
-//				JOptionPane.showMessageDialog(this, "Chưa nhập số lượng dịch vụ");
-//			} else {
-//				ktGiamSL();
-//			}
-//		} else {
-//			setTextTB();
-//		}
 	}
 
 	public boolean ktraSL(String ma) {

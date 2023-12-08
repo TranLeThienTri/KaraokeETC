@@ -58,13 +58,13 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	private Frm_Chinh frmChinh;
 	public TaiKhoan tk;
 	private DanhSachTaiKhoan dsTK;
+
 	public JPanel get_FrmSendMail() {
 		return this.formDangNhap;
 	}
 
-
 	public Frm_DoiMatKhau(TaiKhoan tk) {
-		this.tk =tk;
+		this.tk = tk;
 		ConnectDB.getInstance().connect();
 		frmChinh = new Frm_Chinh();
 		getContentPane().setBackground(SystemColor.controlHighlight);
@@ -125,7 +125,7 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		lbPass.setForeground(new Color(255, 255, 255));
 		lbPass.setFont(new Font("Tahoma", Font.BOLD, 30));
 		formDangNhap.add(lbPass);
-		
+
 		// add sự kiện nút xác nhận
 		btnXacNhan.addActionListener(this);
 	}
@@ -158,7 +158,7 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		pnBGR.setBounds(0, 0, 1200, 500);
 		getContentPane().add(pnBGR);
 		pnBGR.setLayout(null);
-		
+
 		formDangNhap = new JPanel();
 		formDangNhap.setBounds(505, 74, 620, 331);
 		formDangNhap.setForeground(new Color(255, 140, 0));
@@ -173,7 +173,7 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 		Image resizedImage = image.getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon = new ImageIcon(resizedImage);
 		pnBGR.setLayout(null);
-		
+
 		// add ảnh
 		lbBGR = new JLabel();
 		lbBGR.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_phai1.png")));
@@ -205,31 +205,33 @@ public class Frm_DoiMatKhau extends JFrame implements ActionListener {
 	private boolean comparePass() {
 		String maNV = txtTaiKhoan.getText().toString().trim();
 		String mk = pwdNv.getText().toString().trim();
-		return maNV.equals(mk);
-	}
-	
-	public boolean doiMatKhau() {
-		if(comparePass()) {
-			this.setVisible(false);
-			dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());
-			return true;		
-		}else {
-			JOptionPane.showMessageDialog(this, "Không khớp, vui lòng kiểm tra lại!!");
+		if (maNV.equals(mk) && !maNV.equals("")) {
+			return true;
 		}
 		return false;
 	}
 
+	public boolean doiMatKhau() {
+		if (comparePass()) {
+			this.setVisible(false);
+			dsTK.updatePassword(tk.getMaNhanVien(), txtTaiKhoan.getText().trim());
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(this, "Không được để trống và mật khẩu phải khớp !!!");
+		}
+		return false;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if(o == btnXacNhan) {
+		if (o == btnXacNhan) {
 			Boolean fl = doiMatKhau();
-			if (fl==true) {
+			if (fl == true) {
 				JOptionPane.showMessageDialog(this, "Thay đổi mật khẩu thành công !");
 				Frm_DangNhap frmDangNhap = new Frm_DangNhap();
 				frmDangNhap.setVisible(true);
 			}
-		}	
-	}	
+		}
+	}
 }
