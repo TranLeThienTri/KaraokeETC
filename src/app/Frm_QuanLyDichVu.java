@@ -46,6 +46,7 @@ import entitys.DichVu;
 import entitys.KhachHang;
 import entitys.LoaiDichVu;
 import entitys.LoaiKhachHang;
+import entitys.NhanVien;
 import entitys.Phong;
 
 import javax.swing.JButton;
@@ -60,7 +61,8 @@ import javax.swing.table.JTableHeader;
 
 public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnDSDichVu, pnTTDV;
-	private JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia, lbTB, lbIconSearch, lbIconSearchLTP;
+	private JLabel lbDSDichVu, lbBGQLDV, lbTTDV, lbLoaiDichVu, lbTenDV, lbSoLuongTon, lbDonGia, lbTB, lbIconSearch,
+			lbIconSearchLTP;
 	private JComboBox comboTDV, comboLDV;
 	private JTextField txtDonGia, txtSoLuongTon;
 	private Panel pnQLDV;
@@ -72,6 +74,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	KeyStroke keyStrokeCTRL1, keyStrokeCTRL2, keyStrokeCTRL3;
 	DanhSachDichVu dsDV;
 	DecimalFormat df;
+	DecimalFormat dfslt;
 
 	public Panel getFrmQuanLyDichVu() {
 		return this.pnQLDV;
@@ -184,7 +187,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		lbIconSearch.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_search.png")));
 		lbIconSearch.setBounds(536, 69, 30, 30);
 		pnTTDV.add(lbIconSearch);
-		
+
 		lbIconSearchLTP = new JLabel("");
 		lbIconSearchLTP.setIcon(new ImageIcon(Frm_QuanLyDichVu.class.getResource("/imgs/icon_search.png")));
 		lbIconSearchLTP.setBounds(536, 29, 30, 30);
@@ -463,11 +466,11 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		}
 	}
 
-	// Lọc dịch vụ theo loại dịch vụ
+	// Lọc dịch vụ theo tên add kết quả lọc lên bảng
 	public void locTheoTenDichVu() {
 		clearTable();
 		df = new DecimalFormat("###,### VNĐ");
-		String tendv = String.valueOf(comboTDV.getSelectedItem());
+		String tendv = (String)(comboTDV.getSelectedItem());
 		ArrayList<DichVu> list = dsDV.getDSDichVu();
 		int i = 0;
 		for (DichVu dv : list) {
@@ -480,6 +483,31 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 				obj[4] = df.format(dv.getDonGia());
 				model.addRow(obj);
 			}
+		}
+	}
+
+	// Lọc dịch vụ theo tên dịch vụ
+	public void kiemTraTenDV() {
+		String tendv = comboTDV.getSelectedItem().toString();
+		df = new DecimalFormat("#######");
+		dfslt = new DecimalFormat("####");
+		System.out.println(tendv);
+		DichVu dv = dsDV.getDVTheoTen(tendv);
+		if (tendv.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên dịch vụ không được để trống");
+			comboTDV.requestFocus();
+		} else if (!tendv.matches(
+				"^[A-Z][ A-Za-za-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*")) {
+			JOptionPane.showMessageDialog(this, "Tên dịch vụ viết hoa chữ cái đầu !");
+			comboTDV.requestFocus();
+		} else if (dv != null) {
+			String ldv = dv.getloaiDichVu().getTenLoaiDichVu();
+			txtSoLuongTon.setText(dfslt.format(dv.getSoLuongTon()));
+			txtDonGia.setText(df.format(dv.getDonGia()));
+			locTheoTenDichVu();
+		}else {
+			JOptionPane.showMessageDialog(this, "Dịch vụ chưa có trong hệ thống \n Thêm dịch vụ mới!!!");
+			comboTDV.requestFocus();
 		}
 	}
 
@@ -641,12 +669,10 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
-			locTheoTenDichVu();
-		} 
-		else if (o == lbIconSearchLTP) {
+			kiemTraTenDV();
+		} else if (o == lbIconSearchLTP) {
 			locTheoLoaiDichVu();
-		}
-		else {
+		} else {
 			setTextTB();
 		}
 
@@ -670,7 +696,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
 			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		}else if(o == lbIconSearchLTP) {
+		} else if (o == lbIconSearchLTP) {
 			lbIconSearchLTP.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		}
 	}
@@ -681,7 +707,7 @@ public class Frm_QuanLyDichVu extends JFrame implements ActionListener, MouseLis
 		Object o = e.getSource();
 		if (o == lbIconSearch) {
 			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
-		}else if(o == lbIconSearchLTP) {
+		} else if (o == lbIconSearchLTP) {
 			lbIconSearchLTP.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		}
 	}
