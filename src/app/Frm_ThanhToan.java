@@ -237,7 +237,7 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 		lblNguynVn.setBounds(137, 50, 596, 25);
 		pnThanhToan.add(lblNguynVn);
 
-		lbSDT_1 = new JLabel("0382173105");
+		lbSDT_1 = new JLabel("");
 		lbSDT_1.setForeground(Color.BLACK);
 		lbSDT_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lbSDT_1.setBounds(137, 200, 243, 25);

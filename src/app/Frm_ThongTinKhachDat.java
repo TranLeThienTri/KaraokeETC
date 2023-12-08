@@ -192,11 +192,13 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener, Mous
 		pnKH.add(lbTenKH);
 
 		txtSDT = new JTextField();
+		txtSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSDT.setBounds(643, 30, 250, 30);
 		txtSDT.setEditable(false);
 		pnKH.add(txtSDT);
 
 		txtKhachHang = new JTextField();
+		txtKhachHang.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtKhachHang.setBounds(160, 30, 250, 30);
 		pnKH.add(txtKhachHang);
 

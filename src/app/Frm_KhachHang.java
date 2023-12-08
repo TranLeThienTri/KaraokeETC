@@ -199,8 +199,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 
 		lbIconSearch = new JLabel("New label");
 		lbIconSearch.setIcon(new ImageIcon(Frm_KhachHang.class.getResource("/imgs/icon_search.png")));
-		lbIconSearch.setBounds(1117, 20, 30, 30);
-		lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		lbIconSearch.setBounds(1125, 20, 30, 30);
 		panel.add(lbIconSearch);
 
 		// Danh sách khách hàng table
@@ -443,7 +442,13 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	public void ktraKH() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsKh.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("^(0[0-9]{9})$")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+		} else if (kh != null) {
 			txtTenKH.setText(kh.getHoTenKhachHang());
 			txtCCCD.setText(kh.getSoCCCD());
 			txtLoaiKH.setText(kh.getLoaiKhachHang().getTenLoaiKhachHang());
@@ -461,13 +466,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \n Thêm khách hàng mới!!!");
 			txtTenKH.requestFocus();
 		}
-		if (sdt.equals("")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
-			txtSDT.requestFocus();
-		} else if (!sdt.matches("^(0[0-9]{9})$")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
-			txtSDT.requestFocus();
-		}
+
 	}
 
 	public void clearTable() {
@@ -637,13 +636,19 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if (o == lbIconSearch) {
+			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		}
 	}
 
 }

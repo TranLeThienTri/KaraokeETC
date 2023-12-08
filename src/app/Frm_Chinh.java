@@ -41,6 +41,7 @@ import entitys.NhanVien;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -110,15 +111,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
-
 		gui();
-
 	}
 
 	public void gui() {
-
 		getContentPane().setLayout(null);
-
 		PnChinh = new JPanel();
 		PnChinh.setBounds(0, 0, 1400, 800);
 		PnChinh.setEnabled(false);
@@ -168,7 +165,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		lbChucVu = new JLabel(nv.getchucVu().getTenChucVu());
 		lbChucVu.setForeground(Color.WHITE);
 		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbChucVu.setBounds(980, 35, 200, 25);
+		lbChucVu.setBounds(980, 35, 80, 25);
 		pnHeader.add(lbChucVu);
 
 		lbIconChucVu = new JLabel("");
@@ -290,13 +287,18 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		mnQLP.addMouseListener(this);
 		mnQLTP.addMouseListener(this);
 		mnTroGiup.addMouseListener(this);
+		lbChucVu.addMouseListener(this);
 
 		mnTKDV.addActionListener(this);
 		mnTKHD.addActionListener(this);
 		mnTKKH.addActionListener(this);
 		mnTKNV.addActionListener(this);
+		pnHeader.addMouseListener(this);
 
 		// add và địng nghĩa các hot key cho ứng dụng
+
+		// add và địng nghĩa các hot key cho ứng dụng
+
 		keyStrokeF1 = KeyStroke.getKeyStroke("F1");
 		keyStrokeF2 = KeyStroke.getKeyStroke("F2");
 		keyStrokeF3 = KeyStroke.getKeyStroke("F3");
@@ -378,24 +380,17 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			pnCenter.add(frTKDV.getFrmThongKeDichVu());
 		} else {
 			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
-		}	
+		}
 	}
 
 	public void loadFrm_ThongKeHoaDon() {
-		String maCV = "QL";
-		ChucVu cv = new ChucVu(maCV);
-		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
 			pnCenter.removeAll();
 			Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
 			pnCenter.add(frTKHD.getFrmThongKeHoaDon());
-		} else {
-			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
-		}
 	}
 
 	public void loadFrm_ThongKeKhachHang() {
 		pnCenter.removeAll();
-
 		Frm_ThongKeKhachHang frTKKH = new Frm_ThongKeKhachHang();
 		pnCenter.add(frTKKH.getFrmThongKeKhachHang());
 
@@ -413,6 +408,12 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		Frm_TrangChu frTC = new Frm_TrangChu();
 		pnCenter.add(frTC.getFrmTrangChu());
 
+	}
+
+	public void loadFrm_Profile() {
+		Frm_Profile frmProfile = new Frm_Profile(nv);
+		frmProfile.setVisible(true);
+		this.setVisible(false);
 	}
 
 	@Override
@@ -442,10 +443,15 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			loadFrmQuanLyPhong();
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
+
+		if (o == lbChucVu) {
+			loadFrm_Profile();
+		}
+
 		if (o == mnTrangChu)
 			loadFrm_TrangChu();
 		if (o == mnTroGiup) {
-			String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
+			String webURL = "https://qhuy1504.github.io/KaraokeETC_HELP/";
 			try {
 				Desktop.getDesktop().browse(new URL(webURL).toURI());
 			} catch (MalformedURLException e1) {
@@ -459,9 +465,8 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 				e1.printStackTrace();
 			}
 		}
-	}
 
-	
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -477,14 +482,27 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		btnDangxuat.setBackground(Color.red);
+		Object o = e.getSource();
+		if (o == lbChucVu) {
+			lbChucVu.setForeground(new Color(227, 204, 0));
+			lbChucVu.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(227, 204, 0)));
+		} else if (o == btnDangxuat) {
+			// TODO Auto-generated method stub
+			btnDangxuat.setBackground(Color.red);
+		}
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		btnDangxuat.setBackground(Color.white);
+		Object o = e.getSource();
+		if (o == lbChucVu) {
+			lbChucVu.setForeground(Color.WHITE);
+			lbChucVu.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(227, 204, 0)));
+		} else if (o == btnDangxuat) {
+			// TODO Auto-generated method stub
+			btnDangxuat.setBackground(Color.white);
+		}
 	}
 
 	@Override
@@ -637,29 +655,28 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			}
 		});
 		// hot key f9
-				mnTroGiup.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF9, "clickButton");
-				mnTroGiup.getActionMap().put("clickButton", new AbstractAction() {
+		mnTroGiup.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStrokeF9, "clickButton");
+		mnTroGiup.getActionMap().put("clickButton", new AbstractAction() {
 //					        @Override
-					public void actionPerformed(ActionEvent e) {
-						mnTroGiup.doClick();
-						String webURL = "https://tranlethientri.github.io/Adidas_CLone/";
-						try {
-							Desktop.getDesktop().browse(new URL(webURL).toURI());
-						} catch (MalformedURLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (URISyntaxException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				});
-			
+			public void actionPerformed(ActionEvent e) {
+				mnTroGiup.doClick();
+				String webURL = "https://qhuy1504.github.io/KaraokeETC_HELP/";
+				try {
+					Desktop.getDesktop().browse(new URL(webURL).toURI());
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 	}
-	
 
 	public void callTKNV() {
 		// hot key f71
@@ -708,4 +725,5 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 			}
 		});
 	}
+
 }
