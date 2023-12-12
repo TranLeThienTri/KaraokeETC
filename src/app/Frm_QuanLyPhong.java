@@ -416,7 +416,6 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		} else if (o.equals(btnPhongVip)) {
 			locTheoLoaiPhongVIP();
 		} else if (o.equals(btnPhongThuong)) {
-
 			locTheoLoaiPhongThuong();
 		} else if (o.equals(btnTatCa)) {
 			clearTable();
@@ -621,9 +620,9 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		clearTable();
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("##,## M2");
-		ArrayList<Phong> list = dsPhong.getDSPhong();
-		int i = 0;
-		for (Phong p : list) {
+//		ArrayList<Phong> list = dsPhong.getDSPhong();
+		ArrayList<Phong> listN = dsDp.getAllRoomByType(dateString, "VIP");
+		for (Phong p : listN) {
 			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("VIP")) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();
@@ -708,9 +707,10 @@ public class Frm_QuanLyPhong extends JFrame implements ActionListener, MouseList
 		clearTable();
 		df = new DecimalFormat("###,### VNĐ");
 		dfs = new DecimalFormat("##,## M2");
-		ArrayList<Phong> list = dsPhong.getDSPhong();
+//		ArrayList<Phong> list = dsPhong.getDSPhong();
+		ArrayList<Phong> listN = dsDp.getAllRoomByType(dateString, "NOR");
 		int i = 0;
-		for (Phong p : list) {
+		for (Phong p : listN) {
 			if (p.getMaLoaiPhong().getMaLoaiPhong().equals("NOR")) {
 				Object[] obj = new Object[6];
 				obj[0] = p.getMaPhong().trim();

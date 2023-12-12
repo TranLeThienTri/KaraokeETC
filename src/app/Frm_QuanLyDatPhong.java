@@ -1002,8 +1002,9 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 
 			int phut = currentTime.getMinute();
 
+			// quá giờ đặt 30p thì sẽ tự động huỷ đặt phòng
 			if ((ngayHienTai.compareTo(ngayDat) > 0)
-					|| (ngayHienTai.compareTo(ngayDat) == 0 && gio >= gioDat && phut >= phutDat)) {
+					|| (ngayHienTai.compareTo(ngayDat) == 0 && (gio >= gioDat) && (phut - phutDat >= 30))) {
 				dsDP.huyDatPhong(maHoaDon);
 				dsTP.setTTPhongTheoMa(hd.getPhong().getMaPhong(), "EMPT");
 				DanhSachDatPhong dsdp = new DanhSachDatPhong();
