@@ -111,15 +111,11 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);
-
 		gui();
-
 	}
 
 	public void gui() {
-
 		getContentPane().setLayout(null);
-
 		PnChinh = new JPanel();
 		PnChinh.setBounds(0, 0, 1400, 800);
 		PnChinh.setEnabled(false);
@@ -169,7 +165,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 		lbChucVu = new JLabel(nv.getchucVu().getTenChucVu());
 		lbChucVu.setForeground(Color.WHITE);
 		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbChucVu.setBounds(980, 35, 60, 25);
+		lbChucVu.setBounds(980, 35, 80, 25);
 		pnHeader.add(lbChucVu);
 
 		lbIconChucVu = new JLabel("");
@@ -390,20 +386,13 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	}
 
 	public void loadFrm_ThongKeHoaDon() {
-		String maCV = "QL";
-		ChucVu cv = new ChucVu(maCV);
-		if (nv.getchucVu().getMaChucVu().equalsIgnoreCase(maCV)) {
 			pnCenter.removeAll();
 			Frm_ThongKeHoaDon frTKHD = new Frm_ThongKeHoaDon();
 			pnCenter.add(frTKHD.getFrmThongKeHoaDon());
-		} else {
-			JOptionPane.showMessageDialog(this, "!!! Bạn không có quyền truy cập chức năng này");
-		}
 	}
 
 	public void loadFrm_ThongKeKhachHang() {
 		pnCenter.removeAll();
-
 		Frm_ThongKeKhachHang frTKKH = new Frm_ThongKeKhachHang();
 		pnCenter.add(frTKKH.getFrmThongKeKhachHang());
 
@@ -426,6 +415,7 @@ public class Frm_Chinh extends JFrame implements MouseListener, ActionListener {
 	public void loadFrm_Profile() {
 		Frm_Profile frmProfile = new Frm_Profile(nv);
 		frmProfile.setVisible(true);
+		this.setVisible(false);
 	}
 
 	@Override

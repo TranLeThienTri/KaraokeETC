@@ -460,7 +460,6 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		addHotKey3();
 		addHotKey4();
 		xoaTrang();
-
 	}
 
 	@Override
@@ -540,6 +539,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	}
 
 	public void upTableDangDat(ArrayList<Phong> arr) {
+		df = new DecimalFormat("###,### VNĐ");
 		model1.setRowCount(0);
 		for (Phong p : arr) {
 			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equalsIgnoreCase("BOOK")) {
@@ -547,7 +547,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 				obj[0] = p.getMaPhong().trim();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[2] = p.getSucChua();
-				obj[3] = p.getGiaPhong();
+				obj[3] = df.format(p.getGiaPhong());
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 				model1.addRow(obj);
 			}
@@ -556,6 +556,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 	}
 
 	public void upTableTrong(ArrayList<Phong> arr) {
+		df = new DecimalFormat("###,### VNĐ");
 		model1.setRowCount(0);
 		for (Phong p : arr) {
 			if (p.getMaTinhTrangPhong().getMaTinhTrangPhong().equalsIgnoreCase("EMPT")) {
@@ -563,7 +564,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 				obj[0] = p.getMaPhong().trim();
 				obj[1] = p.getMaLoaiPhong().getTenLoaiPhong();
 				obj[2] = p.getSucChua();
-				obj[3] = p.getGiaPhong();
+				obj[3] = df.format(p.getGiaPhong());
 				obj[4] = p.getMaTinhTrangPhong().getTenTinhTrangPhong();
 				model1.addRow(obj);
 			}
@@ -758,7 +759,7 @@ public class Frm_QuanLyDatPhong extends JFrame implements ActionListener, MouseL
 		if (o == lbIconSearch) {
 			lbIconSearch.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		}
-		
+
 	}
 
 	@Override

@@ -795,7 +795,13 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 	public void ktraNV() {
 		String sdt = txtSDT.getText();
 		NhanVien nv = dsNV.getNhanVienTheoSDT(sdt);
-		if (nv != null) {
+		if (sdt.equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("^(0[0-9]{9})$")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+		} else if (nv != null) {
 			txtHoTen.setText(nv.getHoTenNhanVien());
 			txtDiaChi.setText(nv.getDiaChi());
 			txtCCCD.setText(nv.getSoCCCD());
@@ -832,13 +838,7 @@ public class Frm_NhanVien extends JFrame implements MouseListener, ActionListene
 			JOptionPane.showMessageDialog(this, "Nhân viên chưa có trong hệ thống \n Thêm nhân viên mới!!!");
 			txtHoTen.requestFocus();
 		}
-		if (sdt.equalsIgnoreCase("")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
-			txtSDT.requestFocus();
-		} else if (!sdt.matches("^(0[0-9]{9})$")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
-			txtSDT.requestFocus();
-		}
+
 	}
 
 }

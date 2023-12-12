@@ -442,7 +442,13 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 	public void ktraKH() {
 		String sdt = txtSDT.getText();
 		KhachHang kh = dsKh.getKhachHangTheoSDT(sdt);
-		if (kh != null) {
+		if (sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+			txtSDT.requestFocus();
+		} else if (!sdt.matches("^(0[0-9]{9})$")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
+			txtSDT.requestFocus();
+		} else if (kh != null) {
 			txtTenKH.setText(kh.getHoTenKhachHang());
 			txtCCCD.setText(kh.getSoCCCD());
 			txtLoaiKH.setText(kh.getLoaiKhachHang().getTenLoaiKhachHang());
@@ -460,13 +466,7 @@ public class Frm_KhachHang extends JFrame implements ActionListener, MouseListen
 			JOptionPane.showMessageDialog(this, "Khách hàng chưa có trong hệ thống \n Thêm khách hàng mới!!!");
 			txtTenKH.requestFocus();
 		}
-		if (sdt.equals("")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
-			txtSDT.requestFocus();
-		} else if (!sdt.matches("^(0[0-9]{9})$")) {
-			JOptionPane.showMessageDialog(this, "Số điện thoại không quá 10 số và bắt đầu bằng số 0");
-			txtSDT.requestFocus();
-		}
+
 	}
 
 	public void clearTable() {
