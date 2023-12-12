@@ -134,7 +134,6 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		lbQuenMatKhau.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lbQuenMatKhau.setBounds(428, 212, 139, 25);
 		formDangNhap.add(lbQuenMatKhau);
-		
 
 		lbIconUser = new JLabel("");
 		lbIconUser.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/icon_user.png")));
@@ -202,7 +201,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		lbBgTrai.setIcon(new ImageIcon(Frm_DangNhap.class.getResource("/imgs/bg_login_trai1.png")));
 		lbBgTrai.setBounds(0, 0, 440, 500);
 		pnBGR.add(lbBgTrai);
-		
+
 	}
 
 	// Hiển thị ngày hiện tại
@@ -257,7 +256,7 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		// TODO Auto-generated method stub
 		lbQuenMatKhau.setForeground(new Color(227, 204, 0));
 		lbQuenMatKhau.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(227, 204, 0)));
-		
+
 	}
 
 	@Override
@@ -271,19 +270,22 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	public void dangNhap() {
 		String maNV = txtTaiKhoan.getText().toString().trim();
 		String mk = pwdNv.getText().toString().trim();
-		tk = dsTk.getTaiKhoanTheoMa(maNV);
-		if (tk == null) {
-			JOptionPane.showMessageDialog(this, "Tài khoản không đúng!\nVui lòng kiểm tra lại.");
-			txtTaiKhoan.requestFocus();
-		} else if (!tk.getMatKhau().equals(mk)) {
-			JOptionPane.showMessageDialog(this, "Mật khẩu không đúng!\nVui lòng kiểm tra lại.");
-			pwdNv.requestFocus();
-		} else {
-			NhanVien nv = dsNV.getNhanVienTheoMa(maNV);
-			frmChinh.addInfoStaff(nv);
-			Frm_Chinh frm_Chinh = new Frm_Chinh(nv);
-			frm_Chinh.setVisible(true);
-			this.setVisible(false);
+		boolean isTrue = regexDangNhap(maNV, mk);
+		if (isTrue) {
+			tk = dsTk.getTaiKhoanTheoMa(maNV);
+			if (tk == null) {
+				JOptionPane.showMessageDialog(this, "Tài khoản không đúng!\nVui lòng kiểm tra lại.");
+				txtTaiKhoan.requestFocus();
+			} else if (!tk.getMatKhau().equals(mk)) {
+				JOptionPane.showMessageDialog(this, "Mật khẩu không đúng!\nVui lòng kiểm tra lại.");
+				pwdNv.requestFocus();
+			} else {
+				NhanVien nv = dsNV.getNhanVienTheoMa(maNV);
+				frmChinh.addInfoStaff(nv);
+				Frm_Chinh frm_Chinh = new Frm_Chinh(nv);
+				frm_Chinh.setVisible(true);
+				this.setVisible(false);
+			}
 		}
 	}
 
@@ -295,9 +297,26 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 		frmSendMail.setVisible(true);
 		this.setVisible(false);
 	}
-	
+
+	// regex
+	private boolean regexDangNhap(String id, String pass) {
+		if (id.equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(this, "Vui lòng điền mã nhân viên để đăng nhập!");
+			return false;
+		} else if (!id.matches("^(NV[0-9]{3})$")) {
+			JOptionPane.showMessageDialog(this, "Mã nhân viên sai định dạng!");
+			txtTaiKhoan.requestFocus();
+			return false;
+		}
+		if (pass.equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(this, "Vui lòng điền mật khẩu để đăng nhập!");
+			return false;
+		}
+		return true;
+	}
 
 	public static void main(String[] args) {
 		new Frm_DangNhap().setVisible(true);
 	}
+
 }
