@@ -475,6 +475,9 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 				int gioRa1 = ct.getGioChuyen().getHour();
 				int phutRa1 = ct.getGioChuyen().getMinute();
 				int tongThoiGian1 = (gioRa1 * 60 + phutRa1) - (gioVao1 * 60 + phutVao1);
+				if(tongThoiGian1 < 30) {
+					tongThoiGian1 = 30;
+				}
 				int gio1 = tongThoiGian1 / 60;
 				int phutConLai1 = tongThoiGian1 % 60;
 				float tienphong1 = phong.getGiaPhong() / 60 * tongThoiGian1;
@@ -497,6 +500,9 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 			int gioRa1 = hd.getGioTraPhong().getHour();
 			int phutRa1 = hd.getGioTraPhong().getMinute();
 			int tongThoiGian1 = (gioRa1 * 60 + phutRa1) - (gioVao1 * 60 + phutVao1);
+			if(tongThoiGian1 < 30) {
+				tongThoiGian1 = 30;
+			}
 			int gio1 = tongThoiGian1 / 60;
 			int phutConLai1 = tongThoiGian1 % 60;
 			float tienphong1 = phong.getGiaPhong() / 60 * tongThoiGian1;
@@ -518,6 +524,9 @@ public class Frm_ThanhToan extends JFrame implements ActionListener {
 			int gioRa = hd.getGioTraPhong().getHour();
 			int phutRa = hd.getGioTraPhong().getMinute();
 			int tongThoiGian = (gioRa * 60 + phutRa) - (gioVao * 60 + phutVao);
+			if(tongThoiGian < 30) {
+				tongThoiGian = 30;
+			}
 			int gio = tongThoiGian / 60;
 			int phutConLai = tongThoiGian % 60;
 			float tienphong = phong.getGiaPhong() / 60 * tongThoiGian;
