@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
@@ -53,6 +54,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
+
 
 public class Frm_DangNhap extends JFrame implements MouseListener, ActionListener {
 	private JButton btnDangNhap;
@@ -318,5 +320,4 @@ public class Frm_DangNhap extends JFrame implements MouseListener, ActionListene
 	public static void main(String[] args) {
 		new Frm_DangNhap().setVisible(true);
 	}
-
 }
