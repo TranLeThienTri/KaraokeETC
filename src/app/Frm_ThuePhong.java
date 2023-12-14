@@ -547,7 +547,7 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 		LocalTime giothue = LocalTime.now();
 		HoaDonPhong phong = new HoaDonPhong(maHD, p, nv, kh, lhd, ngaythue, giothue);
 		if (!dsTP.themHDThue(phong) && !dsTP.setTTPhongTheoMa(map, "RENT")) {
-			if (ngaythue.getDayOfWeek() == DayOfWeek.THURSDAY || ngaythue.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			if (ngaythue.getDayOfWeek() == DayOfWeek.SATURDAY || ngaythue.getDayOfWeek() == DayOfWeek.SUNDAY) {
 				dsPT.themPTTheoMa(maHD);
 			}
 			JOptionPane.showMessageDialog(this, "Thuê phòng thành công");
