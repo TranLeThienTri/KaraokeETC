@@ -596,7 +596,6 @@ public class Frm_ThuePhong extends JFrame implements MouseListener, ActionListen
 			txtSDT.requestFocus();
 		} else if (kh != null) {
 			txtKhachHang.setText(kh.getHoTenKhachHang());
-			System.out.println(dsHD.getDSHDTheoMaKH(kh.getMaKhachHang()).size());
 			if (dsHD.getDSHDTheoMaKH(kh.getMaKhachHang()).size() > 0) {
 				new Frm_TTKH(sdt).setVisible(true);
 			}

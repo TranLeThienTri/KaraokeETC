@@ -253,6 +253,8 @@ public class Frm_ThongTinKhachDat extends JFrame implements ActionListener, Mous
 			try {
 
 				boolean isNhanPhong = nhanPhong();
+				upTable();
+				
 			} catch (Exception e2) {
 				throw new Error("Chưa chọn phiếu đặt phòng!");
 			}
